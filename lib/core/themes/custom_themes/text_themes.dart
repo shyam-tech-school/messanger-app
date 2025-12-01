@@ -1,0 +1,26 @@
+import 'package:flutter/material.dart';
+
+import '../../constants/color_constants.dart';
+
+class TextThemes {
+  static const TextTheme lightTextTheme = TextTheme(
+    bodyMedium: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.normal,
+      color: ColorConstants.black,
+    ),
+
+    // -- HEADLINE --
+    headlineMedium: TextStyle(
+      fontSize: 28,
+      fontWeight: FontWeight.bold,
+      color: ColorConstants.black,
+    ),
+
+    headlineSmall: TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.bold,
+      color: ColorConstants.black,
+    ),
+  );
+}
