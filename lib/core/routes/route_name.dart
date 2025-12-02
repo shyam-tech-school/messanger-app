@@ -5,4 +5,5 @@ class RouteName {
   static const otpVerificationScreen = 'otp_verification';
   static const navigationScreen = '/navigation';
   static const homeScreen = '/home';
+  static const chatScreen = '/chat';
 }

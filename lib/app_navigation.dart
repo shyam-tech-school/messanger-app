@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mail_messanger/core/constants/color_constants.dart';
 import 'package:mail_messanger/features/call/presentation/pages/call_screen.dart';
-import 'package:mail_messanger/features/chat/presentation/pages/chat_screen.dart';
+import 'package:mail_messanger/features/chats/presentation/pages/chats_screen.dart';
 import 'package:mail_messanger/features/group/presentation/pages/group_screen.dart';
 import 'package:mail_messanger/features/settings/presentation/pages/settings_screen.dart';
 import 'package:mail_messanger/features/story/presentation/pages/story_screen.dart';
@@ -16,7 +16,7 @@ class AppNavigation extends StatefulWidget {
 
 class _AppNavigationState extends State<AppNavigation> {
   final List<Widget> screens = [
-    const ChatScreen(),
+    const ChatsScreen(),
     const StoryScreen(),
     const GroupScreen(),
     const CallScreen(),

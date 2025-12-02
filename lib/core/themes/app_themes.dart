@@ -11,6 +11,7 @@ class AppThemes {
     appBarTheme: const AppBarTheme(
       backgroundColor: ColorConstants.white,
       foregroundColor: ColorConstants.black,
+      elevation: 0,
     ),
     splashColor: Colors.transparent,
     splashFactory: NoSplash.splashFactory,

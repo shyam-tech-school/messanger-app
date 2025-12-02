@@ -11,4 +11,6 @@ class ColorConstants {
 
   //-- HEX COLOR --
   static const Color primary = Color(0xFF564CD6);
+  static const Color scaffoldSecondary = Color(0xFFF7F6F9);
+  static const Color chatBubbleSecondary = Color(0xFF175AF3);
 }

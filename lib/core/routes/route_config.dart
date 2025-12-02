@@ -3,6 +3,7 @@ import 'package:mail_messanger/app_navigation.dart';
 import 'package:mail_messanger/core/routes/route_name.dart';
 import 'package:mail_messanger/features/auth/presentation/pages/otp_screen.dart';
 import 'package:mail_messanger/features/auth/presentation/pages/otp_verification_screen.dart';
+import 'package:mail_messanger/features/chat/presentation/pages/chat_screen.dart';
 import 'package:mail_messanger/features/onboard/presentation/pages/onboard/onboard_screen.dart';
 import 'package:mail_messanger/features/onboard/presentation/pages/splash/splash_screen.dart';
 
@@ -25,6 +26,12 @@ class RouteConfig {
 
       case RouteName.navigationScreen:
         return MaterialPageRoute(builder: (context) => const AppNavigation());
+
+      case RouteName.chatScreen:
+        final arguments = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+          builder: (context) => ChatScreen(chats: arguments),
+        );
 
       default:
         return MaterialPageRoute(
