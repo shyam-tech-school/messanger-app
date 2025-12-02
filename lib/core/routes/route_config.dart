@@ -6,6 +6,7 @@ import 'package:mail_messanger/features/auth/presentation/pages/otp_verification
 import 'package:mail_messanger/features/chat/presentation/pages/chat_screen.dart';
 import 'package:mail_messanger/features/onboard/presentation/pages/onboard/onboard_screen.dart';
 import 'package:mail_messanger/features/onboard/presentation/pages/splash/splash_screen.dart';
+import 'package:mail_messanger/features/profile/presentation/pages/profile_screen.dart';
 
 class RouteConfig {
   static Route<dynamic> routeGenerator(RouteSettings settings) {
@@ -32,6 +33,9 @@ class RouteConfig {
         return MaterialPageRoute(
           builder: (context) => ChatScreen(chats: arguments),
         );
+
+      case RouteName.profileScreen:
+        return MaterialPageRoute(builder: (context) => const ProfileScreen());
 
       default:
         return MaterialPageRoute(

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mail_messanger/core/routes/route_name.dart';
 
 import '../widgets/profile_header.dart';
 import '../widgets/settings_section.dart';
@@ -25,14 +26,17 @@ class SettingsScreen extends StatelessWidget {
       body: Padding(
         padding: const .all(16.0),
         child: ListView(
-          children: const [
-            CupertinoSearchTextField(),
-            SizedBox(height: 20),
+          children: [
+            const CupertinoSearchTextField(),
+            const SizedBox(height: 20),
 
-            ProfileHeader(),
-            SizedBox(height: 20),
+            ProfileHeader(
+              ontap: () =>
+                  Navigator.pushNamed(context, RouteName.profileScreen),
+            ),
+            const SizedBox(height: 20),
 
-            SettingsSection(
+            const SettingsSection(
               items: [
                 SettingsTile(icon: CupertinoIcons.shield, title: "Account"),
                 SettingsTile(icon: CupertinoIcons.lock, title: "Privacy"),
@@ -44,9 +48,9 @@ class SettingsScreen extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
 
-            SettingsSection(
+            const SettingsSection(
               items: [
                 SettingsTile(
                   icon: CupertinoIcons.info,

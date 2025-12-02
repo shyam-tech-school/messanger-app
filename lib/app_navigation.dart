@@ -45,7 +45,9 @@ class _AppNavigationState extends State<AppNavigation> {
                     _currentIndex = 0;
                   });
                 },
-                icons: CupertinoIcons.bubble_left_bubble_right,
+                icons: _currentIndex == 0
+                    ? CupertinoIcons.bubble_left_bubble_right_fill
+                    : CupertinoIcons.bubble_left_bubble_right,
                 label: "Chat",
                 isSelected: _currentIndex == 0,
               ),
@@ -56,7 +58,9 @@ class _AppNavigationState extends State<AppNavigation> {
                     _currentIndex = 1;
                   });
                 },
-                icons: CupertinoIcons.arrow_2_circlepath_circle,
+                icons: _currentIndex == 1
+                    ? CupertinoIcons.arrow_2_circlepath_circle_fill
+                    : CupertinoIcons.arrow_2_circlepath_circle,
                 label: "Story",
                 isSelected: _currentIndex == 1,
               ),
@@ -67,7 +71,9 @@ class _AppNavigationState extends State<AppNavigation> {
                     _currentIndex = 2;
                   });
                 },
-                icons: CupertinoIcons.person_3,
+                icons: _currentIndex == 2
+                    ? CupertinoIcons.person_3_fill
+                    : CupertinoIcons.person_3,
                 label: "Group",
                 isSelected: _currentIndex == 2,
               ),
@@ -78,7 +84,9 @@ class _AppNavigationState extends State<AppNavigation> {
                     _currentIndex = 3;
                   });
                 },
-                icons: CupertinoIcons.phone,
+                icons: _currentIndex == 3
+                    ? CupertinoIcons.phone_fill
+                    : CupertinoIcons.phone,
                 label: "Call",
                 isSelected: _currentIndex == 3,
               ),
