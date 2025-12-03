@@ -55,6 +55,7 @@ class ChatsScreen extends StatelessWidget {
             automaticallyImplyLeading: false,
             actionsPadding: const .only(right: 8),
           ),
+          const SliverToBoxAdapter(child: SizedBox(height: 6)),
 
           // Chat search
           SliverPersistentHeader(

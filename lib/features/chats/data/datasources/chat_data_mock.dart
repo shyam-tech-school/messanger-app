@@ -55,6 +55,21 @@ List<Map<String, dynamic>> chatData = [
         "voiceDuration": "",
       },
     ],
+
+    "callLogs": [
+      {
+        "type": "audio",
+        "direction": "incoming",
+        "isMissed": false,
+        "time": "2025-11-28 16:32",
+      },
+      {
+        "type": "video",
+        "direction": "outgoing",
+        "isMissed": false,
+        "time": "2025-11-26 19:12",
+      },
+    ],
   },
 
   // -------------------- 2. Rahul Verma (Pinned) --------------------
@@ -111,6 +126,27 @@ List<Map<String, dynamic>> chatData = [
         "type": "text",
         "mediaUrl": "",
         "voiceDuration": "",
+      },
+    ],
+
+    "callLogs": [
+      {
+        "type": "audio",
+        "direction": "outgoing",
+        "isMissed": false,
+        "time": "2025-11-29 11:10",
+      },
+      {
+        "type": "video",
+        "direction": "incoming",
+        "isMissed": true,
+        "time": "2025-11-24 14:55",
+      },
+      {
+        "type": "audio",
+        "direction": "incoming",
+        "isMissed": false,
+        "time": "2025-11-22 09:33",
       },
     ],
   },
@@ -171,6 +207,15 @@ List<Map<String, dynamic>> chatData = [
         "voiceDuration": "",
       },
     ],
+
+    "callLogs": [
+      {
+        "type": "video",
+        "direction": "incoming",
+        "isMissed": true,
+        "time": "2025-11-27 17:42",
+      },
+    ],
   },
 
   // -------------------- 4. Manoj Kumar --------------------
@@ -227,6 +272,21 @@ List<Map<String, dynamic>> chatData = [
         "type": "text",
         "mediaUrl": "",
         "voiceDuration": "",
+      },
+    ],
+
+    "callLogs": [
+      {
+        "type": "audio",
+        "direction": "incoming",
+        "isMissed": false,
+        "time": "2025-11-25 13:28",
+      },
+      {
+        "type": "audio",
+        "direction": "outgoing",
+        "isMissed": false,
+        "time": "2025-11-21 10:14",
       },
     ],
   },
@@ -287,6 +347,21 @@ List<Map<String, dynamic>> chatData = [
         "voiceDuration": "",
       },
     ],
+
+    "callLogs": [
+      {
+        "type": "video",
+        "direction": "outgoing",
+        "isMissed": false,
+        "time": "2025-11-26 08:20",
+      },
+      {
+        "type": "audio",
+        "direction": "incoming",
+        "isMissed": true,
+        "time": "2025-11-23 12:51",
+      },
+    ],
   },
 
   // -------------------- 6. Vishnu R --------------------
@@ -335,6 +410,15 @@ List<Map<String, dynamic>> chatData = [
         "type": "text",
         "mediaUrl": "",
         "voiceDuration": "",
+      },
+    ],
+
+    "callLogs": [
+      {
+        "type": "audio",
+        "direction": "incoming",
+        "isMissed": true,
+        "time": "2025-11-30 07:32",
       },
     ],
   },
@@ -387,6 +471,21 @@ List<Map<String, dynamic>> chatData = [
         "voiceDuration": "",
       },
     ],
+
+    "callLogs": [
+      {
+        "type": "video",
+        "direction": "outgoing",
+        "isMissed": false,
+        "time": "2025-11-28 18:45",
+      },
+      {
+        "type": "audio",
+        "direction": "incoming",
+        "isMissed": false,
+        "time": "2025-11-24 20:55",
+      },
+    ],
   },
 
   // -------------------- 8. Karthik --------------------
@@ -437,6 +536,21 @@ List<Map<String, dynamic>> chatData = [
         "voiceDuration": "",
       },
     ],
+
+    "callLogs": [
+      {
+        "type": "audio",
+        "direction": "outgoing",
+        "isMissed": false,
+        "time": "2025-11-29 14:12",
+      },
+      {
+        "type": "video",
+        "direction": "incoming",
+        "isMissed": true,
+        "time": "2025-11-22 09:40",
+      },
+    ],
   },
 
   // -------------------- 9. Riya --------------------
@@ -477,6 +591,21 @@ List<Map<String, dynamic>> chatData = [
         "type": "text",
         "mediaUrl": "",
         "voiceDuration": "",
+      },
+    ],
+
+    "callLogs": [
+      {
+        "type": "video",
+        "direction": "incoming",
+        "isMissed": true,
+        "time": "2025-11-29 19:22",
+      },
+      {
+        "type": "audio",
+        "direction": "outgoing",
+        "isMissed": false,
+        "time": "2025-11-27 16:14",
       },
     ],
   },
@@ -521,6 +650,15 @@ List<Map<String, dynamic>> chatData = [
         "voiceDuration": "",
       },
     ],
+
+    "callLogs": [
+      {
+        "type": "audio",
+        "direction": "incoming",
+        "isMissed": false,
+        "time": "2025-11-30 10:32",
+      },
+    ],
   },
 
   // -------------------- 11. Fathima --------------------
@@ -553,6 +691,21 @@ List<Map<String, dynamic>> chatData = [
         "type": "text",
         "mediaUrl": "",
         "voiceDuration": "",
+      },
+    ],
+
+    "callLogs": [
+      {
+        "type": "audio",
+        "direction": "incoming",
+        "isMissed": true,
+        "time": "2025-11-28 17:40",
+      },
+      {
+        "type": "video",
+        "direction": "outgoing",
+        "isMissed": false,
+        "time": "2025-11-25 14:22",
       },
     ],
   },
@@ -595,6 +748,27 @@ List<Map<String, dynamic>> chatData = [
         "type": "text",
         "mediaUrl": "",
         "voiceDuration": "",
+      },
+    ],
+
+    "callLogs": [
+      {
+        "type": "audio",
+        "direction": "outgoing",
+        "isMissed": false,
+        "time": "2025-11-29 09:15",
+      },
+      {
+        "type": "audio",
+        "direction": "incoming",
+        "isMissed": true,
+        "time": "2025-11-24 21:02",
+      },
+      {
+        "type": "video",
+        "direction": "incoming",
+        "isMissed": false,
+        "time": "2025-11-23 13:40",
       },
     ],
   },
@@ -647,6 +821,21 @@ List<Map<String, dynamic>> chatData = [
         "voiceDuration": "",
       },
     ],
+
+    "callLogs": [
+      {
+        "type": "video",
+        "direction": "incoming",
+        "isMissed": false,
+        "time": "2025-11-30 18:05",
+      },
+      {
+        "type": "audio",
+        "direction": "incoming",
+        "isMissed": true,
+        "time": "2025-11-26 11:44",
+      },
+    ],
   },
 
   // -------------------- 14. Amal --------------------
@@ -679,6 +868,15 @@ List<Map<String, dynamic>> chatData = [
         "type": "text",
         "mediaUrl": "",
         "voiceDuration": "",
+      },
+    ],
+
+    "callLogs": [
+      {
+        "type": "audio",
+        "direction": "incoming",
+        "isMissed": false,
+        "time": "2025-11-28 07:50",
       },
     ],
   },
@@ -732,6 +930,21 @@ List<Map<String, dynamic>> chatData = [
         "voiceDuration": "",
       },
     ],
+
+    "callLogs": [
+      {
+        "type": "video",
+        "direction": "incoming",
+        "isMissed": true,
+        "time": "2025-11-29 15:10",
+      },
+      {
+        "type": "audio",
+        "direction": "outgoing",
+        "isMissed": false,
+        "time": "2025-11-25 09:33",
+      },
+    ],
   },
 
   // -------------------- 16. Jithin --------------------
@@ -772,6 +985,21 @@ List<Map<String, dynamic>> chatData = [
         "type": "voice",
         "mediaUrl": "https://example.com/voice/jithin_001.mp3",
         "voiceDuration": "0:12",
+      },
+    ],
+
+    "callLogs": [
+      {
+        "type": "audio",
+        "direction": "incoming",
+        "isMissed": false,
+        "time": "2025-11-30 16:27",
+      },
+      {
+        "type": "video",
+        "direction": "outgoing",
+        "isMissed": true,
+        "time": "2025-11-22 19:42",
       },
     ],
   },
@@ -816,6 +1044,21 @@ List<Map<String, dynamic>> chatData = [
         "voiceDuration": "",
       },
     ],
+
+    "callLogs": [
+      {
+        "type": "video",
+        "direction": "incoming",
+        "isMissed": false,
+        "time": "2025-11-29 18:44",
+      },
+      {
+        "type": "audio",
+        "direction": "outgoing",
+        "isMissed": false,
+        "time": "2025-11-27 10:12",
+      },
+    ],
   },
 
   // -------------------- 18. Naveen --------------------
@@ -858,6 +1101,21 @@ List<Map<String, dynamic>> chatData = [
         "voiceDuration": "",
       },
     ],
+
+    "callLogs": [
+      {
+        "type": "audio",
+        "direction": "incoming",
+        "isMissed": false,
+        "time": "2025-11-30 13:21",
+      },
+      {
+        "type": "video",
+        "direction": "incoming",
+        "isMissed": true,
+        "time": "2025-11-25 08:40",
+      },
+    ],
   },
 
   // -------------------- 19. Avantika --------------------
@@ -890,6 +1148,21 @@ List<Map<String, dynamic>> chatData = [
         "type": "text",
         "mediaUrl": "",
         "voiceDuration": "",
+      },
+    ],
+
+    "callLogs": [
+      {
+        "type": "video",
+        "direction": "outgoing",
+        "isMissed": false,
+        "time": "2025-11-29 17:05",
+      },
+      {
+        "type": "audio",
+        "direction": "incoming",
+        "isMissed": true,
+        "time": "2025-11-23 11:32",
       },
     ],
   },
@@ -934,6 +1207,27 @@ List<Map<String, dynamic>> chatData = [
         "voiceDuration": "",
       },
     ],
+
+    "callLogs": [
+      {
+        "type": "audio",
+        "direction": "incoming",
+        "isMissed": false,
+        "time": "2025-11-29 13:15",
+      },
+      {
+        "type": "audio",
+        "direction": "outgoing",
+        "isMissed": true,
+        "time": "2025-11-26 09:28",
+      },
+      {
+        "type": "video",
+        "direction": "incoming",
+        "isMissed": false,
+        "time": "2025-11-22 19:40",
+      },
+    ],
   },
 
   // -------------------- 21. Teena --------------------
@@ -974,6 +1268,15 @@ List<Map<String, dynamic>> chatData = [
         "type": "text",
         "mediaUrl": "",
         "voiceDuration": "",
+      },
+    ],
+
+    "callLogs": [
+      {
+        "type": "video",
+        "direction": "incoming",
+        "isMissed": true,
+        "time": "2025-11-28 20:44",
       },
     ],
   },
@@ -1018,6 +1321,21 @@ List<Map<String, dynamic>> chatData = [
         "voiceDuration": "",
       },
     ],
+
+    "callLogs": [
+      {
+        "type": "audio",
+        "direction": "outgoing",
+        "isMissed": false,
+        "time": "2025-11-28 18:32",
+      },
+      {
+        "type": "audio",
+        "direction": "incoming",
+        "isMissed": true,
+        "time": "2025-11-24 10:55",
+      },
+    ],
   },
 
   // -------------------- 23. Sahana --------------------
@@ -1058,6 +1376,27 @@ List<Map<String, dynamic>> chatData = [
         "type": "text",
         "mediaUrl": "",
         "voiceDuration": "",
+      },
+    ],
+
+    "callLogs": [
+      {
+        "type": "video",
+        "direction": "outgoing",
+        "isMissed": false,
+        "time": "2025-11-30 17:42",
+      },
+      {
+        "type": "audio",
+        "direction": "incoming",
+        "isMissed": true,
+        "time": "2025-11-25 12:30",
+      },
+      {
+        "type": "audio",
+        "direction": "incoming",
+        "isMissed": false,
+        "time": "2025-11-22 08:15",
       },
     ],
   },
