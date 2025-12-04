@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mail_messanger/core/constants/color_constants.dart';
 import 'package:mail_messanger/core/routes/route_name.dart';
 
 import '../widgets/profile_header.dart';
@@ -36,16 +37,17 @@ class SettingsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
 
-            const SettingsSection(
+            SettingsSection(
               items: [
-                SettingsTile(icon: CupertinoIcons.shield, title: "Account"),
+                SettingsTile(
+                  onTap: () =>
+                      Navigator.pushNamed(context, RouteName.accountScreen),
+                  icon: CupertinoIcons.shield,
+                  title: "Account",
+                ),
                 SettingsTile(icon: CupertinoIcons.lock, title: "Privacy"),
                 SettingsTile(icon: CupertinoIcons.chat_bubble, title: "Chats"),
                 SettingsTile(icon: CupertinoIcons.bell, title: "Notifications"),
-                SettingsTile(
-                  icon: CupertinoIcons.arrow_up_arrow_down,
-                  title: "Storage and data",
-                ),
               ],
             ),
             const SizedBox(height: 12),
@@ -61,6 +63,17 @@ class SettingsScreen extends StatelessWidget {
                   title: "Invite a friend",
                 ),
               ],
+            ),
+
+            const Align(
+              alignment: Alignment.center,
+              child: Padding(
+                padding: .all(8.0),
+                child: Text(
+                  "@offenso techschool",
+                  style: TextStyle(fontSize: 12, color: ColorConstants.grey),
+                ),
+              ),
             ),
           ],
         ),

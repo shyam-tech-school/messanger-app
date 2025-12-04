@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mail_messanger/core/routes/route_name.dart';
 
 import '../../../../core/constants/color_constants.dart';
 
@@ -11,29 +12,38 @@ class ChatAppbarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Row(
-        spacing: 12,
+      title: GestureDetector(
+        onTap: () {
+          Navigator.pushNamed(
+            context,
+            RouteName.externalProfileScreen,
+            arguments: chats,
+          );
+        },
+        child: Row(
+          spacing: 12,
 
-        children: [
-          Container(
-            height: 55,
-            width: 55,
-            clipBehavior: Clip.hardEdge,
-            decoration: const BoxDecoration(shape: BoxShape.circle),
-            child: Image.network(chats['profileDp']),
-          ),
-          Column(
-            spacing: 2,
-            crossAxisAlignment: .start,
-            children: [
-              Text(chats['name']),
-              const Text(
-                'Typing..',
-                style: TextStyle(color: Colors.green, fontSize: 14),
-              ),
-            ],
-          ),
-        ],
+          children: [
+            Container(
+              height: 55,
+              width: 55,
+              clipBehavior: Clip.hardEdge,
+              decoration: const BoxDecoration(shape: BoxShape.circle),
+              child: Image.network(chats['profileDp']),
+            ),
+            Column(
+              spacing: 2,
+              crossAxisAlignment: .start,
+              children: [
+                Text(chats['name']),
+                const Text(
+                  'Typing..',
+                  style: TextStyle(color: Colors.green, fontSize: 14),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
       actions: [
         IconButton(
