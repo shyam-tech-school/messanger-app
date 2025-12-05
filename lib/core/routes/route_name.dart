@@ -25,6 +25,8 @@ class RouteName {
   static const String aboutScreen = '/about';
   static const String blockedContactsScreen = '/blocked_contacts';
 
-  static const String chatsScreen = '/chats';
+  //-- CHATS --
+  static const String chatsSettingsScreen = '/chats_settings';
+
   static const String notificationScreen = '/notification';
 }
