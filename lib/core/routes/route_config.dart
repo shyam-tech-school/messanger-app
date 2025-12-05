@@ -14,6 +14,11 @@ import 'package:mail_messanger/features/sub_settings/account/change_phone_number
 import 'package:mail_messanger/features/sub_settings/account/delete_account/presentation/pages/delete_account_screen.dart';
 import 'package:mail_messanger/features/sub_settings/account/email/presentation/pages/email_screen.dart';
 import 'package:mail_messanger/features/sub_settings/account/two_step_verification/presentation/pages/two_step_verification.dart';
+import 'package:mail_messanger/features/sub_settings/privacy/about/presentation/pages/privacy_about_screen.dart';
+import 'package:mail_messanger/features/sub_settings/privacy/blocked_contacts/presentation/pages/privacy_blocked_contacts_screen.dart';
+import 'package:mail_messanger/features/sub_settings/privacy/last_seen/presentation/pages/privacy_last_seen_screen.dart';
+import 'package:mail_messanger/features/sub_settings/privacy/privacy_screen.dart';
+import 'package:mail_messanger/features/sub_settings/privacy/profile_photo/presentation/pages/privacy_profile_photo_screen.dart';
 
 class RouteConfig {
   static Route<dynamic> routeGenerator(RouteSettings settings) {
@@ -50,6 +55,7 @@ class RouteConfig {
           builder: (context) => ExternalProfile(user: arguments),
         );
 
+      //-- ACCOUNT SCREEN
       case RouteName.accountScreen:
         return MaterialPageRoute(builder: (context) => const AccountScreen());
 
@@ -72,6 +78,24 @@ class RouteConfig {
       case RouteName.changePhoneNumberScreen:
         return MaterialPageRoute(
           builder: (context) => const ChangePhoneNumberScreen(),
+        );
+
+      //-- PRIVACY SCREEN
+      case RouteName.privacyScreen:
+        return MaterialPageRoute(builder: (context) => PrivacyScreen());
+      case RouteName.lastSeenScreen:
+        return MaterialPageRoute(builder: (context) => PrivacyLastSeenScreen());
+      case RouteName.profilePhotoScreen:
+        return MaterialPageRoute(
+          builder: (context) => const PrivacyProfilePhotoScreen(),
+        );
+      case RouteName.aboutScreen:
+        return MaterialPageRoute(
+          builder: (context) => const PrivacyAboutScreen(),
+        );
+      case RouteName.blockedContactsScreen:
+        return MaterialPageRoute(
+          builder: (context) => const PrivacyBlockedContactsScreen(),
         );
 
       default:

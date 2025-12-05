@@ -9,8 +9,8 @@ class RouteName {
   static const profileScreen = '/profile';
   static const externalProfileScreen = '/external_profile';
 
-  // -- Sub settings route --
-  // -- Account
+  //-- SUB SETTINGS ROUTE --
+  //-- ACCOUNT
   static const String accountScreen = '/accounts';
   static const String twoSVScreen = '/two_step_verification';
   static const String emailScreen = '/email';
@@ -18,7 +18,13 @@ class RouteName {
   static const String changePhoneNumberScreen = '/change_phone_number';
   static const String deleteScreen = '/delete_account';
 
+  //-- PRIVACY --
   static const String privacyScreen = '/privacy';
+  static const String lastSeenScreen = '/last_seen';
+  static const String profilePhotoScreen = '/profile_photo';
+  static const String aboutScreen = '/about';
+  static const String blockedContactsScreen = '/blocked_contacts';
+
   static const String chatsScreen = '/chats';
   static const String notificationScreen = '/notification';
 }

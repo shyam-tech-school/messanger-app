@@ -45,7 +45,13 @@ class SettingsScreen extends StatelessWidget {
                   icon: CupertinoIcons.shield,
                   title: "Account",
                 ),
-                SettingsTile(icon: CupertinoIcons.lock, title: "Privacy"),
+                SettingsTile(
+                  onTap: () =>
+                      Navigator.pushNamed(context, RouteName.privacyScreen),
+                  icon: CupertinoIcons.lock,
+                  title: "Privacy",
+                ),
+
                 SettingsTile(icon: CupertinoIcons.chat_bubble, title: "Chats"),
                 SettingsTile(icon: CupertinoIcons.bell, title: "Notifications"),
               ],
