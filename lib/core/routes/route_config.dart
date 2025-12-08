@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mail_messanger/app_navigation.dart';
 import 'package:mail_messanger/core/routes/route_name.dart';
+import 'package:mail_messanger/features/audio_call/presentation/pages/audio_call_screen.dart';
 import 'package:mail_messanger/features/auth/presentation/pages/otp_screen.dart';
 import 'package:mail_messanger/features/auth/presentation/pages/otp_verification_screen.dart';
 import 'package:mail_messanger/features/chat/presentation/pages/chat_screen.dart';
@@ -113,6 +114,18 @@ class RouteConfig {
         return MaterialPageRoute(
           builder: (context) => const NotificationSettingsScreen(),
         );
+
+      //--AUDIO, VIDEO CALL
+      case RouteName.audioCallScreen:
+        final args = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+          builder: (context) => AudioCallScreen(userData: args),
+        );
+
+      // case RouteName.videoCallScreen:
+      //   return MaterialPageRoute(
+      //     builder: (context) => const NotificationSettingsScreen(),
+      //  );
 
       default:
         return MaterialPageRoute(

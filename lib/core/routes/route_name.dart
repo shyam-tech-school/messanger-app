@@ -30,4 +30,8 @@ class RouteName {
 
   //-- NOTIFICATION --
   static const String notificationScreen = '/notification';
+
+  //-- AUDIO CALL, VIDEO CALL --
+  static const String audioCallScreen = '/audio_call';
+  static const String videoCallScreen = '/video_call';
 }

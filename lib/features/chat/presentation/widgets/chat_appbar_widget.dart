@@ -54,7 +54,11 @@ class ChatAppbarWidget extends StatelessWidget {
         ),
         IconButton(
           onPressed: () {
-            debugPrint("phone button");
+            Navigator.pushNamed(
+              context,
+              RouteName.audioCallScreen,
+              arguments: chats,
+            );
           },
           icon: const Icon(CupertinoIcons.phone, color: ColorConstants.black),
           highlightColor: Colors.transparent,

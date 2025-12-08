@@ -16,8 +16,8 @@ class MessangerApp extends StatelessWidget {
     return MaterialApp(
       home: const SplashScreen(),
       theme: AppThemes.lightThemeData,
-      darkTheme: AppThemes.darkThemeData,
-      themeMode: ThemeMode.system,
+      darkTheme: AppThemes.lightThemeData,
+      themeMode: ThemeMode.light,
       initialRoute: RouteName.splashScreen,
       onGenerateRoute: RouteConfig.routeGenerator,
       debugShowCheckedModeBanner: false,
