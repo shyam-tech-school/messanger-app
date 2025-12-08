@@ -61,18 +61,39 @@ class SettingsScreen extends StatelessWidget {
                   title: "Chats",
                 ),
 
-                SettingsTile(icon: CupertinoIcons.bell, title: "Notifications"),
+                SettingsTile(
+                  onTap: () => Navigator.pushNamed(
+                    context,
+                    RouteName.notificationScreen,
+                  ),
+                  icon: CupertinoIcons.bell,
+                  title: "Notifications",
+                ),
               ],
             ),
             const SizedBox(height: 12),
 
-            const SettingsSection(
+            SettingsSection(
               items: [
                 SettingsTile(
+                  onTap: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("This feature will be available soon."),
+                      ),
+                    );
+                  },
                   icon: CupertinoIcons.info,
                   title: "Help and feedback",
                 ),
                 SettingsTile(
+                  onTap: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("This feature will be available soon."),
+                      ),
+                    );
+                  },
                   icon: CupertinoIcons.person_2,
                   title: "Invite a friend",
                 ),

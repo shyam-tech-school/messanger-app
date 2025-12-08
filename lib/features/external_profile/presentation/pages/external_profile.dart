@@ -67,12 +67,140 @@ class ExternalProfile extends StatelessWidget {
                   ),
                 ],
               ),
+              const SizedBox(height: 20),
 
               // Profile Settings
+              Container(
+                padding: const .fromLTRB(16, 16, 0, 16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: Colors.grey.shade300),
+                ),
+                child: const Column(
+                  children: [
+                    TileInExternalProfileWidget(
+                      icon: CupertinoIcons.photo,
+                      text: 'Media, links and docs',
+                      trailingContent1: '150',
+                    ),
+                    Divider(),
+                    TileInExternalProfileWidget(
+                      icon: CupertinoIcons.star,
+                      text: "Starred",
+                      trailingContent1: "None",
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Clear, Block, Report
+              // SubSettingsWidget(text: 'Clear chat', ontap: () {}, isRed: true),
+              // const SizedBox(height: 12),
+              // SubSettingsWidget(text: 'Block user', ontap: () {}, isRed: true),
+              // const SizedBox(height: 12),
+              // SubSettingsWidget(text: 'Report user', ontap: () {}, isRed: true),
+              Container(
+                padding: const .fromLTRB(16, 16, 0, 16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: Colors.grey.shade300),
+                ),
+                child: Column(
+                  children: [
+                    ExternalProfileOptionWidget(
+                      ontap: () {
+                        debugPrint('Clear chat');
+                      },
+                      tileLabel: "Clear chat",
+                    ),
+                    Divider(),
+                    ExternalProfileOptionWidget(
+                      ontap: () {
+                        debugPrint('Block user');
+                      },
+                      tileLabel: "Block User",
+                    ),
+                    Divider(),
+                    ExternalProfileOptionWidget(
+                      ontap: () {
+                        debugPrint('Report User');
+                      },
+                      tileLabel: "Report User",
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class ExternalProfileOptionWidget extends StatelessWidget {
+  const ExternalProfileOptionWidget({
+    super.key,
+    this.ontap,
+    required this.tileLabel,
+  });
+
+  final Function()? ontap;
+  final String tileLabel;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      onTap: ontap,
+      contentPadding: .zero,
+      minVerticalPadding: 0,
+      minTileHeight: 40,
+      title: Text(
+        tileLabel,
+        style: const TextStyle(color: Colors.red, fontWeight: FontWeight.w600),
+      ),
+    );
+  }
+}
+
+class TileInExternalProfileWidget extends StatelessWidget {
+  const TileInExternalProfileWidget({
+    super.key,
+    required this.icon,
+    required this.text,
+    required this.trailingContent1,
+  });
+
+  final IconData icon;
+  final String text;
+  final String trailingContent1;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(icon),
+        const SizedBox(width: 12),
+        Text(text),
+        const Spacer(),
+        Row(
+          children: [
+            Text(
+              trailingContent1,
+              style: const TextStyle(
+                color: Colors.grey,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const Icon(
+              Icons.chevron_right_rounded,
+              color: Colors.grey,
+              size: 30,
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

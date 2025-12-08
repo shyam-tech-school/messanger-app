@@ -36,17 +36,16 @@ class ChatScreen extends StatelessWidget {
   }
 
   Widget _buildInputBars(BuildContext context) {
-    return SafeArea(
-      bottom: false,
-      minimum: const .only(bottom: 10),
-      child: Container(
-        color: ColorConstants.white,
-        padding: .only(
-          left: 16,
-          right: 10,
-          top: 10,
-          bottom: MediaQuery.of(context).viewInsets.bottom + 10,
-        ),
+    return Container(
+      color: ColorConstants.white,
+      padding: .only(
+        left: 16,
+        right: 10,
+        top: 10,
+        bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+      ),
+      child: SafeArea(
+        bottom: false,
         child: Row(
           children: [
             Expanded(

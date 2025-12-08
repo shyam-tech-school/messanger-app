@@ -28,5 +28,6 @@ class RouteName {
   //-- CHATS --
   static const String chatsSettingsScreen = '/chats_settings';
 
+  //-- NOTIFICATION --
   static const String notificationScreen = '/notification';
 }

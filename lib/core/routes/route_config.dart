@@ -15,6 +15,7 @@ import 'package:mail_messanger/features/sub_settings/account/delete_account/pres
 import 'package:mail_messanger/features/sub_settings/account/email/presentation/pages/email_screen.dart';
 import 'package:mail_messanger/features/sub_settings/account/two_step_verification/presentation/pages/two_step_verification.dart';
 import 'package:mail_messanger/features/sub_settings/chat_settings/chat_settings_screen.dart';
+import 'package:mail_messanger/features/sub_settings/notifications/notification_settings_screen.dart';
 import 'package:mail_messanger/features/sub_settings/privacy/about/presentation/pages/privacy_about_screen.dart';
 import 'package:mail_messanger/features/sub_settings/privacy/blocked_contacts/presentation/pages/privacy_blocked_contacts_screen.dart';
 import 'package:mail_messanger/features/sub_settings/privacy/last_seen/presentation/pages/privacy_last_seen_screen.dart';
@@ -105,6 +106,12 @@ class RouteConfig {
       case RouteName.chatsSettingsScreen:
         return MaterialPageRoute(
           builder: (context) => const ChatSettingsScreen(),
+        );
+
+      //-- NOTIFICATION SCREEN
+      case RouteName.notificationScreen:
+        return MaterialPageRoute(
+          builder: (context) => const NotificationSettingsScreen(),
         );
 
       default:

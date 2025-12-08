@@ -3,6 +3,7 @@ import 'package:mail_messanger/core/constants/color_constants.dart';
 import 'package:mail_messanger/core/constants/image_path_constants.dart';
 import 'package:mail_messanger/core/constants/text_constants.dart';
 import 'package:mail_messanger/core/routes/route_name.dart';
+import 'package:mail_messanger/core/utils/platform_utils.dart';
 
 import '../../widgets/slide_action_widget.dart';
 
@@ -43,7 +44,7 @@ class OnboardScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 60),
+              SizedBox(height: PlatformUtils.isIOS ? 60 : 80),
 
               // Swipe button
               Padding(
