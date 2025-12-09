@@ -31,7 +31,7 @@ class OnboardScreen extends StatelessWidget {
                   Text(
                     TextConstants.onboardTitle,
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                    style: Theme.of(context).textTheme.headlineLarge!.copyWith(
                       fontWeight: FontWeight.w500,
                     ),
                   ),

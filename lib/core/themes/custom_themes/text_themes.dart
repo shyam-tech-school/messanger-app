@@ -11,8 +11,14 @@ class TextThemes {
     ),
 
     // -- HEADLINE --
-    headlineMedium: TextStyle(
+    headlineLarge: TextStyle(
       fontSize: 28,
+      fontWeight: FontWeight.bold,
+      color: ColorConstants.black,
+    ),
+
+    headlineMedium: TextStyle(
+      fontSize: 25,
       fontWeight: FontWeight.bold,
       color: ColorConstants.black,
     ),

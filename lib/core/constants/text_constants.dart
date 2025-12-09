@@ -1,14 +1,20 @@
 class TextConstants {
+  //-- ONBOARD --
   static const String onboardTitle = "Unleash the Power of Conversations!";
   static const String onboardSubTitle =
       "The ultimate chatting app designed to\n enhance your communication\n experience";
 
   static const String swipeToConnect = "Swipe to Start Connect..";
 
-  static const String tolki = "Tolki";
-  static const String welcomeText = "Hi! welcome to Tolki";
-  static const String createAccount = "Create your account";
-  static const String phoneNumber = "Enter your phone number";
+  //-- OTP  --
+  static const String otpVerification = "OTP Verification";
+  static const String createAccountText =
+      "Enter your mobile number to create account";
+  static const String otpSubText = '* We will send you a OTP via this number';
+  static const String verifyOtp = "Verify Phone";
+  static const String verifyOtpSubText = "Enter the security code we sent to";
+  static const String didntGetOtp = "Did'nt receive code?";
+  static const String resendCode = "Resend Code";
 
   //-- BUTTON TEXT --
   static const String next = "Next";

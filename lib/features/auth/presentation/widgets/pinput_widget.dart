@@ -34,6 +34,7 @@ class PinPutWidget extends StatelessWidget {
     );
 
     return Pinput(
+      autofocus: true,
       defaultPinTheme: defaultPinTheme,
       focusedPinTheme: focusedPinTheme,
       submittedPinTheme: submittedPinTheme,

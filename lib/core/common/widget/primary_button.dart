@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import '../../constants/color_constants.dart';
 
 class PrimaryButton extends StatelessWidget {
-  const PrimaryButton({super.key, required this.onTap});
+  const PrimaryButton({super.key, required this.onTap, required this.label});
 
   final VoidCallback onTap;
+  final String label;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class PrimaryButton extends StatelessWidget {
         ),
         alignment: Alignment.center,
         child: Text(
-          "Next",
+          label,
           style: Theme.of(context).textTheme.bodyMedium!.copyWith(
             color: ColorConstants.white,
             fontWeight: FontWeight.bold,
