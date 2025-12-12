@@ -23,9 +23,7 @@ class MessageBubbleWidget extends StatelessWidget {
             Container(
               padding: const .all(12),
               decoration: BoxDecoration(
-                color: isMe
-                    ? ColorConstants.chatBubbleSecondary
-                    : ColorConstants.white,
+                color: isMe ? ColorConstants.primary : ColorConstants.white,
                 borderRadius: .only(
                   topLeft: const Radius.circular(12),
                   topRight: const Radius.circular(12),
@@ -46,13 +44,25 @@ class MessageBubbleWidget extends StatelessWidget {
             ),
             Align(
               alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-              child: Text(
-                TimerHelperUtil.formatMessageBubbleTime(message['time']),
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w500,
-                ),
+              child: Row(
+                spacing: 12,
+                mainAxisAlignment: isMe ? .end : .start,
+                children: [
+                  Text(
+                    TimerHelperUtil.formatMessageBubbleTime(message['time']),
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  // const Icon(
+                  //   Ionicons.checkmark_done,
+                  //   size: 20,
+                  //   color: ColorConstants.primary,
+                  //   fontWeight: FontWeight.bold,
+                  // ),
+                ],
               ),
             ),
           ],

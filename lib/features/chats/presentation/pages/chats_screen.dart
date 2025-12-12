@@ -15,12 +15,13 @@ class ChatsScreen extends StatelessWidget {
     final normalChats = chatData.where((e) => e['isPinned'] == false).toList();
 
     return Scaffold(
+      //backgroundColor: Colors.grey,
       body: CustomScrollView(
         slivers: [
           // Appbar
           SliverAppBar(
             title: Text(
-              "Chat",
+              "Chats",
               style: Theme.of(
                 context,
               ).textTheme.headlineMedium!.copyWith(fontWeight: FontWeight.w500),
@@ -48,7 +49,7 @@ class ChatsScreen extends StatelessWidget {
               ),
             ],
             pinned: true,
-            elevation: 0,
+            elevation: .5,
             centerTitle: false,
             expandedHeight: 60,
             collapsedHeight: 60,

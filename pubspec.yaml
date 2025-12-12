@@ -20,6 +20,7 @@ dependencies:
   cloud_firestore: ^6.1.0
   lottie: ^3.3.2
   provider: ^6.1.5+1
+  ionicons: ^0.2.2
   
 
 dev_dependencies:

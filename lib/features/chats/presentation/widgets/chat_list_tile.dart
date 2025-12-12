@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:mail_messanger/core/utils/chat_helper_util.dart';
 import 'package:mail_messanger/core/utils/timer_helper_util.dart';
 
@@ -26,7 +27,7 @@ class ChatListTile extends StatelessWidget {
       leading: Container(
         height: 55,
         width: 55,
-        padding: const .all(2),
+        padding: const .all(1),
         clipBehavior: Clip.hardEdge,
         decoration: const BoxDecoration(
           color: ColorConstants.primary,
@@ -79,12 +80,18 @@ class ChatListTile extends StatelessWidget {
               ),
             ),
           if (lastMessage != null && lastMessage['isMe'] == true)
-            Image.asset(
-              chats['isRead']
-                  ? 'assets/icons/double-check.png'
-                  : 'assets/icons/double-tick.png',
-              height: 24,
-            ),
+            chats['isRead']
+                ? const Icon(
+                    Ionicons.checkmark_done,
+                    size: 22,
+                    fontWeight: FontWeight.bold,
+                  )
+                : const Icon(
+                    Ionicons.checkmark_done,
+                    size: 22,
+                    color: ColorConstants.primary,
+                    fontWeight: FontWeight.bold,
+                  ),
         ],
       ),
     );

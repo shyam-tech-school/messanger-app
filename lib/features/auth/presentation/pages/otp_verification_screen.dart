@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:mail_messanger/app_navigation.dart';
 import 'package:mail_messanger/core/common/widget/primary_button.dart';
 import 'package:mail_messanger/core/constants/text_constants.dart';
 import 'package:mail_messanger/core/routes/route_name.dart';

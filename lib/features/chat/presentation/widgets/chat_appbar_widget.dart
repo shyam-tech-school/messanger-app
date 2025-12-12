@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mail_messanger/core/common/widget/dp_circle_image_widget.dart';
 import 'package:mail_messanger/core/routes/route_name.dart';
 
 import '../../../../core/constants/color_constants.dart';
@@ -24,13 +25,8 @@ class ChatAppbarWidget extends StatelessWidget {
           spacing: 12,
 
           children: [
-            Container(
-              height: 55,
-              width: 55,
-              clipBehavior: Clip.hardEdge,
-              decoration: const BoxDecoration(shape: BoxShape.circle),
-              child: Image.network(chats['profileDp']),
-            ),
+            DpCircleImageWidget(imageUrl: chats['profileDp']),
+
             Column(
               spacing: 2,
               crossAxisAlignment: .start,
@@ -38,7 +34,7 @@ class ChatAppbarWidget extends StatelessWidget {
                 Text(chats['name']),
                 const Text(
                   'Typing..',
-                  style: TextStyle(color: Colors.green, fontSize: 14),
+                  style: TextStyle(color: ColorConstants.primary, fontSize: 14),
                 ),
               ],
             ),

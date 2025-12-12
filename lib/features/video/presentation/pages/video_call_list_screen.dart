@@ -1,19 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mail_messanger/core/common/widget/dp_circle_image_widget.dart';
 import 'package:mail_messanger/core/constants/color_constants.dart';
 import 'package:mail_messanger/core/utils/timer_helper_util.dart';
 import 'package:mail_messanger/features/chats/data/datasources/chat_data_mock.dart';
 
-class CallScreen extends StatelessWidget {
-  const CallScreen({super.key});
+class VideoCallListScreen extends StatelessWidget {
+  const VideoCallListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Voice Call",
+          "Video Call",
           style: Theme.of(
             context,
           ).textTheme.headlineMedium!.copyWith(fontWeight: FontWeight.w500),
@@ -128,7 +127,7 @@ class CallTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: DpCircleImageWidget(imageUrl: dpImage),
+      leading: CircleAvatar(radius: 26, backgroundImage: NetworkImage(dpImage)),
       title: Text(
         username,
         maxLines: 1,
