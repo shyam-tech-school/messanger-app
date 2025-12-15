@@ -1,34 +1,70 @@
 import 'package:flutter/material.dart';
 
-class AudioCallScreen extends StatelessWidget {
+import '../widgets/call_appbar_widget.dart';
+import '../widgets/call_screen_bottom_option_widget.dart';
+
+class AudioCallScreen extends StatefulWidget {
   const AudioCallScreen({super.key, required this.userData});
 
   final Map<String, dynamic> userData;
 
   @override
+  State<AudioCallScreen> createState() => _AudioCallScreenState();
+}
+
+class _AudioCallScreenState extends State<AudioCallScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scale;
+  late Animation<double> _opacity;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 3),
+    )..repeat();
+
+    _scale = Tween<double>(
+      begin: 0.8,
+      end: 1.6,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+
+    _opacity = Tween<double>(
+      begin: 0.6,
+      end: 0.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Container(
-        decoration: BoxDecoration(
-          color: const Color(0xFF23243A),
-          borderRadius: BorderRadius.circular(40),
-        ),
-        width: double.infinity,
+      backgroundColor: const Color(0xFF23243A),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(80),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SafeArea(child: _buildTopSection()),
-              _buildActionButtons(),
-              InkWell(
-                onTap: () => Navigator.pop(context),
-                child: _buildHangupButton(),
-              ),
-              const SizedBox(height: 10),
-            ],
-          ),
+          padding: const .only(top: 12),
+          child: CallAppbarWidget(widget: widget),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 40),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Spacer(),
+            _buildTopSection(),
+            const Spacer(),
+            const CallScreenBottomOptionWidget(),
+          ],
         ),
       ),
     );
@@ -43,118 +79,57 @@ class AudioCallScreen extends StatelessWidget {
           child: Stack(
             alignment: Alignment.center,
             children: [
-              // Outer Ripple
-              _rippleCircle(500, Colors.grey, 1),
-              _rippleCircle(200, Colors.orange, 2),
-              // _rippleCircle(180),
-              //  _rippleCircle(1),
+              // Animated Glow Circle
+              AnimatedBuilder(
+                animation: _controller,
+                builder: (context, child) {
+                  return Transform.scale(
+                    scale: _scale.value,
+                    child: Opacity(
+                      opacity: _opacity.value,
+                      child: Container(
+                        height: 150,
+                        width: 150,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.orange.withOpacity(0.3),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+
+              // SECOND ripple for nicer effect
+              AnimatedBuilder(
+                animation: _controller,
+                builder: (context, child) {
+                  return Transform.scale(
+                    scale: _scale.value * 1.2,
+                    child: Opacity(
+                      opacity: _opacity.value * 0.7,
+                      child: Container(
+                        height: 150,
+                        width: 150,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.orange.withOpacity(0.2),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
 
               // Profile Image
               CircleAvatar(
                 radius: 80,
-                backgroundImage: NetworkImage(userData['profileDp']),
+                backgroundImage: NetworkImage(widget.userData['profileDp']),
               ),
             ],
           ),
         ),
-
-        const SizedBox(height: 16),
-
-        Text(
-          userData['name'],
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-
-        const SizedBox(height: 8),
-
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.fiber_manual_record, color: Colors.red, size: 16),
-            SizedBox(width: 6),
-            Text(
-              "00:03:40",
-              style: TextStyle(color: Colors.white70, fontSize: 16),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _rippleCircle(double size, Color color, double width) {
-    return Container(
-      height: size,
-      width: size,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(color: color.withOpacity(0.6), width: width),
-      ),
-    );
-  }
-
-  Widget _buildActionButtons() {
-    return const Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            CallActionButton(icon: Icons.mic_off, label: "Mute"),
-            CallActionButton(icon: Icons.chat_bubble_outline, label: "Chat"),
-            CallActionButton(icon: Icons.volume_up, label: "Speaker"),
-          ],
-        ),
-        SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            CallActionButton(icon: Icons.mic, label: "Record"),
-            CallActionButton(icon: Icons.person_add, label: "Add"),
-            CallActionButton(icon: Icons.apps, label: "More"),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildHangupButton() {
-    return Container(
-      height: 65,
-      width: 65,
-      decoration: const BoxDecoration(
-        color: Color(0xFFE76F51),
-        shape: BoxShape.circle,
-      ),
-      child: const Icon(Icons.call_end, color: Colors.white, size: 32),
-    );
-  }
-}
-
-class CallActionButton extends StatelessWidget {
-  final IconData icon;
-  final String label;
-
-  const CallActionButton({super.key, required this.icon, required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          height: 60,
-          width: 60,
-          decoration: const BoxDecoration(
-            color: Colors.white12,
-            shape: BoxShape.circle,
-          ),
-          child: Icon(icon, color: Colors.white, size: 28),
-        ),
-        const SizedBox(height: 8),
-        Text(label, style: const TextStyle(color: Colors.white70)),
+        //const SizedBox(height: 20),
       ],
     );
   }
