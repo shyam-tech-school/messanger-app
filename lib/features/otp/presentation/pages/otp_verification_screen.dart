@@ -2,11 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:mail_messanger/core/common/widget/primary_button.dart';
+import 'package:mail_messanger/core/constants/color_constants.dart';
 import 'package:mail_messanger/core/constants/text_constants.dart';
 import 'package:mail_messanger/core/routes/route_name.dart';
 import 'package:mail_messanger/core/utils/common_utils.dart';
-import 'package:mail_messanger/features/auth/presentation/provider/otp_timer_provider.dart';
-import 'package:mail_messanger/features/auth/presentation/widgets/pinput_widget.dart';
+import 'package:mail_messanger/features/otp/presentation/provider/otp_timer_provider.dart';
+import 'package:mail_messanger/features/otp/presentation/widgets/pinput_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/resend_otp_button_widget.dart';
@@ -32,7 +33,11 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: ColorConstants.darkScaffoldBgColor,
+        elevation: 0,
+        leading: const BackButton(color: ColorConstants.primaryColor),
+      ),
       body: SafeArea(
         child: SizedBox(
           width: .maxFinite,
@@ -45,6 +50,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                   TextConstants.verifyOtp,
                   style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                     fontWeight: FontWeight.w600,
+                    fontFamily: 'LuckiestGuy',
+                    color: ColorConstants.primaryColor,
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -53,7 +60,10 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 const SizedBox(height: 12),
-                const Text("+91-98XXXXXX00"),
+                const Text(
+                  "+91-98XXXXXX00",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
                 const SizedBox(height: 24),
 
                 // Otp field
@@ -86,7 +96,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                     ),
                   ],
                 ),
-                const Spacer(),
+                const SizedBox(height: 30),
 
                 // Submit button
                 PrimaryButton(

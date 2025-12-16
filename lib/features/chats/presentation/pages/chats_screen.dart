@@ -22,9 +22,11 @@ class ChatsScreen extends StatelessWidget {
           SliverAppBar(
             title: Text(
               "Chats",
-              style: Theme.of(
-                context,
-              ).textTheme.headlineMedium!.copyWith(fontWeight: FontWeight.w500),
+              style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                fontFamily: 'LuckiestGuy',
+                color: ColorConstants.primaryColor,
+                letterSpacing: 2,
+              ),
             ),
             actions: [
               IconButton(
@@ -33,7 +35,7 @@ class ChatsScreen extends StatelessWidget {
                 },
                 icon: const Icon(
                   CupertinoIcons.photo_camera,
-                  color: ColorConstants.primary,
+                  color: ColorConstants.white,
                 ),
                 highlightColor: Colors.transparent,
               ),
@@ -43,14 +45,12 @@ class ChatsScreen extends StatelessWidget {
                 },
                 icon: const Icon(
                   CupertinoIcons.square_pencil,
-                  color: ColorConstants.primary,
+                  color: ColorConstants.white,
                 ),
                 highlightColor: Colors.transparent,
               ),
             ],
             pinned: true,
-            elevation: .5,
-            centerTitle: false,
             expandedHeight: 60,
             collapsedHeight: 60,
             automaticallyImplyLeading: false,

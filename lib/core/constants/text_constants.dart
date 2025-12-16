@@ -16,10 +16,6 @@ class TextConstants {
   static const String didntGetOtp = "Did'nt receive code?";
   static const String resendCode = "Resend Code";
 
-  //-- BUTTON TEXT --
-  static const String next = "Next";
-  static const String turnOff = 'Turn off';
-
   //-- MESSAGE TEXT --
   static const String otpMessage = "Your OTP has been sent";
 
@@ -41,4 +37,21 @@ class TextConstants {
       "Use Change Phone Number to migrate your account info, groups and settings from your current phone number to a new phone number. You can't undo this change.";
   static const String changeNumberText2 =
       "To proceed, confirm that your new phone number can receive SMS or calls and tap Next to verify that number.";
+
+  // --- NEW THEME BASED TEXTS --
+
+  // -- ONBOARDING --
+  static const String obTitle1 = 'meet your chat companion';
+  static const String obTitle2 = 'Talk, Share, Discover';
+  static const String obTitle3 = 'Stay Connected Everywhere';
+  static const String obSubTitle1 =
+      "Start conversations, get throughtful replies, and enjoy chat that feels natural every time.";
+  static const String obSubTitle2 =
+      "Chat freely — send messages, ask questions, and connect instantly with your friends or AI buddy.";
+  static const String obSubTitle3 =
+      "Real-time messaging that keeps your conversations flowing — seamless, fast, and always available.";
+
+  //-- BUTTON TEXT --
+  static const String next = "Next";
+  static const String turnOff = 'Turn off';
 }

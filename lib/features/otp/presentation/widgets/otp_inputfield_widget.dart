@@ -11,21 +11,30 @@ class OtpInputFieldWidget extends StatelessWidget {
     return TextField(
       cursorColor: ColorConstants.primary,
       cursorHeight: 22,
-      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-      decoration: InputDecoration(
+      style: const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+      ),
+      decoration: const InputDecoration(
         filled: true,
-        fillColor: Colors.grey.shade200,
+        fillColor: ColorConstants.textfieldFillColor,
         border: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.grey.shade300),
+          borderSide: BorderSide(color: ColorConstants.textfieldBorderColor),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.grey.shade300),
+          borderSide: BorderSide(color: ColorConstants.textfieldBorderColor),
         ),
-        focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: ColorConstants.primary),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: ColorConstants.primaryColor),
         ),
         hintText: "Enter number",
-        hintStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
+        hintStyle: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.normal,
+          color: ColorConstants.white,
+          fontFamily: 'OpenSans',
+        ),
       ),
       inputFormatters: [LengthLimitingTextInputFormatter(10)],
       keyboardType: TextInputType.number,

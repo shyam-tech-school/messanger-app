@@ -20,7 +20,7 @@ class ResendOtpButtonWidget extends StatelessWidget {
         onPressed: ontap,
         child: const Text(
           TextConstants.resendCode,
-          style: TextStyle(color: ColorConstants.primary),
+          style: TextStyle(color: ColorConstants.primaryColor),
         ),
       ),
     );

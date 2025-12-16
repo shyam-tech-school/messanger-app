@@ -15,7 +15,7 @@ class DpCircleImageWidget extends StatelessWidget {
       padding: const .all(1),
       clipBehavior: Clip.hardEdge,
       decoration: const BoxDecoration(
-        color: ColorConstants.primary,
+        color: ColorConstants.dotColor,
         shape: BoxShape.circle,
       ),
       child: Container(

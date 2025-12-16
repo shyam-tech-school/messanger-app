@@ -47,7 +47,9 @@ class _AppNavigationState extends State<AppNavigation> {
             topLeft: .circular(20),
           ),
           child: BottomAppBar(
-            padding: const .only(top: 20),
+            color: ColorConstants.black,
+            //color: ColorConstants.darkScaffoldBgColor,
+            padding: const .only(top: 15),
             child: Row(
               mainAxisAlignment: .spaceEvenly,
               children: [
@@ -119,127 +121,11 @@ class BottomBarIconWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: ontap,
-      child: Column(
-        spacing: 5,
-        children: [
-          Icon(
-            icons,
-            size: 30,
-            color: isSelected ? ColorConstants.primary : ColorConstants.black54,
-          ),
-        ],
-      ),
+    return IconButton(
+      icon: Icon(icons),
+      onPressed: ontap,
+      iconSize: 30,
+      color: isSelected ? ColorConstants.primaryColor : ColorConstants.white,
     );
   }
 }
-
-
-/*
-
-
-
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Stack(
-        children: [
-          // Main screen
-          Positioned.fill(child: screens[_currentIndex]),
-
-          // Floating Bottom Navigation
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 20,
-            child: Center(
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 35,
-                  vertical: 12,
-                ),
-                decoration: BoxDecoration(
-                  color: ColorConstants.primary,
-                  borderRadius: BorderRadius.circular(40),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      offset: const Offset(0, 4),
-                      blurRadius: 12,
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    navItem(
-                      index: 0,
-                      iconSelected:
-                          CupertinoIcons.bubble_left_bubble_right_fill,
-                      iconUnselected: CupertinoIcons.bubble_left_bubble_right,
-                      label: "Chat",
-                    ),
-
-                    const SizedBox(width: 40),
-
-                    navItem(
-                      index: 1,
-                      iconSelected: CupertinoIcons.phone_fill,
-                      iconUnselected: CupertinoIcons.phone,
-                      label: "Call",
-                    ),
-
-                    const SizedBox(width: 40),
-
-                    navItem(
-                      index: 2,
-                      iconSelected: CupertinoIcons.settings_solid,
-                      iconUnselected: CupertinoIcons.settings,
-                      label: "Settings",
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget navItem({
-    required int index,
-    required IconData iconSelected,
-    required IconData iconUnselected,
-    required String label,
-  }) {
-    bool active = _currentIndex == index;
-
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _currentIndex = index;
-        });
-      },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            active ? iconSelected : iconUnselected,
-            color: Colors.white,
-            size: 28,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: const TextStyle(color: Colors.white, fontSize: 13),
-          ),
-        ],
-      ),
-    );
-  }
-*/

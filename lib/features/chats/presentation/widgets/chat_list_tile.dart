@@ -30,7 +30,7 @@ class ChatListTile extends StatelessWidget {
         padding: const .all(1),
         clipBehavior: Clip.hardEdge,
         decoration: const BoxDecoration(
-          color: ColorConstants.primary,
+          color: ColorConstants.dotColor,
           shape: BoxShape.circle,
         ),
         child: Container(
@@ -44,7 +44,7 @@ class ChatListTile extends StatelessWidget {
       ),
       title: Text(
         chats['name'],
-        style: const TextStyle(fontWeight: FontWeight.w600),
+        style: const TextStyle(fontWeight: FontWeight.w700),
       ),
       subtitle: Text(
         previewMessage,
@@ -65,17 +65,17 @@ class ChatListTile extends StatelessWidget {
           // time
           if (unreadCount > 0)
             Container(
-              padding: const .all(6),
+              padding: const .all(8),
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: ColorConstants.primary,
+                color: ColorConstants.primaryColor,
               ),
               child: Text(
                 unreadCount.toString(),
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
-                  color: ColorConstants.white,
+                  color: ColorConstants.black,
                 ),
               ),
             ),

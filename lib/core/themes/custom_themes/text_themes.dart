@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../constants/color_constants.dart';
 
 class TextThemes {
-  static const TextTheme lightTextTheme = TextTheme(
+  static const TextTheme darkTextTheme = TextTheme(
     bodyMedium: TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.normal,

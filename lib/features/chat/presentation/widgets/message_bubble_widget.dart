@@ -23,7 +23,9 @@ class MessageBubbleWidget extends StatelessWidget {
             Container(
               padding: const .all(12),
               decoration: BoxDecoration(
-                color: isMe ? ColorConstants.primary : ColorConstants.white,
+                color: isMe
+                    ? ColorConstants.primaryColor
+                    : ColorConstants.dotColor,
                 borderRadius: .only(
                   topLeft: const Radius.circular(12),
                   topRight: const Radius.circular(12),
@@ -39,7 +41,7 @@ class MessageBubbleWidget extends StatelessWidget {
               constraints: const BoxConstraints(maxWidth: 280),
               child: Text(
                 message['text'],
-                style: TextStyle(color: isMe ? ColorConstants.white : null),
+                style: TextStyle(color: isMe ? ColorConstants.black : null),
               ),
             ),
             Align(

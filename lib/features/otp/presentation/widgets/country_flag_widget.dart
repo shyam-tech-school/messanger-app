@@ -12,7 +12,7 @@ class CountryFlagWidget extends StatelessWidget {
       width: 50,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        border: Border.all(color: ColorConstants.primary),
+        border: Border.all(color: ColorConstants.primaryColor),
       ),
       alignment: Alignment.center,
       child: const Text("🇮🇳", style: TextStyle(fontSize: 28)),

@@ -23,7 +23,7 @@ class PinPutWidget extends StatelessWidget {
     );
 
     final focusedPinTheme = defaultPinTheme.copyDecorationWith(
-      border: Border.all(color: ColorConstants.primary),
+      border: Border.all(color: ColorConstants.primaryColor),
       borderRadius: BorderRadius.circular(20),
     );
 

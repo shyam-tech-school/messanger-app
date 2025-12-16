@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mail_messanger/core/constants/color_constants.dart';
 
 import '../widgets/chat_appbar_widget.dart';
 import '../widgets/chat_input_bar.dart';
@@ -16,7 +15,6 @@ class ChatScreen extends StatelessWidget {
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: ColorConstants.scaffoldSecondary,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(80),
         child: ChatAppbarWidget(chats: chats),

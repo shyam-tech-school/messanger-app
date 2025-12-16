@@ -14,11 +14,13 @@ class CallScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "Voice Call",
-          style: Theme.of(
-            context,
-          ).textTheme.headlineMedium!.copyWith(fontWeight: FontWeight.w500),
+          style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+            fontFamily: 'LuckiestGuy',
+            color: ColorConstants.primaryColor,
+            letterSpacing: 2,
+          ),
         ),
-        centerTitle: false,
+
         automaticallyImplyLeading: false,
       ),
       body: CustomScrollView(
@@ -134,7 +136,7 @@ class CallTile extends StatelessWidget {
         maxLines: 1,
         overflow: .ellipsis,
         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w700,
           fontSize: 16,
           color: isMissed ? Colors.red : null,
         ),
@@ -148,6 +150,7 @@ class CallTile extends StatelessWidget {
                   ? CupertinoIcons.phone_fill_arrow_down_left
                   : CupertinoIcons.phone_fill_arrow_up_right,
               size: 20,
+              color: ColorConstants.primaryColor,
             ),
           ] else ...[
             Image.asset(
@@ -155,7 +158,7 @@ class CallTile extends StatelessWidget {
                   ? 'assets/icons/video_incoming.png'
                   : 'assets/icons/video_outgoing.png',
               height: 22,
-              color: ColorConstants.grey,
+              color: ColorConstants.primaryColor,
             ),
           ],
           Text(direction),

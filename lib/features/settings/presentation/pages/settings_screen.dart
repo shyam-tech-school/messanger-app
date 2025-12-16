@@ -16,28 +16,28 @@ class SettingsScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "Settings",
-          style: Theme.of(
-            context,
-          ).textTheme.headlineMedium!.copyWith(fontWeight: FontWeight.w500),
+          style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+            fontFamily: 'LuckiestGuy',
+            color: ColorConstants.primaryColor,
+            letterSpacing: 2,
+          ),
         ),
-        elevation: 0,
-        centerTitle: false,
         automaticallyImplyLeading: false,
       ),
-      body: Padding(
-        padding: const .all(16.0),
-        child: ListView(
-          children: [
-            const CupertinoSearchTextField(),
-            const SizedBox(height: 20),
+      body: ListView(
+        padding: const .all(16),
+        children: [
+          const CupertinoSearchTextField(),
+          const SizedBox(height: 20),
 
-            ProfileHeader(
-              ontap: () =>
-                  Navigator.pushNamed(context, RouteName.profileScreen),
-            ),
-            const SizedBox(height: 20),
+          ProfileHeader(
+            ontap: () => Navigator.pushNamed(context, RouteName.profileScreen),
+          ),
+          const SizedBox(height: 20),
 
-            SettingsSection(
+          SettingsOuterContainer(
+            sectionText: "Personal",
+            settingsSection: SettingsSection(
               items: [
                 SettingsTile(
                   onTap: () =>
@@ -71,9 +71,13 @@ class SettingsScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+          ),
 
-            SettingsSection(
+          const SizedBox(height: 20),
+
+          SettingsOuterContainer(
+            sectionText: "General",
+            settingsSection: SettingsSection(
               items: [
                 SettingsTile(
                   onTap: () {
@@ -99,24 +103,77 @@ class SettingsScreen extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+          const SizedBox(height: 20),
 
-            const Align(
-              alignment: Alignment.center,
-              child: Padding(
-                padding: .all(8.0),
-                child: Text(
-                  "@offenso techschool",
-                  style: TextStyle(fontSize: 12, color: ColorConstants.grey),
+          const Align(
+            alignment: Alignment.center,
+            child: Padding(
+              padding: .all(8.0),
+              child: Text(
+                "@offenso techschool",
+                style: TextStyle(
+                  fontSize: 12,
+                  color: ColorConstants.primaryColor,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 20),
+        ],
       ),
     );
   }
 }
 
+class SettingsOuterContainer extends StatelessWidget {
+  final String sectionText;
+  final Widget settingsSection;
+
+  const SettingsOuterContainer({
+    super.key,
+    required this.sectionText,
+    required this.settingsSection,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: .maxFinite,
+      decoration: BoxDecoration(
+        color: const Color(0xFF1E1E1E),
+        borderRadius: .circular(20),
+      ),
+      child: Column(
+        children: [
+          Padding(
+            padding: const .all(20),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                sectionText,
+                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                  color: ColorConstants.primaryColor,
+                  fontWeight: .w700,
+                ),
+              ),
+            ),
+          ),
+
+          settingsSection,
+          const SizedBox(height: 12),
+        ],
+      ),
+    );
+  }
+}
+
+
+/*
+
+  
+*/
    
 
 

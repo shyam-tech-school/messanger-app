@@ -29,9 +29,9 @@ class ProfileHeader extends StatelessWidget {
                 crossAxisAlignment: .start,
                 children: [
                   Text(
-                    "Username",
+                    "Robert Evans",
                     style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w700,
                       fontSize: 20,
                       letterSpacing: .8,
                     ),

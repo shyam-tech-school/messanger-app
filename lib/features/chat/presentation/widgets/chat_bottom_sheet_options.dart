@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mail_messanger/core/constants/color_constants.dart';
 
 class ChatBottomSheetOptions extends StatelessWidget {
   const ChatBottomSheetOptions({
@@ -6,13 +7,11 @@ class ChatBottomSheetOptions extends StatelessWidget {
     required this.icon,
     required this.label,
     required this.ontap,
-    required this.iconColor,
   });
 
   final IconData icon;
   final String label;
   final Function()? ontap;
-  final Color iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +22,11 @@ class ChatBottomSheetOptions extends StatelessWidget {
           onTap: ontap,
           child: Container(
             padding: const .all(15),
-            decoration: BoxDecoration(
-              color: Colors.grey.shade300,
+            decoration: const BoxDecoration(
+              color: ColorConstants.darkScaffoldBgColor,
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, size: 40, color: iconColor),
+            child: Icon(icon, size: 30, color: ColorConstants.white),
           ),
         ),
         Text(label),

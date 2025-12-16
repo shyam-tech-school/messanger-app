@@ -31,10 +31,16 @@ class ChatAppbarWidget extends StatelessWidget {
               spacing: 2,
               crossAxisAlignment: .start,
               children: [
-                Text(chats['name']),
+                Text(
+                  chats['name'],
+                  style: const TextStyle(fontWeight: FontWeight.w700),
+                ),
                 const Text(
                   'Typing..',
-                  style: TextStyle(color: ColorConstants.primary, fontSize: 14),
+                  style: TextStyle(
+                    color: ColorConstants.primaryColor,
+                    fontSize: 14,
+                  ),
                 ),
               ],
             ),
@@ -46,7 +52,11 @@ class ChatAppbarWidget extends StatelessWidget {
           onPressed: () {
             debugPrint("video call button");
           },
-          icon: Image.asset('assets/icons/video.png', height: 28),
+          icon: Image.asset(
+            'assets/icons/video.png',
+            height: 28,
+            color: ColorConstants.white,
+          ),
         ),
         IconButton(
           onPressed: () {
@@ -56,14 +66,14 @@ class ChatAppbarWidget extends StatelessWidget {
               arguments: chats,
             );
           },
-          icon: const Icon(CupertinoIcons.phone, color: ColorConstants.black),
+          icon: const Icon(CupertinoIcons.phone, color: ColorConstants.white),
           highlightColor: Colors.transparent,
         ),
       ],
+
       centerTitle: false,
       leadingWidth: 35,
       toolbarHeight: 70,
-      backgroundColor: ColorConstants.white,
       actionsPadding: const .only(right: 8),
     );
   }

@@ -16,15 +16,16 @@ class PrimaryButton extends StatelessWidget {
         height: 60,
         width: .maxFinite,
         decoration: BoxDecoration(
-          color: ColorConstants.primary,
+          color: ColorConstants.primaryColor,
           borderRadius: .circular(10),
         ),
         alignment: Alignment.center,
         child: Text(
           label,
           style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-            color: ColorConstants.white,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w700,
+            color: ColorConstants.black,
+            fontFamily: 'OpenSans',
           ),
         ),
       ),

@@ -31,7 +31,9 @@ class _ChatInputBarState extends State<ChatInputBar> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.white,
+      // color: Colors.white,
+      //color: ColorConstants.textfieldFillColor,
+      color: ColorConstants.darkScaffoldBgColor,
       child: SafeArea(
         bottom: true,
         child: Padding(
@@ -48,9 +50,10 @@ class _ChatInputBarState extends State<ChatInputBar> {
                   showModalBottomSheet(
                     context: context,
                     builder: (context) {
-                      return OptionSheet();
+                      return const OptionSheet();
                     },
                     useSafeArea: true,
+                    backgroundColor: ColorConstants.textfieldFillColor,
                   );
                 },
                 icon: const Icon(Ionicons.link_outline),
@@ -66,14 +69,14 @@ class _ChatInputBarState extends State<ChatInputBar> {
                       horizontal: 14,
                     ),
                     filled: true,
-                    fillColor: ColorConstants.scaffoldSecondary,
+                    fillColor: ColorConstants.textfieldFillColor,
                     hintText: "Type a message",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
                       borderSide: BorderSide.none,
                     ),
                   ),
-                  cursorColor: ColorConstants.primary,
+                  cursorColor: ColorConstants.primaryColor,
                 ),
               ),
 
@@ -109,11 +112,11 @@ class _ChatInputBarState extends State<ChatInputBar> {
     return Container(
       key: const ValueKey("send"),
       decoration: const BoxDecoration(
-        color: ColorConstants.primary,
+        color: ColorConstants.primaryColor,
         shape: BoxShape.circle,
       ),
       child: IconButton(
-        icon: const Icon(Icons.send, color: Colors.white, size: 22),
+        icon: const Icon(Icons.send, color: ColorConstants.black, size: 22),
         onPressed: () {
           debugPrint("send: " + _controller.text);
           _controller.clear();

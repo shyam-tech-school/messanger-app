@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mail_messanger/core/constants/color_constants.dart';
-import 'package:mail_messanger/core/utils/timer_helper_util.dart';
 import 'package:mail_messanger/features/chats/data/datasources/chat_data_mock.dart';
+
+import '../../../call/presentation/pages/call_screen.dart';
 
 class VideoCallListScreen extends StatelessWidget {
   const VideoCallListScreen({super.key});
@@ -13,11 +14,12 @@ class VideoCallListScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "Video Call",
-          style: Theme.of(
-            context,
-          ).textTheme.headlineMedium!.copyWith(fontWeight: FontWeight.w500),
+          style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+            fontFamily: 'LuckiestGuy',
+            color: ColorConstants.primaryColor,
+            letterSpacing: 2,
+          ),
         ),
-        centerTitle: false,
         automaticallyImplyLeading: false,
       ),
       body: CustomScrollView(
@@ -101,68 +103,6 @@ class VideoCallListScreen extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class CallTile extends StatelessWidget {
-  const CallTile({
-    super.key,
-    required this.username,
-    required this.dpImage,
-    required this.callType,
-    required this.direction,
-    required this.time,
-    required this.isMissed,
-  });
-
-  final String username;
-  final String dpImage;
-  final String callType;
-  final String direction;
-  final String time;
-  final bool isMissed;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: CircleAvatar(radius: 26, backgroundImage: NetworkImage(dpImage)),
-      title: Text(
-        username,
-        maxLines: 1,
-        overflow: .ellipsis,
-        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-          fontWeight: FontWeight.w500,
-          fontSize: 16,
-          color: isMissed ? Colors.red : null,
-        ),
-      ),
-      subtitle: Row(
-        spacing: 4,
-        children: [
-          if (callType == 'audio') ...[
-            Icon(
-              direction == 'incoming'
-                  ? CupertinoIcons.phone_fill_arrow_down_left
-                  : CupertinoIcons.phone_fill_arrow_up_right,
-              size: 20,
-            ),
-          ] else ...[
-            Image.asset(
-              direction == 'incoming'
-                  ? 'assets/icons/video_incoming.png'
-                  : 'assets/icons/video_outgoing.png',
-              height: 22,
-              color: ColorConstants.grey,
-            ),
-          ],
-          Text(direction),
-        ],
-      ),
-      trailing: Text(
-        TimerHelperUtil.formatChatListTime(time),
-        style: const TextStyle(color: ColorConstants.grey),
       ),
     );
   }
