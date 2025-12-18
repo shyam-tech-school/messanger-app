@@ -4,11 +4,19 @@ import 'package:flutter/services.dart';
 import '../../../../core/constants/color_constants.dart';
 
 class OtpInputFieldWidget extends StatelessWidget {
-  const OtpInputFieldWidget({super.key});
+  final TextEditingController controller;
+  final Function(String)? onChanged;
+
+  const OtpInputFieldWidget({
+    super.key,
+    required this.controller,
+    required this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: controller,
       cursorColor: ColorConstants.primary,
       cursorHeight: 22,
       style: const TextStyle(
@@ -36,12 +44,16 @@ class OtpInputFieldWidget extends StatelessWidget {
           fontFamily: 'OpenSans',
         ),
       ),
-      inputFormatters: [LengthLimitingTextInputFormatter(10)],
+      inputFormatters: [
+        FilteringTextInputFormatter.digitsOnly,
+        LengthLimitingTextInputFormatter(10),
+      ],
       keyboardType: TextInputType.number,
       textInputAction: TextInputAction.done,
       onSubmitted: (value) {
         FocusScope.of(context).unfocus();
       },
+      onChanged: onChanged,
     );
   }
 }

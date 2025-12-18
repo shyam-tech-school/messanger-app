@@ -52,6 +52,7 @@ class TextConstants {
       "Real-time messaging that keeps your conversations flowing — seamless, fast, and always available.";
 
   //-- BUTTON TEXT --
-  static const String next = "Next";
+  static const String next = "Continue";
   static const String turnOff = 'Turn off';
+  static const String verify = "Verify";
 }

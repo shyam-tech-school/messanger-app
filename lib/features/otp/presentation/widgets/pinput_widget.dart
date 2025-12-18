@@ -4,7 +4,10 @@ import 'package:pinput/pinput.dart';
 import '../../../../core/constants/color_constants.dart';
 
 class PinPutWidget extends StatelessWidget {
-  const PinPutWidget({super.key});
+  final ValueChanged<String> onCompleted;
+  final Function(String)? onChanged;
+
+  const PinPutWidget({super.key, required this.onCompleted, this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -34,16 +37,16 @@ class PinPutWidget extends StatelessWidget {
     );
 
     return Pinput(
+      length: 6,
       autofocus: true,
       defaultPinTheme: defaultPinTheme,
       focusedPinTheme: focusedPinTheme,
       submittedPinTheme: submittedPinTheme,
-      validator: (s) {
-        return s == '2222' ? null : 'Pin is incorrect';
-      },
       pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
       showCursor: true,
-      onCompleted: (pin) {},
+      onCompleted: onCompleted,
+      onChanged: onChanged,
+      autofillHints: const [AutofillHints.oneTimeCode],
     );
   }
 }

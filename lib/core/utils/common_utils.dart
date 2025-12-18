@@ -10,13 +10,41 @@ class CommonUtils {
   }
 
   // -- Snackbar
-  static dynamic showSnakckbar(BuildContext context, String content) {
+  static dynamic showSnakckbar(
+    BuildContext context,
+    String content, [
+    Color bgColor = ColorConstants.textfieldFillColor,
+  ]) {
     return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(content, style: Theme.of(context).textTheme.bodyMedium),
-        backgroundColor: ColorConstants.textfieldFillColor,
+        backgroundColor: bgColor,
         behavior: SnackBarBehavior.fixed,
       ),
     );
+  }
+
+  //-- VALIDATE INDIAN PHONE NUMBER
+  static String? validateIndianPhoneNumber(String phone) {
+    final value = phone.trim();
+
+    if (value.isEmpty) {
+      return 'Phone number cannot be empty';
+    }
+
+    if (!RegExp(r'^\d+$').hasMatch(value)) {
+      return 'Phone number must contain digits only';
+    }
+
+    if (phone.length < 10) {
+      return 'Phone number must be 10 digits';
+    }
+
+    return null;
+  }
+
+  static String toE164(String phone, {String countryCode = "+91"}) {
+    final normalized = phone.replaceFirst(RegExp(r'^0+'), '');
+    return "$countryCode$normalized";
   }
 }

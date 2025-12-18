@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mail_messanger/app_provider.dart';
 import 'package:mail_messanger/core/routes/route_config.dart';
 import 'package:mail_messanger/core/routes/route_name.dart';
@@ -10,6 +11,8 @@ import 'package:provider/provider.dart';
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   runApp(const MessangerApp());
 }

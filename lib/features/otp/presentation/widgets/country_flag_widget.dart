@@ -15,7 +15,7 @@ class CountryFlagWidget extends StatelessWidget {
         border: Border.all(color: ColorConstants.primaryColor),
       ),
       alignment: Alignment.center,
-      child: const Text("🇮🇳", style: TextStyle(fontSize: 28)),
+      child: const Text("🇮🇳", style: TextStyle(fontSize: 20)),
     );
   }
 }

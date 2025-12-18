@@ -36,8 +36,9 @@ class RouteConfig {
         return MaterialPageRoute(builder: (context) => const OtpScreen());
 
       case RouteName.otpVerificationScreen:
+        final arguments = settings.arguments as String;
         return MaterialPageRoute(
-          builder: (context) => const OtpVerificationScreen(),
+          builder: (context) => OtpVerificationScreen(phoneNumber: arguments),
         );
 
       case RouteName.navigationScreen:
