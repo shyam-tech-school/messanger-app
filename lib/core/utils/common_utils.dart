@@ -36,15 +36,19 @@ class CommonUtils {
       return 'Phone number must contain digits only';
     }
 
-    if (phone.length < 10) {
+    if (phone.length != 10) {
       return 'Phone number must be 10 digits';
+    }
+
+    if (!RegExp(r'^[6-9]').hasMatch(value)) {
+      return 'Enter a valid indian phone number';
     }
 
     return null;
   }
 
   static String toE164(String phone, {String countryCode = "+91"}) {
-    final normalized = phone.replaceFirst(RegExp(r'^0+'), '');
+    final normalized = phone.trim().replaceFirst(RegExp(r'^0+'), '');
     return "$countryCode$normalized";
   }
 }

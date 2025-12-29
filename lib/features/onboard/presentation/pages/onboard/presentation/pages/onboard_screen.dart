@@ -4,6 +4,8 @@ import 'package:mail_messanger/core/routes/route_name.dart';
 import 'package:mail_messanger/features/onboard/presentation/pages/onboard/datasource/onboard_data_source.dart';
 import 'package:mail_messanger/features/onboard/presentation/pages/onboard/presentation/widgets/onboard_pages.dart';
 
+import '../../../../../../../core/storage/onboard_storage.dart';
+
 class OnboardScreen extends StatefulWidget {
   const OnboardScreen({super.key});
 
@@ -15,14 +17,17 @@ class _OnboardScreenState extends State<OnboardScreen> {
   final _pageController = PageController();
   int _currentIndex = 0;
 
-  void _next() {
+  void _next() async {
     if (_currentIndex < pages.length - 1) {
       _pageController.nextPage(
         duration: const Duration(milliseconds: 400),
         curve: Curves.easeIn,
       );
     } else {
-      Navigator.pushNamed(context, RouteName.otpScreen);
+      await OnboardStorage.markCompleted();
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, RouteName.otpScreen);
+      }
     }
   }
 

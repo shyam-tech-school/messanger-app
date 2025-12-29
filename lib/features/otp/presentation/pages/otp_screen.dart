@@ -1,10 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mail_messanger/core/constants/color_constants.dart';
 import 'package:mail_messanger/core/constants/image_path_constants.dart';
 import 'package:mail_messanger/core/constants/text_constants.dart';
+import 'package:mail_messanger/core/utils/app_logger.dart';
 import 'package:mail_messanger/core/utils/common_utils.dart';
 import 'package:mail_messanger/features/otp/presentation/provider/auth_provider.dart';
 import 'package:mail_messanger/features/otp/presentation/widgets/padding16_symmetric.dart';
@@ -46,94 +45,91 @@ class _OtpScreenState extends State<OtpScreen> {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Lottie.asset(ImagePathConstants.otp, height: 300),
-                const SizedBox(height: 20),
-                Text(
-                  TextConstants.otpVerification,
-                  style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                    color: ColorConstants.primaryColor,
-                    fontFamily: 'LuckiestGuy',
-                    letterSpacing: 1,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                const Text(TextConstants.createAccountText),
-                const SizedBox(height: 20),
-                Padding16Symmetric(
-                  child: Row(
-                    spacing: 12,
-                    children: [
-                      const CountryFlagWidget(),
-
-                      // input field
-                      Expanded(
-                        child: OtpInputFieldWidget(
-                          controller: _phoneNumberController,
-                          onChanged: _onTextChanged,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 12),
-
-                Text(
-                  TextConstants.otpSubText,
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-                const SizedBox(height: 30),
-
-                // Submit button
-                Padding16Symmetric(
-                  child: Consumer<OTPAuthProvider>(
-                    builder: (context, auth, _) => PrimaryBtnWidget(
-                      progress: progress,
-                      label: TextConstants.next,
-                      isEnabled: !auth.isLoading,
-                      ontap: auth.isLoading
-                          ? null
-                          : () async {
-                              final rawPhone = _phoneNumberController.text;
-
-                              final error =
-                                  CommonUtils.validateIndianPhoneNumber(
-                                    rawPhone,
-                                  );
-
-                              if (error != null) {
-                                CommonUtils.showSnakckbar(context, error);
-                                return;
-                              }
-
-                              final phoneE164 = CommonUtils.toE164(rawPhone);
-
-                              await auth.sendOtp(phoneE164);
-
-                              if (context.mounted) {
-                                if (auth.error != null) {
-                                  CommonUtils.showSnakckbar(
-                                    context,
-                                    auth.error!,
-                                  );
-                                  return;
-                                }
-                              }
-                              log("[LOG]: ${_phoneNumberController.text}");
-
-                              if (context.mounted) {
-                                Navigator.pushNamed(
-                                  context,
-                                  RouteName.otpVerificationScreen,
-                                  arguments: rawPhone,
-                                );
-                              }
-                            },
+            child: Padding(
+              padding: const .only(bottom: 16),
+              child: Column(
+                children: [
+                  Lottie.asset(ImagePathConstants.otp, height: 300),
+                  const SizedBox(height: 20),
+                  Text(
+                    TextConstants.otpVerification,
+                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                      color: ColorConstants.primaryColor,
+                      fontFamily: 'LuckiestGuy',
+                      letterSpacing: 1,
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 12),
+                  const Text(TextConstants.createAccountText),
+                  const SizedBox(height: 20),
+                  Padding16Symmetric(
+                    child: Row(
+                      spacing: 12,
+                      children: [
+                        const CountryFlagWidget(),
+
+                        // input field
+                        Expanded(
+                          child: OtpInputFieldWidget(
+                            controller: _phoneNumberController,
+                            onChanged: _onTextChanged,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+
+                  Text(
+                    TextConstants.otpSubText,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  const SizedBox(height: 30),
+
+                  // Submit button
+                  Padding16Symmetric(
+                    child: Consumer<OTPAuthProvider>(
+                      builder: (context, auth, _) => PrimaryBtnWidget(
+                        progress: auth.isLoading ? 1.0 : progress,
+                        label: TextConstants.next,
+                        isLoading: auth.isLoading,
+                        onTap: () async {
+                          final rawPhone = _phoneNumberController.text;
+
+                          final error = CommonUtils.validateIndianPhoneNumber(
+                            rawPhone,
+                          );
+
+                          if (error != null) {
+                            CommonUtils.showSnakckbar(context, error);
+                            return;
+                          }
+
+                          final phoneE164 = CommonUtils.toE164(rawPhone);
+
+                          await auth.sendOtp(phoneE164);
+
+                          if (context.mounted) {
+                            if (auth.error != null) {
+                              CommonUtils.showSnakckbar(context, auth.error!);
+                              return;
+                            }
+                          }
+                          AppLogger.i("[OTP]: ${_phoneNumberController.text}");
+
+                          if (context.mounted) {
+                            Navigator.pushNamed(
+                              context,
+                              RouteName.otpVerificationScreen,
+                              arguments: rawPhone,
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

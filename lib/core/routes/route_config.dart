@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:mail_messanger/app_navigation.dart';
 import 'package:mail_messanger/core/routes/route_name.dart';
 import 'package:mail_messanger/features/audio_call/presentation/pages/audio_call_screen.dart';
+import 'package:mail_messanger/features/contacts/presentation/pages/contact_permission_screen.dart';
 import 'package:mail_messanger/features/otp/presentation/pages/otp_screen.dart';
 import 'package:mail_messanger/features/otp/presentation/pages/otp_verification_screen.dart';
 import 'package:mail_messanger/features/chat/presentation/pages/chat_screen.dart';
 import 'package:mail_messanger/features/external_profile/presentation/pages/external_profile.dart';
 import 'package:mail_messanger/features/onboard/presentation/pages/onboard/presentation/pages/onboard_screen.dart';
-import 'package:mail_messanger/features/onboard/presentation/pages/splash/splash_screen.dart';
 import 'package:mail_messanger/features/profile/presentation/pages/profile_screen.dart';
 import 'package:mail_messanger/features/sub_settings/account/account_screen.dart';
 import 'package:mail_messanger/features/sub_settings/account/change_phone_number/presentation/pages/change_phone_number_info.dart';
@@ -26,9 +26,6 @@ import 'package:mail_messanger/features/sub_settings/privacy/profile_photo/prese
 class RouteConfig {
   static Route<dynamic> routeGenerator(RouteSettings settings) {
     switch (settings.name) {
-      case RouteName.splashScreen:
-        return MaterialPageRoute(builder: (context) => const SplashScreen());
-
       case RouteName.onboardScreen:
         return MaterialPageRoute(builder: (context) => const OnboardScreen());
 
@@ -39,6 +36,11 @@ class RouteConfig {
         final arguments = settings.arguments as String;
         return MaterialPageRoute(
           builder: (context) => OtpVerificationScreen(phoneNumber: arguments),
+        );
+
+      case RouteName.contactPermissionScreen:
+        return MaterialPageRoute(
+          builder: (context) => const ContactPermissionScreen(),
         );
 
       case RouteName.navigationScreen:

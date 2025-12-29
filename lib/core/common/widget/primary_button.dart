@@ -7,19 +7,19 @@ class PrimaryBtnWidget extends StatelessWidget {
     super.key,
     required this.progress,
     required this.label,
-    required this.ontap,
-    required this.isEnabled,
+    required this.onTap,
+    required this.isLoading,
   });
 
   final double progress;
   final String label;
-  final Function()? ontap;
-  final bool isEnabled;
+  final Function()? onTap;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: isEnabled ? ontap : null,
+      onTap: isLoading ? null : onTap,
       child: SizedBox(
         height: 60,
         child: Stack(
@@ -41,16 +41,45 @@ class PrimaryBtnWidget extends StatelessWidget {
               ),
             ),
 
-            Center(
-              child: Text(
-                label,
-                style: const TextStyle(
-                  fontFamily: 'OpenSans',
-                  fontWeight: FontWeight.w700,
-                  color: ColorConstants.black,
-                ),
-              ),
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 200),
+              child: isLoading
+                  ? const Center(
+                      child: SizedBox(
+                        key: ValueKey('loader'),
+                        height: 24,
+                        width: 24,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2.5,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            Colors.black,
+                          ),
+                        ),
+                      ),
+                    )
+                  : Center(
+                      child: Text(
+                        key: const ValueKey('text'),
+                        label,
+                        style: const TextStyle(
+                          fontFamily: 'OpenSans',
+                          fontWeight: FontWeight.w700,
+                          color: ColorConstants.black,
+                        ),
+                      ),
+                    ),
             ),
+
+            // Center(
+            //   child: Text(
+            //     label,
+            //     style: const TextStyle(
+            //       fontFamily: 'OpenSans',
+            //       fontWeight: FontWeight.w700,
+            //       color: ColorConstants.black,
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

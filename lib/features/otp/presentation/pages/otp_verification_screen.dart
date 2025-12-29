@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:mail_messanger/core/common/widget/primary_button.dart';
 import 'package:mail_messanger/core/constants/color_constants.dart';
 import 'package:mail_messanger/core/constants/text_constants.dart';
-import 'package:mail_messanger/core/routes/route_name.dart';
 import 'package:mail_messanger/core/utils/common_utils.dart';
 import 'package:mail_messanger/features/otp/presentation/provider/auth_provider.dart';
 import 'package:mail_messanger/features/otp/presentation/provider/otp_timer_provider.dart';
 import 'package:mail_messanger/features/otp/presentation/widgets/pinput_widget.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../app_root.dart';
 import '../widgets/resend_otp_button_widget.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
@@ -26,6 +26,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   String _otp = '';
   final int maxPhoneLength = 10;
   double progress = 0.0;
+  bool _isVerificationSuccess = false;
 
   @override
   void initState() {
@@ -117,9 +118,10 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 // Submit button
                 Consumer<OTPAuthProvider>(
                   builder: (_, auth, _) => PrimaryBtnWidget(
-                    progress: progress,
+                    progress: _isVerificationSuccess ? 1.0 : progress,
                     label: TextConstants.verify,
-                    ontap: auth.isLoading
+                    isLoading: auth.isLoading && !_isVerificationSuccess,
+                    onTap: (_isVerificationSuccess || auth.isLoading)
                         ? null
                         : () async {
                             if (_otp.length != 6) {
@@ -132,17 +134,25 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                             }
 
                             try {
-                              await auth.verifyOtp(_otp);
+                              setState(() {
+                                _isVerificationSuccess = true;
+                              });
 
-                              if (context.mounted) {
-                                Navigator.pushNamedAndRemoveUntil(
-                                  context,
-                                  RouteName.navigationScreen,
-                                  (route) => true,
-                                );
-                              }
+                              await auth.verifyOtp(_otp);
+                              WidgetsBinding.instance.addPostFrameCallback(
+                                (_) => Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                    builder: (_) => const AppRoot(),
+                                  ),
+                                  (route) => false,
+                                ),
+                              );
                             } catch (e) {
                               if (context.mounted) {
+                                setState(() {
+                                  _isVerificationSuccess = false;
+                                });
+
                                 CommonUtils.showSnakckbar(
                                   context,
                                   'Invalid OTP. Please try again.',
@@ -150,7 +160,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                               }
                             }
                           },
-                    isEnabled: true,
                   ),
                 ),
               ],
@@ -161,38 +170,3 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     );
   }
 }
-
-
-// Consumer<OTPAuthProvider>(
-                //   builder: (_, authProvider, _) => PrimaryBtnWidget(
-                //     onTap: authProvider.isLoading
-                //         ? null
-                //         : () async {
-                //             if (_otp.length != 6) {
-                //               CommonUtils.showSnakckbar(
-                //                 context,
-                //                 'Enter a valid OTP',
-                //                 Colors.red,
-                //               );
-                //               return;
-                //             }
-
-                //             await authProvider.verifyOtp(_otp);
-
-                //             if (authProvider.error != null) {
-                //               CommonUtils.showSnakckbar(
-                //                 context,
-                //                 authProvider.error!,
-                //               );
-                //               return;
-                //             }
-
-                //             Navigator.pushNamedAndRemoveUntil(
-                //               context,
-                //               RouteName.navigationScreen,
-                //               (route) => true,
-                //             );
-                //           },
-                //     label: "Verify",
-                //   ),
-                // ),

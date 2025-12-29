@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:mail_messanger/core/utils/app_logger.dart';
 import 'package:mail_messanger/features/otp/domain/usecases/send_otp_usecase.dart';
 import 'package:mail_messanger/features/otp/domain/usecases/verify_otp_usecase.dart';
 
@@ -19,17 +18,22 @@ class OTPAuthProvider extends ChangeNotifier {
 
   Future<void> sendOtp(String phoneNumber) async {
     try {
+      if (isLoading) return;
+
       isLoading = true;
       notifyListeners();
 
       verificationId = await sendOtpUsecase(phoneNumber);
-      log('[LOG]: OTP Verification id: $verificationId');
+      AppLogger.i('[OTP]: Verification id: $verificationId');
     } catch (e) {
       error = e.toString();
+      AppLogger.e('[OTP] send failed', e);
+      rethrow;
     } finally {
       isLoading = false;
       notifyListeners();
     }
+    notifyListeners();
   }
 
   Future<void> verifyOtp(String smsCode) async {
