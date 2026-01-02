@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mail_messanger/core/app_state_manager.dart';
 import 'package:mail_messanger/core/common/widget/primary_button.dart';
 import 'package:mail_messanger/core/constants/color_constants.dart';
 import 'package:mail_messanger/core/constants/text_constants.dart';
@@ -120,7 +121,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                   builder: (_, auth, _) => PrimaryBtnWidget(
                     progress: _isVerificationSuccess ? 1.0 : progress,
                     label: TextConstants.verify,
-                    isLoading: auth.isLoading && !_isVerificationSuccess,
+                    isLoading: auth.isLoading && _isVerificationSuccess,
                     onTap: (_isVerificationSuccess || auth.isLoading)
                         ? null
                         : () async {
@@ -139,6 +140,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                               });
 
                               await auth.verifyOtp(_otp);
+                              await AppStateManager.setPhoneVerified(); // OTP verified flag
+
                               WidgetsBinding.instance.addPostFrameCallback(
                                 (_) => Navigator.of(context).pushAndRemoveUntil(
                                   MaterialPageRoute(

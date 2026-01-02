@@ -5,6 +5,7 @@ import 'dart:typed_data';
 
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
+import 'package:mail_messanger/core/config/app_config.dart';
 import 'package:mail_messanger/core/utils/app_logger.dart';
 import 'package:mime/mime.dart';
 
@@ -13,13 +14,9 @@ abstract class ProfileRemoteDatasource {
 }
 
 class ProfileRemoteDataSoruceImpl implements ProfileRemoteDatasource {
-  final String baseUrl;
-
-  ProfileRemoteDataSoruceImpl(this.baseUrl);
-
   @override
   Future<String> uploadProfileImage(File imageFile) async {
-    final url = Uri.parse('$baseUrl/upload/profile');
+    final url = Uri.parse(AppConfig.uploadProfileImageUrl);
 
     final Uint8List bytes = await imageFile.readAsBytes();
     final mimeFromBytes = lookupMimeType(imageFile.path, headerBytes: bytes);

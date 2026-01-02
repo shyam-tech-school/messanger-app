@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mail_messanger/core/constants/color_constants.dart';
+import 'package:mail_messanger/core/routes/route_name.dart';
+import 'package:mail_messanger/features/contacts/presentation/provider/contact_permission_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../widgets/contact_preview_tile_widget.dart';
 
@@ -8,6 +11,8 @@ class ContactPermissionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final contactPermissionProvider = context.watch<ContactsProvider>();
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -83,21 +88,37 @@ class ContactPermissionScreen extends StatelessWidget {
                 width: double.infinity,
                 height: 60,
                 child: ElevatedButton(
-                  onPressed: () {
-                    // request contact permission
-                  },
+                  onPressed: contactPermissionProvider.isSyncing
+                      ? null
+                      : () async {
+                          final success = await contactPermissionProvider
+                              .requestAndSyncContacts();
+
+                          if (success && context.mounted) {
+                            Navigator.pushReplacementNamed(
+                              context,
+                              RouteName.chatListScreen,
+                            );
+                          }
+                        },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: ColorConstants.primaryColor,
                     shape: RoundedRectangleBorder(borderRadius: .circular(10)),
                   ),
-                  child: const Text(
-                    "Turn on Contacts",
-                    style: TextStyle(
-                      fontFamily: 'OpenSans',
-                      fontWeight: FontWeight.w700,
-                      color: ColorConstants.black,
-                    ),
-                  ),
+                  child: contactPermissionProvider.isSyncing
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                            color: ColorConstants.black,
+                          ),
+                        )
+                      : const Text(
+                          "Turn on Contacts",
+                          style: TextStyle(
+                            fontFamily: 'OpenSans',
+                            fontWeight: FontWeight.w700,
+                            color: ColorConstants.black,
+                          ),
+                        ),
                 ),
               ),
             ],

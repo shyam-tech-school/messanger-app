@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mail_messanger/app_navigation.dart';
 import 'package:mail_messanger/core/routes/route_name.dart';
 import 'package:mail_messanger/features/audio_call/presentation/pages/audio_call_screen.dart';
+import 'package:mail_messanger/features/chats/presentation/pages/chats_screen.dart';
 import 'package:mail_messanger/features/contacts/presentation/pages/contact_permission_screen.dart';
 import 'package:mail_messanger/features/otp/presentation/pages/otp_screen.dart';
 import 'package:mail_messanger/features/otp/presentation/pages/otp_verification_screen.dart';
@@ -45,6 +46,9 @@ class RouteConfig {
 
       case RouteName.navigationScreen:
         return MaterialPageRoute(builder: (context) => const AppNavigation());
+
+      case RouteName.chatListScreen:
+        return MaterialPageRoute(builder: (context) => const ChatsScreen());
 
       case RouteName.chatScreen:
         final arguments = settings.arguments as Map<String, dynamic>;

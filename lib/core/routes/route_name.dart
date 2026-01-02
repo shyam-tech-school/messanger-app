@@ -5,7 +5,7 @@ class RouteName {
   static const contactPermissionScreen = '/contact_permission';
 
   static const navigationScreen = '/navigation';
-  static const homeScreen = '/home';
+  static const chatListScreen = '/chat_list';
   static const chatScreen = '/chat';
   static const profileScreen = '/profile';
   static const externalProfileScreen = '/external_profile';
