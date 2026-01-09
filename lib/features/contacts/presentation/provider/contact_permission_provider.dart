@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:mail_messanger/features/contacts/core/contacts_permission_manager.dart';
 import 'package:mail_messanger/features/contacts/domain/entities/matched_contact.dart';
@@ -40,6 +42,7 @@ class ContactsProvider extends ChangeNotifier {
       notifyListeners();
 
       matchedContacts = await syncContactsUsecases();
+      log('mateched contacts: $matchedContacts');
 
       isSyncing = false;
       notifyListeners();

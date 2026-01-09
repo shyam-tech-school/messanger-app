@@ -9,6 +9,7 @@ class RouteName {
   static const chatScreen = '/chat';
   static const profileScreen = '/profile';
   static const externalProfileScreen = '/external_profile';
+  static const contactListScreen = '/contact_list';
 
   //-- SUB SETTINGS ROUTE --
   //-- ACCOUNT

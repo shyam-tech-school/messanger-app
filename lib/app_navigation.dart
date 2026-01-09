@@ -28,75 +28,77 @@ class _AppNavigationState extends State<AppNavigation> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: screens[_currentIndex],
-      bottomNavigationBar: Container(
-        height: 90,
-        clipBehavior: Clip.hardEdge,
-        decoration: BoxDecoration(
-          border: Border(top: BorderSide(color: ColorConstants.greyShade300)),
-          borderRadius: const .only(
-            topRight: .circular(20),
-            topLeft: .circular(20),
+      bottomNavigationBar: SafeArea(
+        child: Container(
+          height: 90,
+          clipBehavior: Clip.hardEdge,
+          decoration: BoxDecoration(
+            border: Border(top: BorderSide(color: ColorConstants.greyShade300)),
+            borderRadius: const .only(
+              topRight: .circular(20),
+              topLeft: .circular(20),
+            ),
+            boxShadow: const [
+              BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 10),
+            ],
           ),
-          boxShadow: const [
-            BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 10),
-          ],
-        ),
-        child: ClipRRect(
-          borderRadius: const .only(
-            topRight: .circular(20),
-            topLeft: .circular(20),
-          ),
-          child: BottomAppBar(
-            color: ColorConstants.black,
-            //color: ColorConstants.darkScaffoldBgColor,
-            padding: const .only(top: 15),
-            child: Row(
-              mainAxisAlignment: .spaceEvenly,
-              children: [
-                BottomBarIconWidget(
-                  ontap: () {
-                    setState(() {
-                      _currentIndex = 0;
-                    });
-                  },
-                  icons: Ionicons.chatbubbles_outline,
-                  label: "Chats",
-                  isSelected: _currentIndex == 0,
-                ),
+          child: ClipRRect(
+            borderRadius: const .only(
+              topRight: .circular(20),
+              topLeft: .circular(20),
+            ),
+            child: BottomAppBar(
+              color: ColorConstants.black,
+              //color: ColorConstants.darkScaffoldBgColor,
+              padding: const .only(top: 15),
+              child: Row(
+                mainAxisAlignment: .spaceEvenly,
+                children: [
+                  BottomBarIconWidget(
+                    ontap: () {
+                      setState(() {
+                        _currentIndex = 0;
+                      });
+                    },
+                    icons: Ionicons.chatbubbles_outline,
+                    label: "Chats",
+                    isSelected: _currentIndex == 0,
+                  ),
 
-                BottomBarIconWidget(
-                  ontap: () {
-                    setState(() {
-                      _currentIndex = 1;
-                    });
-                  },
-                  icons: CupertinoIcons.phone,
-                  label: "Call",
-                  isSelected: _currentIndex == 1,
-                ),
+                  BottomBarIconWidget(
+                    ontap: () {
+                      setState(() {
+                        _currentIndex = 1;
+                      });
+                    },
+                    icons: CupertinoIcons.phone,
+                    label: "Call",
+                    isSelected: _currentIndex == 1,
+                  ),
 
-                BottomBarIconWidget(
-                  ontap: () {
-                    setState(() {
-                      _currentIndex = 2;
-                    });
-                  },
-                  icons: Ionicons.videocam_outline,
-                  label: "Call",
-                  isSelected: _currentIndex == 2,
-                ),
+                  BottomBarIconWidget(
+                    ontap: () {
+                      setState(() {
+                        _currentIndex = 2;
+                      });
+                    },
+                    icons: Ionicons.videocam_outline,
+                    label: "Call",
+                    isSelected: _currentIndex == 2,
+                  ),
 
-                BottomBarIconWidget(
-                  ontap: () {
-                    setState(() {
-                      _currentIndex = 3;
-                    });
-                  },
-                  icons: Ionicons.settings_outline,
-                  label: "Settings",
-                  isSelected: _currentIndex == 3,
-                ),
-              ],
+                  BottomBarIconWidget(
+                    ontap: () {
+                      setState(() {
+                        _currentIndex = 3;
+                      });
+                    },
+                    icons: Ionicons.settings_outline,
+                    label: "Settings",
+                    isSelected: _currentIndex == 3,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

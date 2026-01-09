@@ -1,59 +1,137 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mail_messanger/features/chats/data/datasources/chat_data_mock.dart';
-import 'package:mail_messanger/features/otp/presentation/widgets/padding16_symmetric.dart';
+import 'package:lottie/lottie.dart';
+import 'package:mail_messanger/core/constants/image_path_constants.dart';
+import 'package:mail_messanger/core/constants/text_constants.dart';
+import 'package:mail_messanger/core/utils/app_logger.dart';
+import 'package:mail_messanger/features/contacts/domain/entities/matched_contact.dart';
+import 'package:mail_messanger/features/contacts/presentation/provider/contact_permission_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../core/constants/color_constants.dart';
+import '../widgets/contacts_tile_widget.dart';
 
-class ContactsListScreen extends StatelessWidget {
+class ContactsListScreen extends StatefulWidget {
   const ContactsListScreen({super.key});
 
   @override
+  State<ContactsListScreen> createState() => _ContactsListScreenState();
+}
+
+class _ContactsListScreenState extends State<ContactsListScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => context.read<ContactsProvider>().requestAndSyncContacts(),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<ContactsProvider>(context);
+    final List<MatchedContact> contacts = provider.matchedContacts;
+
+    AppLogger.i('matched contacts: ${provider.matchedContacts.length}');
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Contacts",
-          style: TextStyle(
-            fontFamily: 'LuckiestGuy',
-            color: ColorConstants.primaryColor,
+        title: Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: Text(
+            "Contacts",
+            style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+              fontFamily: 'LuckiestGuy',
+              color: ColorConstants.primaryColor,
+              letterSpacing: 2,
+            ),
           ),
         ),
+        actions: const [ContactMoreOptionWidget()],
+        titleSpacing: 5,
       ),
       body: SafeArea(
-        child: Padding16Symmetric(
-          child: ListView.builder(
-            itemCount: chatData.length,
-            itemBuilder: (context, index) {
-              final list = chatData[index];
-              return ListTile(
-                onTap: () {},
-                leading: Container(
-                  height: 55,
-                  width: 55,
-                  padding: const .all(1),
-                  clipBehavior: Clip.hardEdge,
-                  decoration: const BoxDecoration(
-                    color: ColorConstants.dotColor,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Container(
-                    clipBehavior: Clip.hardEdge,
-                    decoration: BoxDecoration(
-                      color: Colors.blue.shade100,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Image.network(list['profileDp']),
+        child: Padding(
+          padding: const .all(16),
+          child: Column(
+            children: [
+              const CupertinoSearchTextField(),
+              const SizedBox(height: 12),
+
+              if (contacts.isEmpty)
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: .center,
+                    children: [
+                      Container(
+                        //color: Colors.red,
+                        child: Lottie.asset(
+                          ImagePathConstants.noContacts,
+                          height: 200,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      const Text(TextConstants.noContactsFound),
+                    ],
                   ),
                 ),
-                title: Text(
-                  list['name'],
-                  style: const TextStyle(fontWeight: FontWeight.w700),
+
+              if (contacts.isNotEmpty)
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: contacts.length,
+                    itemBuilder: (context, index) =>
+                        ContactsTileWidget(matchedContact: contacts[index]),
+                  ),
                 ),
-              );
-            },
+            ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class ContactMoreOptionWidget extends StatelessWidget {
+  const ContactMoreOptionWidget({super.key});
+
+  void _openSettings() {
+    debugPrint('Contact settings');
+  }
+
+  void _onContactRefresh(BuildContext context) async {
+    AppLogger.i('Contact refreshed');
+    context.read<ContactsProvider>().requestAndSyncContacts();
+  }
+
+  void _onHelp() {
+    debugPrint('On help');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton(
+      onSelected: (value) {
+        switch (value) {
+          case 'settings':
+            _openSettings();
+            break;
+          case 'refresh':
+            _onContactRefresh(context);
+            break;
+          case 'help':
+            _onHelp();
+            break;
+        }
+      },
+      itemBuilder: (context) => [
+        const PopupMenuItem(value: 'settings', child: Text('Contact Settings')),
+        const PopupMenuItem(value: 'refresh', child: Text('Refresh')),
+        const PopupMenuItem(value: 'help', child: Text('Help')),
+      ],
+      tooltip: 'More options',
+      offset: const Offset(0, 45),
+      shape: RoundedRectangleBorder(borderRadius: .circular(12)),
     );
   }
 }

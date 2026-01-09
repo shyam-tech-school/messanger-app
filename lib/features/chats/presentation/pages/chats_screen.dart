@@ -40,9 +40,8 @@ class ChatsScreen extends StatelessWidget {
                 highlightColor: Colors.transparent,
               ),
               IconButton(
-                onPressed: () {
-                  debugPrint("contacts button");
-                },
+                onPressed: () =>
+                    Navigator.pushNamed(context, RouteName.contactListScreen),
                 icon: const Icon(
                   CupertinoIcons.square_pencil,
                   color: ColorConstants.white,

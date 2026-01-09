@@ -5,4 +5,7 @@ class ImagePathConstants {
   static const String email = "assets/images/common/email.jpg";
   static const String sim = "assets/images/common/change-phone.png";
   static const String otp = "assets/animations/otp-animation.json";
+
+  // -- ANIMATIONS --
+  static const String noContacts = 'assets/animations/Settings.json';
 }

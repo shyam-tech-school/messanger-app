@@ -55,4 +55,8 @@ class TextConstants {
   static const String next = "Continue";
   static const String turnOff = 'Turn off';
   static const String verify = "Verify";
+
+  // -- GENERAL MESSAGES --
+  static const String noContactsFound =
+      "None of your contacts are using Connecta yet";
 }
