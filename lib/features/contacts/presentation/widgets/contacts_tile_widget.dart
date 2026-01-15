@@ -5,17 +5,20 @@ import '../../domain/entities/matched_contact.dart';
 
 class ContactsTileWidget extends StatelessWidget {
   final MatchedContact matchedContact;
+  final VoidCallback onTap;
 
-  const ContactsTileWidget({super.key, required this.matchedContact});
+  const ContactsTileWidget({
+    super.key,
+    required this.matchedContact,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const .symmetric(vertical: 5),
       child: ListTile(
-        onTap: () {
-          debugPrint('Navigate to particular screen');
-        },
+        onTap: onTap,
         leading: Container(
           height: 55,
           width: 55,

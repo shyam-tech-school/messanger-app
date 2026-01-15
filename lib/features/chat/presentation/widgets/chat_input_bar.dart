@@ -1,12 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:mail_messanger/features/chat/domain/entities/message_entity.dart';
+import 'package:mail_messanger/features/chat/domain/usecases/send_message_usecase.dart';
 
 import '../../../../core/constants/color_constants.dart';
 import 'option_sheet.dart';
 
 class ChatInputBar extends StatefulWidget {
-  const ChatInputBar({super.key});
+  final String chatId;
+  final String currentUserId;
+  final String otherUserId;
+  final SendMessageUsecase sendMessageUsecase;
+
+  const ChatInputBar({
+    super.key,
+    required this.chatId,
+    required this.currentUserId,
+    required this.otherUserId,
+    required this.sendMessageUsecase,
+  });
 
   @override
   State<ChatInputBar> createState() => _ChatInputBarState();
@@ -26,6 +39,12 @@ class _ChatInputBarState extends State<ChatInputBar> {
         setState(() => isTyping = typing);
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -90,7 +109,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
                     opacity: animation,
                     child: ScaleTransition(scale: animation, child: child),
                   ),
-                  child: isTyping ? _sendButton() : _micButton(),
+                  child: isTyping ? _sendMessage() : _micButton(),
                 ),
               ),
             ],
@@ -108,7 +127,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
     );
   }
 
-  Widget _sendButton() {
+  Widget _sendMessage() {
     return Container(
       key: const ValueKey("send"),
       decoration: const BoxDecoration(
@@ -117,8 +136,23 @@ class _ChatInputBarState extends State<ChatInputBar> {
       ),
       child: IconButton(
         icon: const Icon(Icons.send, color: ColorConstants.black, size: 22),
-        onPressed: () {
-          debugPrint("send: " + _controller.text);
+        onPressed: () async {
+          final text = _controller.text.trim();
+          if (text.isEmpty) return;
+
+          await widget.sendMessageUsecase(
+            MessageEntity(
+              chatId: widget.chatId,
+              senderId: widget.currentUserId,
+              receiverId: widget.otherUserId,
+              message: text,
+              type: "text",
+              mediaUrl: null,
+              createdAt: DateTime.now(),
+            ),
+          );
+
+          // clear controller
           _controller.clear();
         },
       ),

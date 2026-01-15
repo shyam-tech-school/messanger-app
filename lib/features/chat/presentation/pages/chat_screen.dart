@@ -1,35 +1,57 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:mail_messanger/features/chat/data/datasources/chat_remote_datasource.dart';
+import 'package:mail_messanger/features/chat/data/repositories/chat_repository.dart';
+import 'package:mail_messanger/features/chat/domain/usecases/send_message_usecase.dart';
 
 import '../widgets/chat_appbar_widget.dart';
 import '../widgets/chat_input_bar.dart';
 import '../widgets/message_bubble_widget.dart';
 
 class ChatScreen extends StatelessWidget {
-  const ChatScreen({super.key, required this.chats});
+  final String chatRoomId;
+  final String otherUserName;
+  final String? otherUserImage;
+  final String otherUserId;
+  final String currentUserId;
 
-  final Map<String, dynamic> chats;
+  ChatScreen({
+    super.key,
+    required this.chatRoomId,
+    required this.otherUserName,
+    required this.otherUserImage,
+    required this.otherUserId,
+    required this.currentUserId,
+  });
+
+  late final SendMessageUsecase _sendMessageUsecase = SendMessageUsecase(
+    ChatRepository(ChatRemoteDataSourceImpl(FirebaseFirestore.instance)),
+  );
 
   @override
   Widget build(BuildContext context) {
-    final messages = chats['messages'] as List;
-
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(80),
-        child: ChatAppbarWidget(chats: chats),
+        child: ChatAppbarWidget(
+          otherUserName: otherUserName,
+          otherPhotoUrl: otherUserImage,
+        ),
       ),
       body: ListView.builder(
         reverse: false,
-        itemCount: messages.length,
+        itemCount: 2,
         itemBuilder: (context, index) {
-          final message = messages[index];
-          debugPrint(message.toString());
-
-          return MessageBubbleWidget(message: message);
+          return const MessageBubbleWidget();
         },
       ),
-      bottomNavigationBar: const ChatInputBar(),
+      bottomNavigationBar: ChatInputBar(
+        chatId: chatRoomId,
+        currentUserId: currentUserId,
+        otherUserId: otherUserId,
+        sendMessageUsecase: _sendMessageUsecase,
+      ),
     );
   }
 }

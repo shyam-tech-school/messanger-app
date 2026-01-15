@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mail_messanger/features/chat/data/datasources/chat_remote_datasource.dart';
+import 'package:mail_messanger/features/chat/data/repositories/chat_repository.dart';
+import 'package:mail_messanger/features/chat/domain/usecases/send_message_usecase.dart';
 import 'package:mail_messanger/features/contacts/data/datasources/contacts_local_datasource.dart';
 import 'package:mail_messanger/features/contacts/data/datasources/contacts_remote_datasource.dart';
 import 'package:mail_messanger/features/contacts/data/repositories/contacts_repository.dart';
@@ -61,8 +64,9 @@ class AppProvider {
       ),
     ),
 
-    // contacts
+    // contacts permission
     Provider(create: (_) => ContactsPermissionManager()),
+
     Provider(
       create: (_) => SyncContactsUsecases(
         ContactsRepository(
@@ -71,10 +75,19 @@ class AppProvider {
         ),
       ),
     ),
+
+    // Contact provider
     ChangeNotifierProvider(
       create: (context) => ContactsProvider(
         context.read<SyncContactsUsecases>(),
         context.read<ContactsPermissionManager>(),
+      ),
+    ),
+
+    // ---- Chat ----
+    Provider(
+      create: (_) => SendMessageUsecase(
+        ChatRepository(ChatRemoteDataSourceImpl(FirebaseFirestore.instance)),
       ),
     ),
   ];

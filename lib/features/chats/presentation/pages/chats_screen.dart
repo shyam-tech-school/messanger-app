@@ -1,8 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mail_messanger/core/constants/color_constants.dart';
 import 'package:mail_messanger/core/routes/route_name.dart';
-import 'package:mail_messanger/features/chats/data/datasources/chat_data_mock.dart';
 
 import '../widgets/chat_list_tile.dart';
 
@@ -11,8 +12,7 @@ class ChatsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pinnedChats = chatData.where((e) => e['isPinned'] == true).toList();
-    final normalChats = chatData.where((e) => e['isPinned'] == false).toList();
+    final currentUserId = FirebaseAuth.instance.currentUser!.uid;
 
     return Scaffold(
       //backgroundColor: Colors.grey,
@@ -65,37 +65,37 @@ class ChatsScreen extends StatelessWidget {
           ),
 
           // -- PINNED MESSAGES --
-          if (pinnedChats.isNotEmpty) ...[
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const .symmetric(horizontal: 16, vertical: 6),
-                child: Text(
-                  "pinned message".toUpperCase(),
-                  style: const TextStyle(
-                    color: ColorConstants.grey,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ),
-            SliverList.builder(
-              itemCount: pinnedChats.length,
-              itemBuilder: (context, index) {
-                return ChatListTile(
-                  ontap: () {
-                    debugPrint(index.toString());
-                    Navigator.pushNamed(
-                      context,
-                      RouteName.chatScreen,
-                      arguments: pinnedChats[index],
-                    );
-                  },
-                  chats: pinnedChats[index],
-                );
-              },
-            ),
-          ],
+
+          //   SliverToBoxAdapter(
+          //     child: Padding(
+          //       padding: const .symmetric(horizontal: 16, vertical: 6),
+          //       child: Text(
+          //         "pinned message".toUpperCase(),
+          //         style: const TextStyle(
+          //           color: ColorConstants.grey,
+          //           fontSize: 14,
+          //           fontWeight: FontWeight.w500,
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          //   SliverList.builder(
+          //     itemCount: pinnedChats.length,
+          //     itemBuilder: (context, index) {
+          //       return ChatListTile(
+          //         ontap: () {
+          //           debugPrint(index.toString());
+          //           Navigator.pushNamed(
+          //             context,
+          //             RouteName.chatScreen,
+          //             arguments: pinnedChats[index],
+          //           );
+          //         },
+          //         chats: pinnedChats[index],
+          //       );
+          //     },
+          //   ),
+          // ],
 
           // -- ALL MESSAGES --
           SliverToBoxAdapter(
@@ -112,18 +112,13 @@ class ChatsScreen extends StatelessWidget {
             ),
           ),
           SliverList.builder(
-            itemCount: normalChats.length,
+            itemCount: 2,
             itemBuilder: (context, index) {
               return ChatListTile(
                 ontap: () {
                   debugPrint(index.toString());
-                  Navigator.pushNamed(
-                    context,
-                    RouteName.chatScreen,
-                    arguments: normalChats[index],
-                  );
+                  Navigator.pushNamed(context, RouteName.chatScreen);
                 },
-                chats: normalChats[index],
               );
             },
           ),

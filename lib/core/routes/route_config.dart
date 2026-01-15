@@ -57,9 +57,16 @@ class RouteConfig {
         return MaterialPageRoute(builder: (context) => const ChatsScreen());
 
       case RouteName.chatScreen:
-        final arguments = settings.arguments as Map<String, dynamic>;
+        final args = settings.arguments as Map<String, dynamic>;
+
         return MaterialPageRoute(
-          builder: (context) => ChatScreen(chats: arguments),
+          builder: (context) => ChatScreen(
+            chatRoomId: args['chatRoomId'],
+            otherUserId: args['otherUserId'],
+            otherUserName: args['otherUserName'],
+            otherUserImage: args['otherUserImageUrl'] ?? null,
+            currentUserId: args['currentUserId'],
+          ),
         );
 
       case RouteName.profileScreen:

@@ -1,9 +1,15 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mail_messanger/core/constants/image_path_constants.dart';
 import 'package:mail_messanger/core/constants/text_constants.dart';
+import 'package:mail_messanger/core/routes/route_name.dart';
 import 'package:mail_messanger/core/utils/app_logger.dart';
+import 'package:mail_messanger/features/chat/data/datasources/chat_remote_datasource.dart';
 import 'package:mail_messanger/features/contacts/domain/entities/matched_contact.dart';
 import 'package:mail_messanger/features/contacts/presentation/provider/contact_permission_provider.dart';
 import 'package:provider/provider.dart';
@@ -80,8 +86,41 @@ class _ContactsListScreenState extends State<ContactsListScreen> {
                 Expanded(
                   child: ListView.builder(
                     itemCount: contacts.length,
-                    itemBuilder: (context, index) =>
-                        ContactsTileWidget(matchedContact: contacts[index]),
+                    itemBuilder: (context, index) => ContactsTileWidget(
+                      matchedContact: contacts[index],
+                      onTap: () async {
+                        log('tapped');
+
+                        final chatRemoteDs = ChatRemoteDataSourceImpl(
+                          FirebaseFirestore.instance,
+                        );
+
+                        final currentUserId =
+                            FirebaseAuth.instance.currentUser!.uid;
+
+                        final otherUserId = contacts[index].uid;
+
+                        final chatRoomId = await chatRemoteDs.startChat(
+                          currentUserId,
+                          otherUserId,
+                        );
+
+                        final otherUserNamme = contacts[index].name;
+                        final otherUserImagerUrl = contacts[index].photoUrl;
+
+                        Navigator.pushNamed(
+                          context,
+                          RouteName.chatScreen,
+                          arguments: {
+                            'chatRoomId': chatRoomId,
+                            'otherUserId': otherUserId,
+                            'otherUserName': otherUserNamme,
+                            'otherUserImageUrl': otherUserImagerUrl,
+                            'currentUserId': currentUserId,
+                          },
+                        );
+                      },
+                    ),
                   ),
                 ),
             ],

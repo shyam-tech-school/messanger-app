@@ -1,11 +1,11 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../../constants/color_constants.dart';
 
 class DpCircleImageWidget extends StatelessWidget {
   const DpCircleImageWidget({super.key, required this.imageUrl});
 
-  final String imageUrl;
+  final String? imageUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,9 @@ class DpCircleImageWidget extends StatelessWidget {
       child: Container(
         clipBehavior: Clip.hardEdge,
         decoration: const BoxDecoration(shape: BoxShape.circle),
-        child: Image.network(imageUrl),
+        child: imageUrl == null
+            ? const Icon(Icons.person, size: 35)
+            : Image.network(imageUrl!, fit: BoxFit.cover),
       ),
     );
   }

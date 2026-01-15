@@ -1,42 +1,42 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mail_messanger/core/common/widget/dp_circle_image_widget.dart';
-import 'package:mail_messanger/core/routes/route_name.dart';
 
 import '../../../../core/constants/color_constants.dart';
 
 class ChatAppbarWidget extends StatelessWidget {
-  const ChatAppbarWidget({super.key, required this.chats});
+  final String? otherPhotoUrl;
+  final String otherUserName;
 
-  final Map<String, dynamic> chats;
+  const ChatAppbarWidget({
+    super.key,
+    required this.otherPhotoUrl,
+    required this.otherUserName,
+  });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       title: GestureDetector(
         onTap: () {
-          Navigator.pushNamed(
-            context,
-            RouteName.externalProfileScreen,
-            arguments: chats,
-          );
+          //! external profile screen
         },
         child: Row(
           spacing: 12,
 
           children: [
-            DpCircleImageWidget(imageUrl: chats['profileDp']),
+            DpCircleImageWidget(imageUrl: otherPhotoUrl),
 
             Column(
               spacing: 2,
               crossAxisAlignment: .start,
               children: [
                 Text(
-                  chats['name'],
+                  otherUserName,
                   style: const TextStyle(fontWeight: FontWeight.w700),
                 ),
                 const Text(
-                  'Typing..',
+                  'online',
                   style: TextStyle(
                     color: ColorConstants.primaryColor,
                     fontSize: 14,
@@ -60,11 +60,7 @@ class ChatAppbarWidget extends StatelessWidget {
         ),
         IconButton(
           onPressed: () {
-            Navigator.pushNamed(
-              context,
-              RouteName.audioCallScreen,
-              arguments: chats,
-            );
+            //! audio call screen
           },
           icon: const Icon(CupertinoIcons.phone, color: ColorConstants.white),
           highlightColor: Colors.transparent,

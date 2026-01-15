@@ -1,0 +1,7 @@
+import 'package:mail_messanger/features/chat/domain/entities/message_entity.dart';
+
+abstract class IChatRepositories {
+  Future<String> startChat(String currentUserid, String otherUserid);
+  Future<void> sendMessage(MessageEntity messageEntity);
+  Stream<List<MessageEntity>> getMessages(String chatId);
+}
