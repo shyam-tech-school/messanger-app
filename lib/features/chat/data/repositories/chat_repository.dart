@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mail_messanger/features/chat/data/datasources/chat_remote_datasource.dart';
 import 'package:mail_messanger/features/chat/domain/entities/message_entity.dart';
 import 'package:mail_messanger/features/chat/domain/repositories/i_chat_repositories.dart';
@@ -20,5 +21,10 @@ class ChatRepository implements IChatRepositories {
   @override
   Future<void> sendMessage(MessageEntity message) {
     return remoteDs.sendMessage(message);
+  }
+
+  @override
+  Stream<QuerySnapshot<Map<String, dynamic>>> streamChats(String userId) {
+    return remoteDs.streamChats(userId);
   }
 }

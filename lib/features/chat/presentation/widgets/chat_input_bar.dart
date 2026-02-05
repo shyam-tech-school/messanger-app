@@ -140,6 +140,9 @@ class _ChatInputBarState extends State<ChatInputBar> {
           final text = _controller.text.trim();
           if (text.isEmpty) return;
 
+          // Clear controller
+          _controller.clear();
+
           await widget.sendMessageUsecase(
             MessageEntity(
               chatId: widget.chatId,

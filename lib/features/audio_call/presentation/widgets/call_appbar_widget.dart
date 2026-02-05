@@ -14,7 +14,7 @@ class CallAppbarWidget extends StatelessWidget {
       title: Column(
         children: [
           Text(
-            widget.userData['name'],
+            widget.otherUserName,
             style: const TextStyle(
               color: Colors.white,
               fontSize: 24,

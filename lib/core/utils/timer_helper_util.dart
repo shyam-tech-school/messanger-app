@@ -89,4 +89,35 @@ class TimerHelperUtil {
 
     return unread;
   }
+
+  // Convert firebase timestamp to normal chat time
+  static String formatChatTime(DateTime? timestamp) {
+    if (timestamp == null) return '';
+
+    final DateTime messageTime = timestamp;
+    final DateTime now = DateTime.now();
+
+    final DateTime today = DateTime(now.year, now.month, now.day);
+
+    final DateTime yesterday = today.subtract(const Duration(days: 1));
+
+    final messageDate = DateTime(
+      messageTime.year,
+      messageTime.month,
+      messageTime.day,
+    );
+
+    // same time
+    if (messageDate == today) {
+      return DateFormat('hh:mm a').format(messageTime);
+    }
+
+    // yesterday
+    if (messageDate == yesterday) {
+      return 'Yesterday';
+    }
+
+    // older message - show date
+    return DateFormat('dd MM yyyy').format(messageTime);
+  }
 }

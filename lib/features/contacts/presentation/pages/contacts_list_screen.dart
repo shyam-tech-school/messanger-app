@@ -89,8 +89,6 @@ class _ContactsListScreenState extends State<ContactsListScreen> {
                     itemBuilder: (context, index) => ContactsTileWidget(
                       matchedContact: contacts[index],
                       onTap: () async {
-                        log('tapped');
-
                         final chatRemoteDs = ChatRemoteDataSourceImpl(
                           FirebaseFirestore.instance,
                         );

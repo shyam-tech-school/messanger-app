@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mail_messanger/core/common/widget/dp_circle_image_widget.dart';
+import 'package:mail_messanger/core/routes/route_name.dart';
 
 import '../../../../core/constants/color_constants.dart';
 
@@ -60,7 +61,14 @@ class ChatAppbarWidget extends StatelessWidget {
         ),
         IconButton(
           onPressed: () {
-            //! audio call screen
+            Navigator.pushNamed(
+              context,
+              RouteName.audioCallScreen,
+              arguments: {
+                'otherUserName': otherUserName,
+                'otherPhotoUrl': otherPhotoUrl,
+              },
+            );
           },
           icon: const Icon(CupertinoIcons.phone, color: ColorConstants.white),
           highlightColor: Colors.transparent,

@@ -4,9 +4,14 @@ import '../widgets/call_appbar_widget.dart';
 import '../widgets/call_screen_bottom_option_widget.dart';
 
 class AudioCallScreen extends StatefulWidget {
-  const AudioCallScreen({super.key, required this.userData});
+  final String otherUserName;
+  final String? otherPhotoUrl;
 
-  final Map<String, dynamic> userData;
+  const AudioCallScreen({
+    super.key,
+    required this.otherUserName,
+    required this.otherPhotoUrl,
+  });
 
   @override
   State<AudioCallScreen> createState() => _AudioCallScreenState();
@@ -124,7 +129,9 @@ class _AudioCallScreenState extends State<AudioCallScreen>
               // Profile Image
               CircleAvatar(
                 radius: 80,
-                backgroundImage: NetworkImage(widget.userData['profileDp']),
+                child: widget.otherPhotoUrl == null
+                    ? const Icon(Icons.person, size: 40)
+                    : Image.network(widget.otherPhotoUrl!),
               ),
             ],
           ),

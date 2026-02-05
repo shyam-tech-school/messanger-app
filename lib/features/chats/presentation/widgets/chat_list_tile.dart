@@ -1,54 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:mail_messanger/core/utils/chat_helper_util.dart';
+import 'package:mail_messanger/core/common/widget/dp_circle_image_widget.dart';
 import 'package:mail_messanger/core/utils/timer_helper_util.dart';
 
 import '../../../../core/constants/color_constants.dart';
 
 class ChatListTile extends StatelessWidget {
-  const ChatListTile({super.key, required this.ontap});
-
   final VoidCallback ontap;
+  final String username;
+  final String? userImageUrl;
+  final String lastMessage;
+  final int unreadCount;
+
+  const ChatListTile({
+    super.key,
+    required this.ontap,
+    required this.username,
+    required this.userImageUrl,
+    required this.lastMessage,
+    required this.unreadCount,
+  });
 
   @override
   Widget build(BuildContext context) {
-    // final List messages = chats['messages'];
-    // final lastMessage = messages.isNotEmpty ? messages.last : null;
-    // final previewMessage = ChatHelperUtil.buildPreviewMessage(lastMessage);
-    // final time = lastMessage != null ? lastMessage['time'] : "";
-    // final unreadCount = ChatHelperUtil.calculateUnread(
-    //   messages,
-    //   chats['isRead'],
-    // );
-
     return ListTile(
       onTap: ontap,
-      leading: Container(
-        height: 55,
-        width: 55,
-        padding: const .all(1),
-        clipBehavior: Clip.hardEdge,
-        decoration: const BoxDecoration(
-          color: ColorConstants.dotColor,
-          shape: BoxShape.circle,
-        ),
-        child: Container(
-          clipBehavior: Clip.hardEdge,
-          decoration: BoxDecoration(
-            color: Colors.blue.shade100,
-            shape: BoxShape.circle,
-          ),
-          child: Image.network(
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLat8bZvhXD3ChSXyzGsFVh6qgplm1KhYPKA&s",
-          ),
-        ),
-      ),
+      leading: DpCircleImageWidget(imageUrl: userImageUrl),
       title: Text(
-        "user name",
+        username,
         style: const TextStyle(fontWeight: FontWeight.w700),
       ),
       subtitle: Text(
-        "message",
+        lastMessage,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15),
@@ -63,7 +46,7 @@ class ChatListTile extends StatelessWidget {
             ).textTheme.bodyMedium!.copyWith(fontSize: 14),
           ),
 
-          // time
+          // !time
           //if (unreadCount > 0)
           // Container(
           //   padding: const .all(8),

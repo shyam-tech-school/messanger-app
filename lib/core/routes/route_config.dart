@@ -64,7 +64,7 @@ class RouteConfig {
             chatRoomId: args['chatRoomId'],
             otherUserId: args['otherUserId'],
             otherUserName: args['otherUserName'],
-            otherUserImage: args['otherUserImageUrl'] ?? null,
+            otherUserImage: args['otherUserImageUrl'],
             currentUserId: args['currentUserId'],
           ),
         );
@@ -139,7 +139,10 @@ class RouteConfig {
       case RouteName.audioCallScreen:
         final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
-          builder: (context) => AudioCallScreen(userData: args),
+          builder: (context) => AudioCallScreen(
+            otherUserName: args['otherUserName'],
+            otherPhotoUrl: args['otherPhotoUrl'],
+          ),
         );
 
       // case RouteName.videoCallScreen:

@@ -5,6 +5,7 @@ abstract class ChatRemoteDatasource {
   Future<String> startChat(String currentUserId, String otherUserId);
   Future<void> sendMessage(MessageEntity message);
   Stream<List<MessageEntity>> getMessages(String chatId);
+  Stream<QuerySnapshot<Map<String, dynamic>>> streamChats(String userId);
 }
 
 class ChatRemoteDataSourceImpl implements ChatRemoteDatasource {
@@ -88,5 +89,14 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDatasource {
       // Typing reset
       'typing.${message.senderId}': false,
     });
+  }
+
+  @override
+  Stream<QuerySnapshot<Map<String, dynamic>>> streamChats(String userId) {
+    return firestore
+        .collection('chats')
+        .where('participants', arrayContains: userId)
+        .orderBy('lastMessageTime', descending: true)
+        .snapshots();
   }
 }
