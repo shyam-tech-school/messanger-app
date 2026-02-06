@@ -2,17 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mail_messanger/core/common/widget/dp_circle_image_widget.dart';
 import 'package:mail_messanger/core/routes/route_name.dart';
+import 'package:mail_messanger/features/audio_call/presentation/pages/audio_call_screen.dart';
 
 import '../../../../core/constants/color_constants.dart';
 
 class ChatAppbarWidget extends StatelessWidget {
   final String? otherPhotoUrl;
   final String otherUserName;
+  final String? otherUserId;
 
   const ChatAppbarWidget({
     super.key,
     required this.otherPhotoUrl,
     required this.otherUserName,
+    this.otherUserId,
   });
 
   @override
@@ -61,10 +64,13 @@ class ChatAppbarWidget extends StatelessWidget {
         ),
         IconButton(
           onPressed: () {
+            if (otherUserId == null) return;
             Navigator.pushNamed(
               context,
               RouteName.audioCallScreen,
               arguments: {
+                'mode': AudioCallMode.outgoing,
+                'otherUserId': otherUserId!,
                 'otherUserName': otherUserName,
                 'otherPhotoUrl': otherPhotoUrl,
               },

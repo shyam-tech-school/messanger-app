@@ -7,9 +7,19 @@ class StartCallUsecase {
 
   StartCallUsecase(this.audioCallRepo, this.rtcRepo);
 
-  Future<void> call(String callId) async {
+  Future<void> call(
+    String callId, {
+    required String callerId,
+    required String calleeId,
+    String? callerName,
+    String? calleeName,
+  }) async {
     await rtcRepo.ensureMicPermission();
     final offer = await rtcRepo.createOffer();
-    await audioCallRepo.createCall(callId, offer);
+    await audioCallRepo.createCall(callId, offer,
+        callerId: callerId,
+        calleeId: calleeId,
+        callerName: callerName,
+        calleeName: calleeName);
   }
 }

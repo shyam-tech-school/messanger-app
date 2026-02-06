@@ -11,14 +11,14 @@ class CallScreenBottomOptionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: .maxFinite,
-      padding: const .all(14),
+      width: double.infinity,
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: ColorConstants.black,
-        borderRadius: .circular(30),
+        borderRadius: BorderRadius.circular(30),
       ),
       child: Row(
-        mainAxisAlignment: .spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           CallActionButton(icon: Icons.more_horiz, ontap: () {}),
           CallActionButton(icon: Ionicons.videocam, ontap: () {}),

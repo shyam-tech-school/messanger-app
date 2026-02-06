@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:mail_messanger/core/constants/color_constants.dart';
+import 'package:mail_messanger/features/audio_call/presentation/widgets/incoming_call_listener.dart';
 import 'package:mail_messanger/features/call/presentation/pages/call_screen.dart';
 import 'package:mail_messanger/features/chats/presentation/pages/chats_screen.dart';
 import 'package:mail_messanger/features/settings/presentation/pages/settings_screen.dart';
@@ -27,32 +28,31 @@ class _AppNavigationState extends State<AppNavigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: screens[_currentIndex],
+      body: IncomingCallListener(child: screens[_currentIndex]),
       bottomNavigationBar: SafeArea(
         child: Container(
           height: 90,
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
             border: Border(top: BorderSide(color: ColorConstants.greyShade300)),
-            borderRadius: const .only(
-              topRight: .circular(20),
-              topLeft: .circular(20),
+            borderRadius: const BorderRadius.only(
+              topRight: Radius.circular(20),
+              topLeft: Radius.circular(20),
             ),
             boxShadow: const [
               BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 10),
             ],
           ),
           child: ClipRRect(
-            borderRadius: const .only(
-              topRight: .circular(20),
-              topLeft: .circular(20),
+            borderRadius: const BorderRadius.only(
+              topRight: Radius.circular(20),
+              topLeft: Radius.circular(20),
             ),
             child: BottomAppBar(
               color: ColorConstants.black,
-              //color: ColorConstants.darkScaffoldBgColor,
-              padding: const .only(top: 15),
+              padding: const EdgeInsets.only(top: 15),
               child: Row(
-                mainAxisAlignment: .spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   BottomBarIconWidget(
                     ontap: () {

@@ -57,6 +57,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
         child: ChatAppbarWidget(
           otherUserName: widget.otherUserName,
           otherPhotoUrl: widget.otherUserImage,
+          otherUserId: widget.otherUserId,
         ),
       ),
       body: StreamBuilder<List<MessageEntity>>(

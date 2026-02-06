@@ -1,0 +1,19 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Calls: only participants can read/write
+    match /calls/{callId} {
+      allow read, write: if request.auth != null
+        && (resource == null
+          || request.auth.uid == resource.data.callerId
+          || request.auth.uid == resource.data.calleeId);
+      allow create: if request.auth != null
+        && request.resource.data.callerId == request.auth.uid;
+    }
+    // ICE candidates subcollection: same as parent call
+    match /calls/{callId}/candidates/{candidateId} {
+      allow read, write: if request.auth != null;
+    }
+    // Add your other collections (users, chats, etc.) below
+  }
+}

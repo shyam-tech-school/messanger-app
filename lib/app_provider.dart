@@ -1,5 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mail_messanger/features/audio_call/data/datasources/webrtc_remote_datasource.dart';
+import 'package:mail_messanger/features/audio_call/data/repositories/audiocall_repository_impl.dart';
+import 'package:mail_messanger/features/audio_call/data/repositories/rtcp_repository_impl.dart';
+import 'package:mail_messanger/features/audio_call/presentation/provider/call_service_provider.dart';
 import 'package:mail_messanger/features/chat/data/datasources/chat_remote_datasource.dart';
 import 'package:mail_messanger/features/chat/data/repositories/chat_repository.dart';
 import 'package:mail_messanger/features/chat/domain/usecases/send_message_usecase.dart';
@@ -89,6 +93,17 @@ class AppProvider {
       create: (_) => SendMessageUsecase(
         ChatRepository(ChatRemoteDataSourceImpl(FirebaseFirestore.instance)),
       ),
+    ),
+
+    // ---- Audio Call (WebRTC + Firestore signaling) ----
+    ChangeNotifierProvider(
+      create: (_) {
+        final firestore = FirebaseFirestore.instance;
+        final webrtcDs = WebrtcRemoteDatasource();
+        final audioRepo = AudiocallRepositoryImpl(firestore);
+        final rtcRepo = RtcpRepositoryImpl(webrtcDs);
+        return CallServiceProvider(audioRepo: audioRepo, rtcRepo: rtcRepo);
+      },
     ),
   ];
 }

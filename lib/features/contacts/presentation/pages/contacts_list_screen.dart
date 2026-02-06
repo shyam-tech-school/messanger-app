@@ -23,7 +23,6 @@ class ContactsListScreen extends StatefulWidget {
   @override
   State<ContactsListScreen> createState() => _ContactsListScreenState();
 }
-
 class _ContactsListScreenState extends State<ContactsListScreen> {
   @override
   void initState() {

@@ -20,5 +20,17 @@ class RtcpRepositoryImpl implements IRTCPRepository {
       webrtcRemoteDs.setRemoteDescription(sdp);
 
   @override
+  Future<void> addIceCandidate(Map<String, dynamic> candidate) =>
+      webrtcRemoteDs.addIceCandidate(candidate);
+
+  @override
+  void setOnIceCandidate(void Function(Map<String, dynamic>) onCandidate) =>
+      webrtcRemoteDs.setOnIceCandidate(onCandidate);
+
+  @override
+  Stream<String> get connectionStateStream =>
+      webrtcRemoteDs.connectionStateStream;
+
+  @override
   Future<void> dispose() => webrtcRemoteDs.dispose();
 }

@@ -9,6 +9,7 @@ class AnswerCallUsecase {
 
   Future<void> call(String callId) async {
     final offer = await iAudioRepo.getOffer(callId);
+    if (offer == null) throw StateError('Offer not found for call $callId');
     await irtcpRepo.setRemoteDescription(offer);
     final answer = await irtcpRepo.createAnswer();
     await iAudioRepo.saveAnswer(callId, answer);

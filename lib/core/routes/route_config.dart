@@ -137,11 +137,23 @@ class RouteConfig {
 
       //--AUDIO, VIDEO CALL
       case RouteName.audioCallScreen:
-        final args = settings.arguments as Map<String, dynamic>;
+        final args = settings.arguments as Map<String, dynamic>? ?? {};
+        AudioCallMode mode = AudioCallMode.outgoing;
+        if (args['mode'] is AudioCallMode) {
+          mode = args['mode'] as AudioCallMode;
+        } else if (args['mode'] is String) {
+          mode = AudioCallMode.values.firstWhere(
+            (e) => e.name == args['mode'],
+            orElse: () => AudioCallMode.outgoing,
+          );
+        }
         return MaterialPageRoute(
           builder: (context) => AudioCallScreen(
-            otherUserName: args['otherUserName'],
-            otherPhotoUrl: args['otherPhotoUrl'],
+            mode: mode,
+            otherUserId: args['otherUserId'] as String? ?? '',
+            otherUserName: args['otherUserName'] as String? ?? '',
+            otherPhotoUrl: args['otherPhotoUrl'] as String?,
+            callId: args['callId'] as String?,
           ),
         );
 
