@@ -12,6 +12,7 @@ class ChatInputBar extends StatefulWidget {
   final String currentUserId;
   final String otherUserId;
   final SendMessageUsecase sendMessageUsecase;
+  final VoidCallback? onMessageSent;
 
   const ChatInputBar({
     super.key,
@@ -19,6 +20,7 @@ class ChatInputBar extends StatefulWidget {
     required this.currentUserId,
     required this.otherUserId,
     required this.sendMessageUsecase,
+    this.onMessageSent,
   });
 
   @override
@@ -155,8 +157,8 @@ class _ChatInputBarState extends State<ChatInputBar> {
             ),
           );
 
-          // clear controller
-          _controller.clear();
+          // Notify parent that message was sent
+          widget.onMessageSent?.call();
         },
       ),
     );

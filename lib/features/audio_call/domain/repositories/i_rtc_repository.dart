@@ -21,6 +21,12 @@ abstract class IRTCPRepository {
   /// Dispose peer connection and release media resources.
   Future<void> dispose();
 
+  /// Toggle microphone mute state.
+  Future<void> toggleMute(bool isMuted);
+
+  /// Toggle speakerphone state.
+  Future<void> toggleSpeaker(bool isSpeakerOn);
+
   /// Stream of ICE connection state for UI (e.g. connecting, connected, failed).
   Stream<String> get connectionStateStream;
 }

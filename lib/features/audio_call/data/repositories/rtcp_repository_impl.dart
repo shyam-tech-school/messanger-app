@@ -32,5 +32,13 @@ class RtcpRepositoryImpl implements IRTCPRepository {
       webrtcRemoteDs.connectionStateStream;
 
   @override
+  Future<void> toggleMute(bool isMuted) async =>
+      webrtcRemoteDs.toggleMute(isMuted);
+
+  @override
+  Future<void> toggleSpeaker(bool isSpeakerOn) =>
+      webrtcRemoteDs.toggleSpeaker(isSpeakerOn);
+
+  @override
   Future<void> dispose() => webrtcRemoteDs.dispose();
 }

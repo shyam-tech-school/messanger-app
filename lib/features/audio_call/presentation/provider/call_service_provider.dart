@@ -28,7 +28,27 @@ class CallServiceProvider extends ChangeNotifier {
   String? _connectionState;
   bool _remoteAnswerApplied = false;
 
+  bool _isMuted = false;
+  bool get isMuted => _isMuted;
+
+  bool _isSpeakerOn = false;
+  bool get isSpeakerOn => _isSpeakerOn;
+
   String? get _myUid => FirebaseAuth.instance.currentUser?.uid;
+
+  /// Toggle mute state.
+  Future<void> toggleMute() async {
+    _isMuted = !_isMuted;
+    notifyListeners();
+    await _rtcRepo.toggleMute(_isMuted);
+  }
+
+  /// Toggle speaker state.
+  Future<void> toggleSpeaker() async {
+    _isSpeakerOn = !_isSpeakerOn;
+    notifyListeners();
+    await _rtcRepo.toggleSpeaker(_isSpeakerOn);
+  }
 
   /// Start an outgoing call. Creates offer, writes to Firestore, listens for answer and ICE.
   Future<void> startCall({
@@ -193,6 +213,8 @@ class CallServiceProvider extends ChangeNotifier {
     _currentCall = null;
     _connectionState = null;
     _remoteAnswerApplied = false;
+    _isMuted = false;
+    _isSpeakerOn = false;
     notifyListeners();
   }
 }

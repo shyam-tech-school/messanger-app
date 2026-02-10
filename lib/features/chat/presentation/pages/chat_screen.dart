@@ -39,13 +39,85 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   );
 
   final _scrollController = ScrollController();
-  int _lastMessageCount = 0;
-  bool _initialLoadDone = false;
+  bool _isUserAtBottom = true;
+  bool _initialScrollDone = false;
+  final double _scrollThreshold = 100.0; // pixels from bottom
+  String? _lastMessageId;
+  List<MessageEntity> _cachedMessages =
+      []; // Cache messages to prevent loading indicator
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+
+    // Listen to scroll position to track if user is at bottom
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (!_scrollController.hasClients) return;
+
+    // For reverse list, position 0 is at the bottom
+    final isAtBottom = _scrollController.position.pixels <= _scrollThreshold;
+
+    if (isAtBottom != _isUserAtBottom) {
+      setState(() => _isUserAtBottom = isAtBottom);
+    }
+  }
+
+  void _scrollToBottom({bool animate = true}) {
+    if (!_scrollController.hasClients) return;
+
+    if (animate) {
+      _scrollController.animateTo(
+        0, // For reverse list, 0 is the bottom
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    } else {
+      _scrollController.jumpTo(0);
+    }
+  }
+
+  void _handleNewMessages(List<MessageEntity> messages) {
+    if (messages.isEmpty) return;
+
+    final latestMessage =
+        messages.first; // First item in reversed list is newest
+    final latestMessageId =
+        '${latestMessage.chatId}_${latestMessage.createdAt.millisecondsSinceEpoch}';
+
+    // Check if this is a new message
+    final isNewMessage = _lastMessageId != latestMessageId;
+    _lastMessageId = latestMessageId;
+
+    if (!isNewMessage) return;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Auto-scroll if:
+      // 1. Initial load (first time opening chat)
+      // 2. User is already at/near bottom
+      // 3. User sent the message themselves
+      final shouldAutoScroll =
+          !_initialScrollDone ||
+          _isUserAtBottom ||
+          latestMessage.senderId == widget.currentUserId;
+
+      if (shouldAutoScroll) {
+        _scrollToBottom(animate: _initialScrollDone);
+      }
+
+      _initialScrollDone = true;
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   @override
@@ -63,42 +135,37 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       body: StreamBuilder<List<MessageEntity>>(
         stream: _chatRepository.getMessages(widget.chatRoomId),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            if (!_initialLoadDone) {
-              return const Center(child: CircularProgressIndicator());
-            } else {
-              return const SizedBox.shrink();
-            }
+          // Use cached messages if snapshot has no data (prevents loading indicator)
+          final messages = snapshot.hasData ? snapshot.data! : _cachedMessages;
+
+          // Only show loading indicator on true initial load (no cached messages)
+          if (messages.isEmpty && !snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
           }
 
-          final messages = snapshot.data!;
-          _initialLoadDone = true;
-
-          if (messages.length > _lastMessageCount) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              if (_scrollController.hasClients) {
-                _scrollController.animateTo(
-                  _scrollController.position.maxScrollExtent,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeOut,
-                );
-              }
-            });
-
-            _lastMessageCount = messages.length;
+          // Update cache when new data arrives
+          if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+            _cachedMessages = snapshot.data!;
           }
 
           if (messages.isEmpty) {
             return const Center(child: Text('No messages yet'));
           }
 
+          // Handle new messages and auto-scroll logic
+          _handleNewMessages(messages);
+
+          // Reverse the list so newest messages are at index 0
+          final reversedMessages = messages.reversed.toList();
+
           return ListView.builder(
             controller: _scrollController,
-            itemCount: messages.length,
-
+            reverse: true, // Makes the list start from bottom
+            itemCount: reversedMessages.length,
+            addAutomaticKeepAlives: false, // Optimize performance
+            addRepaintBoundaries: true, // Optimize rendering
             itemBuilder: (context, index) {
-              final message = messages[index];
-
+              final message = reversedMessages[index];
               final isMe = message.senderId == widget.currentUserId;
 
               return MessageBubbleWidget(
@@ -115,6 +182,10 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
         currentUserId: widget.currentUserId,
         otherUserId: widget.otherUserId,
         sendMessageUsecase: _sendMessageUsecase,
+        onMessageSent: () {
+          // Always scroll to bottom when user sends a message
+          _scrollToBottom();
+        },
       ),
     );
   }

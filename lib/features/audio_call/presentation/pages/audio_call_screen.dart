@@ -8,6 +8,7 @@ import '../../../../core/constants/color_constants.dart';
 import '../../domain/entities/call_entity.dart';
 import '../provider/call_service_provider.dart';
 import '../widgets/call_action_button.dart';
+import '../widgets/call_screen_bottom_option_widget.dart';
 
 /// Mode: outgoing (caller), incoming (callee), or in-call (both).
 enum AudioCallMode { outgoing, incoming, inCall }
@@ -111,11 +112,6 @@ class _AudioCallScreenState extends State<AudioCallScreen>
               '${m.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}',
         );
     });
-  }
-
-  Future<void> _endCall() async {
-    await context.read<CallServiceProvider>().endCall();
-    if (mounted) Navigator.of(context).pop();
   }
 
   Future<void> _rejectCall() async {
@@ -329,28 +325,7 @@ class _AudioCallScreenState extends State<AudioCallScreen>
           );
         }
 
-        return Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            color: ColorConstants.black,
-            borderRadius: BorderRadius.circular(30),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              CallActionButton(icon: Icons.more_horiz, ontap: () {}),
-              CallActionButton(icon: Icons.videocam_off, ontap: () {}),
-              CallActionButton(icon: Icons.volume_up, ontap: () {}),
-              CallActionButton(icon: Icons.mic_off, ontap: () {}),
-              CallActionButton(
-                icon: Icons.call_end,
-                color: Colors.red,
-                ontap: _endCall,
-              ),
-            ],
-          ),
-        );
+        return const CallScreenBottomOptionWidget();
       },
     );
   }

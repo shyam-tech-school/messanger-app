@@ -14,7 +14,7 @@ const Map<String, dynamic> _defaultIceServers = {
       'credential': 'webrtcpassword',
     },
 
-    // TURN over TCP (fallback – important)
+    // TURN over TCP (fallback)
     {
       'urls': 'turn:72.61.174.27:3478?transport=tcp',
       'username': 'webrtcuser',
@@ -119,7 +119,22 @@ class WebrtcRemoteDatasource {
     _onIceCandidate = onCandidate;
   }
 
-  /// Close peer connection and stop all tracks. Idempotent.
+  /// Toggle microphone mute state.
+  void toggleMute(bool isMuted) {
+    if (_localStream != null) {
+      // Typically audio tracks are at index 0, but iterate all just in case
+      for (var track in _localStream!.getAudioTracks()) {
+        track.enabled = !isMuted;
+      }
+    }
+  }
+
+  /// Toggle speakerphone state.
+  Future<void> toggleSpeaker(bool isSpeakerOn) async {
+    await Helper.setSpeakerphoneOn(isSpeakerOn);
+  }
+
+  /// Close peer connection and stop all tracks.
   Future<void> dispose() async {
     if (_disposed) return;
     _disposed = true;

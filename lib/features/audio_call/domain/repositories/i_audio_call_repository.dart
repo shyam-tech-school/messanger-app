@@ -3,14 +3,16 @@ import 'package:mail_messanger/features/audio_call/domain/entities/call_entity.d
 /// Signaling via Firestore: create call, offer/answer, ICE candidates, status.
 abstract class IAudioCallRepository {
   /// Create a new call document with offer; status = ringing.
-  Future<void> createCall(String callId, Map<String, dynamic> offer, {
+  Future<void> createCall(
+    String callId,
+    Map<String, dynamic> offer, {
     required String callerId,
     required String calleeId,
     String? callerName,
     String? calleeName,
   });
 
-  /// Get current offer from call document (for callee).
+  /// Get current offer from call document (callee).
   Future<Map<String, dynamic>?> getOffer(String callId);
 
   /// Save answer and set status to connected.
@@ -26,11 +28,18 @@ abstract class IAudioCallRepository {
   Future<void> updateCallStatus(String callId, CallStatus status);
 
   /// Add an ICE candidate to the call's candidates subcollection.
-  Future<void> addIceCandidate(String callId, Map<String, dynamic> candidate, String type);
+  Future<void> addIceCandidate(
+    String callId,
+    Map<String, dynamic> candidate,
+    String type,
+  );
 
   /// Stream ICE candidates for the other peer (caller listens for callee, callee for caller).
-  Stream<Map<String, dynamic>> streamCandidates(String callId, String excludeType);
+  Stream<Map<String, dynamic>> streamCandidates(
+    String callId,
+    String excludeType,
+  );
 
-  /// Cancel all active listeners for this call (cleanup).
+  /// Cancel all active listeners for this call
   void cancelListeners();
 }
