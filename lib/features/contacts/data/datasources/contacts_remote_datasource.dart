@@ -13,11 +13,21 @@ class ContactsRemoteDataSourceImpl implements ContactsRemoteDatasource {
   Future<List<Map<String, dynamic>>> matchContacts(List<String> hashes) async {
     if (hashes.isEmpty) return [];
 
-    final snapshot = await firestore
-        .collection('users')
-        .where('phoneHash', whereIn: hashes.take(10).toList())
-        .get();
+    final List<Map<String, dynamic>> allMatches = [];
 
-    return snapshot.docs.map((e) => e.data()).toList();
+    // Chunk hashes into groups of 10 (Firestore whereIn limit) for larger lists
+    for (var i = 0; i < hashes.length; i += 10) {
+      final end = (i + 10 < hashes.length) ? i + 10 : hashes.length;
+      final chunk = hashes.sublist(i, end);
+
+      final snapshot = await firestore
+          .collection('users')
+          .where('phoneHash', whereIn: chunk)
+          .get();
+
+      allMatches.addAll(snapshot.docs.map((e) => e.data()));
+    }
+
+    return allMatches;
   }
 }

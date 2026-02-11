@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -69,9 +70,15 @@ class _AudioCallScreenState extends State<AudioCallScreen>
       final service = context.read<CallServiceProvider>();
       if (widget.mode == AudioCallMode.outgoing &&
           service.currentCall == null) {
+        // Get current user's display name for caller name
+        final currentUser = FirebaseAuth.instance.currentUser;
+        final callerName =
+            currentUser?.displayName ?? currentUser?.email ?? 'Unknown';
+
         service.startCall(
           calleeId: widget.otherUserId,
           calleeName: widget.otherUserName,
+          callerName: callerName,
         );
       }
 

@@ -1,8 +1,8 @@
 /// Call status for signaling and UI.
 enum CallStatus {
   idle,
-  calling,   // caller: dialing
-  ringing,   // callee: incoming
+  calling, // caller: dialing
+  ringing, // callee: incoming
   connected,
   ended,
   rejected,
@@ -10,14 +10,45 @@ enum CallStatus {
 }
 
 extension CallStatusX on CallStatus {
-  String get firestoreValue => name;
+  String get firestoreValue {
+    switch (this) {
+      case CallStatus.idle:
+        return 'idle';
+      case CallStatus.calling:
+        return 'calling';
+      case CallStatus.ringing:
+        return 'ringing';
+      case CallStatus.connected:
+        return 'connected';
+      case CallStatus.ended:
+        return 'ended';
+      case CallStatus.rejected:
+        return 'rejected';
+      case CallStatus.error:
+        return 'error';
+    }
+  }
 
   static CallStatus fromString(String? value) {
     if (value == null) return CallStatus.idle;
-    return CallStatus.values.firstWhere(
-      (e) => e.name == value,
-      orElse: () => CallStatus.idle,
-    );
+    switch (value) {
+      case 'idle':
+        return CallStatus.idle;
+      case 'calling':
+        return CallStatus.calling;
+      case 'ringing':
+        return CallStatus.ringing;
+      case 'connected':
+        return CallStatus.connected;
+      case 'ended':
+        return CallStatus.ended;
+      case 'rejected':
+        return CallStatus.rejected;
+      case 'error':
+        return CallStatus.error;
+      default:
+        return CallStatus.idle;
+    }
   }
 }
 

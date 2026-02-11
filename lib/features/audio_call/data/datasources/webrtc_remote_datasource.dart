@@ -56,6 +56,10 @@ class WebrtcRemoteDatasource {
   /// Initialize peer connection and local audio stream. Call once before createOffer/createAnswer.
   Future<void> _ensurePeerConnection() async {
     if (_peerConnection != null) return;
+
+    // Ensure any previous connection is fully cleaned up to prevent state conflicts
+    await _cleanupPeerConnection();
+
     _peerConnection = await createPeerConnection(
       _defaultIceServers,
       <String, dynamic>{},
@@ -134,14 +138,23 @@ class WebrtcRemoteDatasource {
     await Helper.setSpeakerphoneOn(isSpeakerOn);
   }
 
+  /// Clean up peer connection and local stream.
+  Future<void> _cleanupPeerConnection() async {
+    if (_peerConnection != null) {
+      await _peerConnection!.close();
+      _peerConnection = null;
+    }
+    if (_localStream != null) {
+      _localStream!.getTracks().forEach((t) => t.stop());
+      _localStream = null;
+    }
+  }
+
   /// Close peer connection and stop all tracks.
   Future<void> dispose() async {
     if (_disposed) return;
     _disposed = true;
     await _connectionStateController.close();
-    _localStream?.getTracks().forEach((t) => t.stop());
-    _localStream = null;
-    await _peerConnection?.close();
-    _peerConnection = null;
+    await _cleanupPeerConnection();
   }
 }
