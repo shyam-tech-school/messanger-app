@@ -4,6 +4,8 @@ import 'package:mail_messanger/features/chat/data/datasources/chat_remote_dataso
 import 'package:mail_messanger/features/chat/data/repositories/chat_repository.dart';
 import 'package:mail_messanger/features/chat/domain/entities/message_entity.dart';
 import 'package:mail_messanger/features/chat/domain/usecases/send_message_usecase.dart';
+import 'package:mail_messanger/features/chat/domain/usecases/set_typing_status_usecase.dart';
+import 'package:mail_messanger/features/chat/domain/usecases/stream_typing_status_usecase.dart';
 
 import '../widgets/chat_appbar_widget.dart';
 import '../widgets/chat_input_bar.dart';
@@ -33,6 +35,16 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   late final SendMessageUsecase _sendMessageUsecase = SendMessageUsecase(
     ChatRepository(ChatRemoteDataSourceImpl(FirebaseFirestore.instance)),
   );
+
+  late final SetTypingStatusUsecase _setTypingStatusUsecase =
+      SetTypingStatusUsecase(
+        ChatRepository(ChatRemoteDataSourceImpl(FirebaseFirestore.instance)),
+      );
+
+  late final StreamTypingStatusUsecase _streamTypingStatusUsecase =
+      StreamTypingStatusUsecase(
+        ChatRepository(ChatRemoteDataSourceImpl(FirebaseFirestore.instance)),
+      );
 
   final ChatRepository _chatRepository = ChatRepository(
     ChatRemoteDataSourceImpl(FirebaseFirestore.instance),
@@ -130,6 +142,8 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
           otherUserName: widget.otherUserName,
           otherPhotoUrl: widget.otherUserImage,
           otherUserId: widget.otherUserId,
+          chatId: widget.chatRoomId,
+          streamTypingStatusUsecase: _streamTypingStatusUsecase,
         ),
       ),
       body: StreamBuilder<List<MessageEntity>>(
@@ -182,6 +196,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
         currentUserId: widget.currentUserId,
         otherUserId: widget.otherUserId,
         sendMessageUsecase: _sendMessageUsecase,
+        setTypingStatusUsecase: _setTypingStatusUsecase,
         onMessageSent: () {
           // Always scroll to bottom when user sends a message
           _scrollToBottom();

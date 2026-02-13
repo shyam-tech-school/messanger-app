@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:mail_messanger/features/chat/domain/entities/message_entity.dart';
 import 'package:mail_messanger/features/chat/domain/usecases/send_message_usecase.dart';
+import 'package:mail_messanger/features/chat/domain/usecases/set_typing_status_usecase.dart';
 
 import '../../../../core/constants/color_constants.dart';
 import 'option_sheet.dart';
@@ -12,6 +13,7 @@ class ChatInputBar extends StatefulWidget {
   final String currentUserId;
   final String otherUserId;
   final SendMessageUsecase sendMessageUsecase;
+  final SetTypingStatusUsecase setTypingStatusUsecase;
   final VoidCallback? onMessageSent;
 
   const ChatInputBar({
@@ -20,6 +22,7 @@ class ChatInputBar extends StatefulWidget {
     required this.currentUserId,
     required this.otherUserId,
     required this.sendMessageUsecase,
+    required this.setTypingStatusUsecase,
     this.onMessageSent,
   });
 
@@ -39,6 +42,12 @@ class _ChatInputBarState extends State<ChatInputBar> {
       final typing = _controller.text.trim().isNotEmpty;
       if (typing != isTyping) {
         setState(() => isTyping = typing);
+        // Update backend typing status
+        widget.setTypingStatusUsecase(
+          widget.chatId,
+          widget.currentUserId,
+          typing,
+        );
       }
     });
   }

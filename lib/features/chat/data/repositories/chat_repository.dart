@@ -27,4 +27,14 @@ class ChatRepository implements IChatRepositories {
   Stream<QuerySnapshot<Map<String, dynamic>>> streamChats(String userId) {
     return remoteDs.streamChats(userId);
   }
+
+  @override
+  Future<void> setTypingStatus(String chatId, String userId, bool isTyping) {
+    return remoteDs.setTypingStatus(chatId, userId, isTyping);
+  }
+
+  @override
+  Stream<bool> streamTypingStatus(String chatId, String userId) {
+    return remoteDs.streamTypingStatus(chatId, userId);
+  }
 }

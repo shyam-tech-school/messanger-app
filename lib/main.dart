@@ -10,6 +10,8 @@ import 'package:mail_messanger/core/routes/route_config.dart';
 import 'package:mail_messanger/core/themes/app_themes.dart';
 import 'package:mail_messanger/core/utils/app_logger.dart';
 import 'package:mail_messanger/firebase_options.dart';
+import 'package:mail_messanger/core/services/firebase_messaging_service.dart';
+import 'package:mail_messanger/core/services/presence_service.dart';
 import 'package:provider/provider.dart';
 
 void main(List<String> args) async {
@@ -24,6 +26,9 @@ void main(List<String> args) async {
     FirebaseAuth.instance.setSettings(appVerificationDisabledForTesting: true);
     AppLogger.w('Firebase app verification disabled for testing');
   }
+
+  // Initialize Presence Service
+  PresenceService().initialize();
 
   runApp(const MessangerApp());
 }

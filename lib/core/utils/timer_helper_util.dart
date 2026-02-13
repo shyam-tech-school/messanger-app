@@ -107,9 +107,9 @@ class TimerHelperUtil {
       messageTime.day,
     );
 
-    // same time
+    // same day
     if (messageDate == today) {
-      return DateFormat('hh:mm a').format(messageTime);
+      return DateFormat('HH:mm').format(messageTime);
     }
 
     // yesterday
@@ -118,6 +118,6 @@ class TimerHelperUtil {
     }
 
     // older message - show date
-    return DateFormat('dd MM yyyy').format(messageTime);
+    return DateFormat('dd MMM').format(messageTime);
   }
 }

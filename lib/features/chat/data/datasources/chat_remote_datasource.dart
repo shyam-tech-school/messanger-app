@@ -6,6 +6,10 @@ abstract class ChatRemoteDatasource {
   Future<void> sendMessage(MessageEntity message);
   Stream<List<MessageEntity>> getMessages(String chatId);
   Stream<QuerySnapshot<Map<String, dynamic>>> streamChats(String userId);
+
+  // Typing status
+  Future<void> setTypingStatus(String chatId, String userId, bool isTyping);
+  Stream<bool> streamTypingStatus(String chatId, String userId);
 }
 
 class ChatRemoteDataSourceImpl implements ChatRemoteDatasource {
@@ -98,5 +102,39 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDatasource {
         .where('participants', arrayContains: userId)
         .orderBy('lastMessageTime', descending: true)
         .snapshots();
+  }
+
+  @override
+  Future<void> setTypingStatus(
+    String chatId,
+    String userId,
+    bool isTyping,
+  ) async {
+    print(
+      'ChatRemoteDataSource: Setting typing status for $userId in $chatId to $isTyping',
+    );
+    await firestore
+        .collection('chats')
+        .doc(chatId)
+        .update({'typing.$userId': isTyping})
+        .catchError((e) {
+          print('ChatRemoteDataSource: Error setting typing status: $e');
+        });
+  }
+
+  @override
+  Stream<bool> streamTypingStatus(String chatId, String userId) {
+    return firestore.collection('chats').doc(chatId).snapshots().map((
+      snapshot,
+    ) {
+      final data = snapshot.data();
+      final isTyping = (data != null && data['typing'] != null)
+          ? data['typing'][userId] ?? false
+          : false;
+      print(
+        'ChatRemoteDataSource: Streamed typing status for $userId in $chatId: $isTyping',
+      );
+      return isTyping;
+    });
   }
 }

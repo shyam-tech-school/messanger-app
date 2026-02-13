@@ -36,16 +36,6 @@ class _IncomingCallListenerState extends State<IncomingCallListener> {
           'IncomingCallListener: Received call ${call.callId} from ${call.callerName}',
         );
 
-        // DEBUG: Show snackbar to confirm stream is working in release mode
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   SnackBar(
-        //     content: Text(
-        //       'DEBUG: Incoming call detected from ${call.callerName}',
-        //     ),
-        //     duration: const Duration(seconds: 2),
-        //   ),
-        // );
-
         if (!mounted) return;
         if (_shownCallIds.contains(call.callId)) return;
 
@@ -68,13 +58,8 @@ class _IncomingCallListenerState extends State<IncomingCallListener> {
             });
       },
       onError: (e) {
+        // Safe error logging only - no UI operations that could crash
         debugPrint('IncomingCallListener Error: $e');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('DEBUG Error: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
       },
     );
   }
