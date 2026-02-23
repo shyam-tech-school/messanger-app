@@ -29,6 +29,7 @@ import 'package:provider/single_child_widget.dart';
 import 'package:mail_messanger/features/otp/presentation/provider/auth_provider.dart';
 
 import 'features/contacts/core/contacts_permission_manager.dart';
+import 'core/services/firebase_messaging_service.dart';
 
 class AppProvider {
   static List<SingleChildWidget> provider = [
@@ -65,6 +66,7 @@ class AppProvider {
             AuthRemoteDatasourceImpl(FirebaseFirestore.instance),
           ),
         ),
+        FirebaseMessagingService(),
       ),
     ),
 

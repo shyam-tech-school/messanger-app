@@ -39,8 +39,8 @@ dependencies:
   flutter_callkit_incoming: ^3.0.0
   firebase_messaging: ^16.0.4
   uuid: ^4.5.2
+  flutter_dotenv: ^5.2.1
  
-  
 
 dev_dependencies:
   flutter_test:
@@ -54,6 +54,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - .env
     - assets/images/onboard/
     - assets/icons/
     - assets/images/common/

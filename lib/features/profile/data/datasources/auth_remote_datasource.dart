@@ -18,6 +18,7 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDataSource {
       "phoneHash": user.phoneHash,
       "name": user.name,
       "photoUrl": user.photoUrl,
+      "fcmToken": user.fcmToken,
       "createdAt": FieldValue.serverTimestamp(),
       "updatedAt": FieldValue.serverTimestamp(),
     }, SetOptions(merge: true));

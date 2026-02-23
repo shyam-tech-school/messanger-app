@@ -1,27 +1,33 @@
 import 'dart:async';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-/// STUN/TURN configuration. Replace with your coturn server for production.
-const Map<String, dynamic> _defaultIceServers = {
-  'iceServers': [
-    {'urls': 'stun:stun.l.google.com:19302'},
+/// Build ICE servers config from environment variables.
+/// Reads TURN_SERVER_URL, TURN_USERNAME, and TURN_PASSWORD from the .env file.
+Map<String, dynamic> _getIceServers() {
+  final turnUrl = dotenv.env['TURN_SERVER_URL'] ?? '';
+  final turnUsername = dotenv.env['TURN_USERNAME'] ?? '';
+  final turnPassword = dotenv.env['TURN_PASSWORD'] ?? '';
 
-    {
-      'urls': 'turn:72.61.174.27:3478',
-      'username': 'webrtcuser',
-      'credential': 'webrtcpassword',
-    },
-
-    // TURN over TCP (fallback)
-    {
-      'urls': 'turn:72.61.174.27:3478?transport=tcp',
-      'username': 'webrtcuser',
-      'credential': 'webrtcpassword',
-    },
-  ],
-};
+  return {
+    'iceServers': [
+      {'urls': 'stun:stun.l.google.com:19302'},
+      {
+        'urls': 'turn:$turnUrl',
+        'username': turnUsername,
+        'credential': turnPassword,
+      },
+      // TURN over TCP (fallback)
+      {
+        'urls': 'turn:$turnUrl?transport=tcp',
+        'username': turnUsername,
+        'credential': turnPassword,
+      },
+    ],
+  };
+}
 
 /// Audio-only media constraints for getUserMedia.
 const Map<String, dynamic> _audioOnlyConstraints = {
@@ -61,7 +67,7 @@ class WebrtcRemoteDatasource {
     await _cleanupPeerConnection();
 
     _peerConnection = await createPeerConnection(
-      _defaultIceServers,
+      _getIceServers(),
       <String, dynamic>{},
     );
     _localStream = await Helper.openCamera(_audioOnlyConstraints);

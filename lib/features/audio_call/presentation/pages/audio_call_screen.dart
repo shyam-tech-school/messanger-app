@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -70,16 +71,27 @@ class _AudioCallScreenState extends State<AudioCallScreen>
       final service = context.read<CallServiceProvider>();
       if (widget.mode == AudioCallMode.outgoing &&
           service.currentCall == null) {
-        // Get current user's display name for caller name
+        // Get current user's name from Firestore for caller name
         final currentUser = FirebaseAuth.instance.currentUser;
-        final callerName =
-            currentUser?.displayName ?? currentUser?.email ?? 'Unknown';
+        if (currentUser != null) {
+          FirebaseFirestore.instance
+              .collection('users')
+              .doc(currentUser.uid)
+              .get()
+              .then((doc) {
+                final name =
+                    doc.data()?['name'] ??
+                    currentUser.displayName ??
+                    currentUser.email ??
+                    'Unknown';
 
-        service.startCall(
-          calleeId: widget.otherUserId,
-          calleeName: widget.otherUserName,
-          callerName: callerName,
-        );
+                service.startCall(
+                  calleeId: widget.otherUserId,
+                  calleeName: widget.otherUserName,
+                  callerName: name,
+                );
+              });
+        }
       }
 
       // For incoming calls, watch the call document so that if the caller
@@ -149,13 +161,22 @@ class _AudioCallScreenState extends State<AudioCallScreen>
             backgroundColor: const Color(0xFF23243A),
             title: Column(
               children: [
-                Text(
-                  widget.otherUserName,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Consumer<CallServiceProvider>(
+                  builder: (_, service, __) {
+                    final call = service.currentCall;
+                    final displayName = (widget.mode == AudioCallMode.incoming)
+                        ? (call?.callerName ?? widget.otherUserName)
+                        : (call?.calleeName ?? widget.otherUserName);
+
+                    return Text(
+                      displayName,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    );
+                  },
                 ),
                 const SizedBox(height: 6),
                 Consumer<CallServiceProvider>(

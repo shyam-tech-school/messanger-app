@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mail_messanger/core/utils/app_logger.dart';
 import 'package:mail_messanger/features/otp/domain/repositories/i_auth_repository.dart';
 
 class FirebaseAuthRepository implements IAuthRepository {
@@ -18,16 +18,16 @@ class FirebaseAuthRepository implements IAuthRepository {
 
       verificationCompleted: (credential) {
         _auth.signInWithCredential(credential);
-        log('[LOG]: AUTO VERIFIED');
+        AppLogger.i('AUTO VERIFIED');
       },
 
       verificationFailed: (error) {
-        log('[LOG]: OTP FAILED: ${error.code} - ${error.message}');
+        AppLogger.e('OTP FAILED: ${error.code} - ${error.message}');
         completer.completeError(Exception(error.message));
       },
 
       codeSent: (verificationId, _) {
-        log('[LOG]: OTP SENT. verificationId: $verificationId');
+        AppLogger.i('OTP SENT. verificationId: $verificationId');
         completer.complete(verificationId);
       },
 
@@ -35,7 +35,7 @@ class FirebaseAuthRepository implements IAuthRepository {
         if (!completer.isCompleted) {
           completer.complete(verificationId);
         }
-        log('[LOG]: AUTO RETRIEVAL TIMEOUT');
+        AppLogger.w('AUTO RETRIEVAL TIMEOUT');
       },
     );
 

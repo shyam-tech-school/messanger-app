@@ -4,6 +4,7 @@ class AppUser {
   final String phoneHash;
   final String name;
   final String? photoUrl;
+  final String? fcmToken;
 
   AppUser({
     required this.uid,
@@ -11,5 +12,6 @@ class AppUser {
     required this.phoneHash,
     required this.name,
     this.photoUrl,
+    this.fcmToken,
   });
 }
