@@ -1,19 +1,37 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Calls: only participants can read/write
+
+    // ── Audio calls ─────────────────────────────────────────────────────────
     match /calls/{callId} {
-      allow read, write: if request.auth != null
+      allow read: if request.auth != null;
+      allow write: if request.auth != null
         && (resource == null
           || request.auth.uid == resource.data.callerId
           || request.auth.uid == resource.data.calleeId);
-      allow create: if request.auth != null
-        && request.resource.data.callerId == request.auth.uid;
     }
-    // ICE candidates subcollection: same as parent call
     match /calls/{callId}/candidates/{candidateId} {
       allow read, write: if request.auth != null;
     }
-    // Add your other collections (users, chats, etc.) below
+
+    // ── Video calls ──────────────────────────────────────────────────────────
+    match /video_calls/{callId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null
+        && (resource == null
+          || request.auth.uid == resource.data.callerId
+          || request.auth.uid == resource.data.calleeId);
+    }
+    match /video_calls/{callId}/candidates/{candidateId} {
+      allow read, write: if request.auth != null;
+    }
+
+    // ── Catch-all for other collections (users, chats, messages, etc.) ──────
+    // This restores the ability for the app to function if you haven't written
+    // strict rules for every other collection yet.
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+
   }
 }

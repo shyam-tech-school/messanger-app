@@ -7,6 +7,7 @@ import 'package:mail_messanger/features/call/presentation/pages/call_screen.dart
 import 'package:mail_messanger/features/chats/presentation/pages/chats_screen.dart';
 import 'package:mail_messanger/features/settings/presentation/pages/settings_screen.dart';
 import 'package:mail_messanger/features/video/presentation/pages/video_call_list_screen.dart';
+import 'package:mail_messanger/features/video_call/presentation/widgets/incoming_video_call_listener.dart';
 
 class AppNavigation extends StatefulWidget {
   const AppNavigation({super.key});
@@ -28,7 +29,9 @@ class _AppNavigationState extends State<AppNavigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IncomingCallListener(child: screens[_currentIndex]),
+      body: IncomingCallListener(
+        child: IncomingVideoCallListener(child: screens[_currentIndex]),
+      ),
       bottomNavigationBar: SafeArea(
         child: Container(
           height: 90,

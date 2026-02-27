@@ -24,6 +24,7 @@ import 'package:mail_messanger/features/sub_settings/privacy/blocked_contacts/pr
 import 'package:mail_messanger/features/sub_settings/privacy/last_seen/presentation/pages/privacy_last_seen_screen.dart';
 import 'package:mail_messanger/features/sub_settings/privacy/privacy_screen.dart';
 import 'package:mail_messanger/features/sub_settings/privacy/profile_photo/presentation/pages/privacy_profile_photo_screen.dart';
+import 'package:mail_messanger/features/video_call/presentation/pages/video_call_screen.dart';
 
 class RouteConfig {
   static Route<dynamic> routeGenerator(RouteSettings settings) {
@@ -157,10 +158,26 @@ class RouteConfig {
           ),
         );
 
-      // case RouteName.videoCallScreen:
-      //   return MaterialPageRoute(
-      //     builder: (context) => const NotificationSettingsScreen(),
-      //  );
+      case RouteName.videoCallScreen:
+        final vArgs = settings.arguments as Map<String, dynamic>? ?? {};
+        VideoCallMode vMode = VideoCallMode.outgoing;
+        if (vArgs['mode'] is VideoCallMode) {
+          vMode = vArgs['mode'] as VideoCallMode;
+        } else if (vArgs['mode'] is String) {
+          vMode = VideoCallMode.values.firstWhere(
+            (e) => e.name == vArgs['mode'],
+            orElse: () => VideoCallMode.outgoing,
+          );
+        }
+        return MaterialPageRoute(
+          builder: (context) => VideoCallScreen(
+            mode: vMode,
+            otherUserId: vArgs['otherUserId'] as String? ?? '',
+            otherUserName: vArgs['otherUserName'] as String? ?? '',
+            otherPhotoUrl: vArgs['otherPhotoUrl'] as String?,
+            callId: vArgs['callId'] as String?,
+          ),
+        );
 
       default:
         return MaterialPageRoute(

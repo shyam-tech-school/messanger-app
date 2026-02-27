@@ -105,7 +105,17 @@ class ChatAppbarWidget extends StatelessWidget {
       actions: [
         IconButton(
           onPressed: () {
-            debugPrint("video call button");
+            if (otherUserId == null) return;
+            Navigator.pushNamed(
+              context,
+              RouteName.videoCallScreen,
+              arguments: {
+                'mode': 'outgoing',
+                'otherUserId': otherUserId!,
+                'otherUserName': otherUserName,
+                'otherPhotoUrl': otherPhotoUrl,
+              },
+            );
           },
           icon: Image.asset(
             'assets/icons/video.png',

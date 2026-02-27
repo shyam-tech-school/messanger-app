@@ -7,6 +7,10 @@ import 'package:mail_messanger/features/audio_call/presentation/provider/call_se
 import 'package:mail_messanger/features/chat/data/datasources/chat_remote_datasource.dart';
 import 'package:mail_messanger/features/chat/data/repositories/chat_repository.dart';
 import 'package:mail_messanger/features/chat/domain/usecases/send_message_usecase.dart';
+import 'package:mail_messanger/features/video_call/data/datasources/video_webrtc_datasource.dart';
+import 'package:mail_messanger/features/video_call/data/repositories/video_call_repository_impl.dart';
+import 'package:mail_messanger/features/video_call/data/repositories/video_rtc_repository_impl.dart';
+import 'package:mail_messanger/features/video_call/presentation/provider/video_call_service_provider.dart';
 import 'package:mail_messanger/features/contacts/data/datasources/contacts_local_datasource.dart';
 import 'package:mail_messanger/features/contacts/data/datasources/contacts_remote_datasource.dart';
 import 'package:mail_messanger/features/contacts/data/repositories/contacts_repository.dart';
@@ -105,6 +109,20 @@ class AppProvider {
         final audioRepo = AudiocallRepositoryImpl(firestore);
         final rtcRepo = RtcpRepositoryImpl(webrtcDs);
         return CallServiceProvider(audioRepo: audioRepo, rtcRepo: rtcRepo);
+      },
+    ),
+
+    // ---- Video Call (WebRTC + Firestore signaling) ----
+    ChangeNotifierProvider(
+      create: (_) {
+        final firestore = FirebaseFirestore.instance;
+        final videoDs = VideoWebrtcDatasource();
+        final videoRepo = VideoCallRepositoryImpl(firestore);
+        final videoRtcRepo = VideoRtcRepositoryImpl(videoDs);
+        return VideoCallServiceProvider(
+          videoRepo: videoRepo,
+          rtcRepo: videoRtcRepo,
+        );
       },
     ),
   ];
