@@ -62,9 +62,19 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-
-    // Listen to scroll position to track if user is at bottom
     _scrollController.addListener(_onScroll);
+
+    // Reset unread count as soon as the chat is opened (WhatsApp style)
+    _resetUnread();
+  }
+
+  Future<void> _resetUnread() async {
+    try {
+      await _chatRepository.resetUnreadCount(
+        widget.chatRoomId,
+        widget.currentUserId,
+      );
+    } catch (_) {}
   }
 
   void _onScroll() {

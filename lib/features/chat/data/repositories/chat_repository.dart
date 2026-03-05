@@ -37,4 +37,9 @@ class ChatRepository implements IChatRepositories {
   Stream<bool> streamTypingStatus(String chatId, String userId) {
     return remoteDs.streamTypingStatus(chatId, userId);
   }
+
+  @override
+  Future<void> resetUnreadCount(String chatId, String userId) {
+    return remoteDs.resetUnreadCount(chatId, userId);
+  }
 }

@@ -10,4 +10,7 @@ abstract class IChatRepositories {
   // Typing
   Future<void> setTypingStatus(String chatId, String userId, bool isTyping);
   Stream<bool> streamTypingStatus(String chatId, String userId);
+
+  // Unread count
+  Future<void> resetUnreadCount(String chatId, String userId);
 }

@@ -203,6 +203,9 @@ class _ChatsScreenState extends State<ChatsScreen> {
                         final lastMessage =
                             (chatData['lastMessage'] as String?) ?? '';
 
+                        final lastMessageTime =
+                            chatData['lastMessageTime'] as Timestamp?;
+
                         final unreadCount =
                             chatDoc['unreadCount']?[currentUserId] ?? 0;
 
@@ -224,6 +227,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
                           userImageUrl: otherUserImageUrl,
                           unreadCount: unreadCount,
                           lastMessage: lastMessage,
+                          lastMessageTime: lastMessageTime,
                         );
                       },
                     ),

@@ -10,6 +10,9 @@ abstract class ChatRemoteDatasource {
   // Typing status
   Future<void> setTypingStatus(String chatId, String userId, bool isTyping);
   Stream<bool> streamTypingStatus(String chatId, String userId);
+
+  // Unread count
+  Future<void> resetUnreadCount(String chatId, String userId);
 }
 
 class ChatRemoteDataSourceImpl implements ChatRemoteDatasource {
@@ -135,6 +138,13 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDatasource {
         'ChatRemoteDataSource: Streamed typing status for $userId in $chatId: $isTyping',
       );
       return isTyping;
+    });
+  }
+
+  @override
+  Future<void> resetUnreadCount(String chatId, String userId) async {
+    await firestore.collection('chats').doc(chatId).update({
+      'unreadCount.$userId': 0,
     });
   }
 }
