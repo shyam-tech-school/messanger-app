@@ -97,7 +97,7 @@ class ContactPermissionScreen extends StatelessWidget {
                           if (success && context.mounted) {
                             Navigator.pushReplacementNamed(
                               context,
-                              RouteName.chatListScreen,
+                              RouteName.navigationScreen,
                             );
                           }
                         },
