@@ -64,6 +64,9 @@ class CallEntity {
   final DateTime? endedAt;
   final String? callerName;
   final String? calleeName;
+  final String? callerAvatar;
+  final String? calleeAvatar;
+  final String? type;
 
   const CallEntity({
     required this.callId,
@@ -76,6 +79,9 @@ class CallEntity {
     this.endedAt,
     this.callerName,
     this.calleeName,
+    this.callerAvatar,
+    this.calleeAvatar,
+    this.type,
   });
 
   CallEntity copyWith({
@@ -89,6 +95,9 @@ class CallEntity {
     DateTime? endedAt,
     String? callerName,
     String? calleeName,
+    String? callerAvatar,
+    String? calleeAvatar,
+    String? type,
   }) {
     return CallEntity(
       callId: callId ?? this.callId,
@@ -101,6 +110,9 @@ class CallEntity {
       endedAt: endedAt ?? this.endedAt,
       callerName: callerName ?? this.callerName,
       calleeName: calleeName ?? this.calleeName,
+      callerAvatar: callerAvatar ?? this.callerAvatar,
+      calleeAvatar: calleeAvatar ?? this.calleeAvatar,
+      type: type ?? this.type,
     );
   }
 

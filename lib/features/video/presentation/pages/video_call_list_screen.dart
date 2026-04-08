@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -6,6 +5,8 @@ import 'package:mail_messanger/core/constants/color_constants.dart';
 import 'package:mail_messanger/core/routes/route_name.dart';
 import 'package:mail_messanger/features/audio_call/domain/entities/call_entity.dart';
 import 'package:mail_messanger/features/video_call/presentation/pages/video_call_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:mail_messanger/features/call/presentation/provider/call_history_provider.dart';
 
 class VideoCallListScreen extends StatelessWidget {
   const VideoCallListScreen({super.key});
@@ -28,26 +29,18 @@ class VideoCallListScreen extends StatelessWidget {
       ),
       body: myUid == null
           ? const Center(child: Text('Not signed in'))
-          : StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-              stream: FirebaseFirestore.instance
-                  .collection('video_calls')
-                  .where(
-                    Filter.or(
-                      Filter('callerId', isEqualTo: myUid),
-                      Filter('calleeId', isEqualTo: myUid),
-                    ),
-                  )
-                  .orderBy('createdAt', descending: true)
-                  .limit(50)
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
+          : Consumer<CallHistoryProvider>(
+              builder: (context, provider, _) {
+                if (provider.isLoading) {
                   return const Center(child: CircularProgressIndicator());
                 }
 
-                final docs = snapshot.data?.docs ?? [];
+                // Filter for video calls only
+                final videoLogs = provider.callLogs
+                    .where((log) => log.type == 'video')
+                    .toList();
 
-                if (docs.isEmpty) {
+                if (videoLogs.isEmpty) {
                   return const Center(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -68,7 +61,7 @@ class VideoCallListScreen extends StatelessWidget {
                 }
 
                 return ListView.separated(
-                  itemCount: docs.length,
+                  itemCount: videoLogs.length,
                   separatorBuilder: (_, __) => Divider(
                     height: 1,
                     thickness: 0.3,
@@ -76,24 +69,20 @@ class VideoCallListScreen extends StatelessWidget {
                     indent: 72,
                   ),
                   itemBuilder: (context, index) {
-                    final d = docs[index].data();
-                    final isOutgoing = d['callerId'] == myUid;
+                    final d = videoLogs[index];
+                    final isOutgoing = d.callerId == myUid;
                     final otherUserId = isOutgoing
-                        ? d['calleeId'] as String? ?? ''
-                        : d['callerId'] as String? ?? '';
+                        ? d.calleeId
+                        : d.callerId;
                     final otherName = isOutgoing
-                        ? (d['calleeName'] as String? ?? 'Unknown')
-                        : (d['callerName'] as String? ?? 'Unknown');
-                    final status = CallStatusX.fromString(
-                      d['status'] as String?,
-                    );
+                        ? (d.calleeName ?? 'Unknown')
+                        : (d.callerName ?? 'Unknown');
+                    final status = d.callStatus;
                     final isMissed =
                         !isOutgoing &&
                         (status == CallStatus.ended ||
                             status == CallStatus.rejected);
-                    final createdAt = d['createdAt'] is Timestamp
-                        ? (d['createdAt'] as Timestamp).toDate()
-                        : null;
+                    final createdAt = d.createdAt;
 
                     return ListTile(
                       onTap: () {

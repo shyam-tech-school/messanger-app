@@ -25,6 +25,8 @@ class AudiocallRepositoryImpl implements IAudioCallRepository {
     required String calleeId,
     String? callerName,
     String? calleeName,
+    String? callerAvatar,
+    String? calleeAvatar,
   }) async {
     await _calls.doc(callId).set({
       'callId': callId,
@@ -32,7 +34,10 @@ class AudiocallRepositoryImpl implements IAudioCallRepository {
       'calleeId': calleeId,
       'callerName': callerName,
       'calleeName': calleeName,
+      'callerAvatar': callerAvatar,
+      'calleeAvatar': calleeAvatar,
       'offer': offer,
+      'type': 'audio',
       'status': CallStatus.ringing.firestoreValue,
       'createdAt': FieldValue.serverTimestamp(),
     });
@@ -76,6 +81,9 @@ class AudiocallRepositoryImpl implements IAudioCallRepository {
       endedAt: endedAt,
       callerName: d['callerName'] as String?,
       calleeName: d['calleeName'] as String?,
+      callerAvatar: d['callerAvatar'] as String?,
+      calleeAvatar: d['calleeAvatar'] as String?,
+      type: d['type'] as String? ?? 'audio',
     );
   }
 

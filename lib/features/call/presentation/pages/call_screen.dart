@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:mail_messanger/core/common/widget/dp_circle_image_widget.dart';
 import 'package:mail_messanger/core/constants/color_constants.dart';
 import 'package:mail_messanger/core/utils/timer_helper_util.dart';
-import 'package:mail_messanger/features/chats/data/datasources/chat_data_mock.dart';
+
+import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mail_messanger/features/call/presentation/provider/call_history_provider.dart';
 
 class CallScreen extends StatelessWidget {
   const CallScreen({super.key});
@@ -23,8 +26,14 @@ class CallScreen extends StatelessWidget {
 
         automaticallyImplyLeading: false,
       ),
-      body: CustomScrollView(
-        slivers: [
+      body: Consumer<CallHistoryProvider>(
+        builder: (context, provider, _) {
+          final audioLogs = provider.callLogs
+              .where((log) => log.type == 'audio' || log.type == null)
+              .toList();
+
+          return CustomScrollView(
+            slivers: [
           const SliverToBoxAdapter(
             child: Padding(
               padding: .all(16.0),
@@ -44,38 +53,61 @@ class CallScreen extends StatelessWidget {
             ),
           ),
 
-          SliverList(
-            delegate: SliverChildBuilderDelegate((context, index) {
-              final chatList = chatData[index];
-              final logs = chatList['callLogs'] as List<Map<String, dynamic>>;
-              logs.sort(
-                (a, b) => DateTime.parse(
-                  b['time'],
-                ).compareTo(DateTime.parse(a['time'])),
-              );
+          if (provider.isLoading)
+            const SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.all(32.0),
+                child: Center(child: CircularProgressIndicator()),
+              ),
+            )
+          else if (audioLogs.isEmpty)
+            const SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.all(32.0),
+                child: Center(child: Text("No audio calls yet")),
+              ),
+            )
+          else
+            SliverList(
+              delegate: SliverChildBuilderDelegate((context, index) {
+                final log = audioLogs[index];
+                final myUid = FirebaseAuth.instance.currentUser?.uid;
+                final isIncoming = log.calleeId == myUid;
 
-              final firstLog = logs.first;
+                final username = isIncoming
+                    ? (log.callerName ?? 'Unknown')
+                    : (log.calleeName ?? 'Unknown');
+                final dpImage = isIncoming
+                    ? (log.callerAvatar ?? '')
+                    : (log.calleeAvatar ?? '');
+                
+                final direction = isIncoming ? 'incoming' : 'outgoing';
+                
+                // Simplified missed call logic: if we were the callee and ended rejected or untouched
+                final isMissed = isIncoming &&
+                    log.callStatus.name == 'rejected' || 
+                    (isIncoming && log.callStatus.name == 'ended' && log.answer == null);
 
-              return Column(
-                children: [
-                  CallTile(
-                    username: chatList['name'],
-                    dpImage: chatList['profileDp'],
-                    callType: firstLog['type'],
-                    direction: firstLog['direction'],
-                    time: firstLog['time'],
-                    isMissed: firstLog['isMissed'],
-                  ),
-                  Divider(
-                    height: 1,
-                    thickness: 0.3,
-                    color: Colors.grey.shade400,
-                    indent: 70,
-                  ),
-                ],
-              );
-            }, childCount: chatData.length),
-          ),
+                return Column(
+                  children: [
+                    CallTile(
+                      username: username.isEmpty ? 'Unknown' : username,
+                      dpImage: dpImage,
+                      callType: log.type ?? 'audio',
+                      direction: direction,
+                      time: log.createdAt?.toIso8601String() ?? DateTime.now().toIso8601String(),
+                      isMissed: isMissed,
+                    ),
+                    Divider(
+                      height: 1,
+                      thickness: 0.3,
+                      color: Colors.grey.shade400,
+                      indent: 70,
+                    ),
+                  ],
+                );
+              }, childCount: audioLogs.length),
+            ),
 
           SliverToBoxAdapter(
             child: Padding(
@@ -104,9 +136,10 @@ class CallScreen extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
+      );
+    }),
+  );
+}
 }
 
 class CallTile extends StatelessWidget {

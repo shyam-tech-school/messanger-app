@@ -47,6 +47,8 @@ class VideoCallServiceProvider extends ChangeNotifier {
     required String calleeId,
     String? calleeName,
     String? callerName,
+    String? callerAvatar,
+    String? calleeAvatar,
   }) async {
     final myUid = _myUid;
     if (myUid == null) throw Exception('Not authenticated');
@@ -61,6 +63,8 @@ class VideoCallServiceProvider extends ChangeNotifier {
       callStatus: CallStatus.calling,
       callerName: callerName,
       calleeName: calleeName,
+      callerAvatar: callerAvatar,
+      calleeAvatar: calleeAvatar,
     );
     notifyListeners();
 
@@ -77,6 +81,8 @@ class VideoCallServiceProvider extends ChangeNotifier {
       calleeId: calleeId,
       callerName: callerName,
       calleeName: calleeName,
+      callerAvatar: callerAvatar,
+      calleeAvatar: calleeAvatar,
     );
     _currentCall = _currentCall!.copyWith(callStatus: CallStatus.ringing);
     notifyListeners();

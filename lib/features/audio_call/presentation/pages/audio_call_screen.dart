@@ -89,6 +89,8 @@ class _AudioCallScreenState extends State<AudioCallScreen>
                   calleeId: widget.otherUserId,
                   calleeName: widget.otherUserName,
                   callerName: name,
+                  callerAvatar: currentUser.photoURL,
+                  calleeAvatar: widget.otherPhotoUrl,
                 );
               });
         }

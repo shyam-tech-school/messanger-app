@@ -10,6 +10,8 @@ abstract class IAudioCallRepository {
     required String calleeId,
     String? callerName,
     String? calleeName,
+    String? callerAvatar,
+    String? calleeAvatar,
   });
 
   /// Get current offer from call document (callee).

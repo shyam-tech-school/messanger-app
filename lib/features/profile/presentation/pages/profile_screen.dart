@@ -109,7 +109,7 @@ class ProfileScreen extends StatelessWidget {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "About",
+                  "Phone number",
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                     color: Colors.grey,
                     fontWeight: FontWeight.w600,

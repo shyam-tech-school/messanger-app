@@ -21,7 +21,7 @@ class DpCircleImageWidget extends StatelessWidget {
       child: Container(
         clipBehavior: Clip.hardEdge,
         decoration: const BoxDecoration(shape: BoxShape.circle),
-        child: imageUrl == null
+        child: imageUrl == null || imageUrl!.isEmpty
             ? const Icon(Icons.person, size: 35)
             : Image.network(imageUrl!, fit: BoxFit.cover),
       ),

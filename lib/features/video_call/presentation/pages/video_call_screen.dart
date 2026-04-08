@@ -78,6 +78,8 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
               calleeId: widget.otherUserId,
               calleeName: widget.otherUserName,
               callerName: name,
+              callerAvatar: currentUser.photoURL,
+              calleeAvatar: widget.otherPhotoUrl,
             );
           }
         } catch (e) {

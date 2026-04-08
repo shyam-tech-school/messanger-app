@@ -13,13 +13,20 @@ class StartCallUsecase {
     required String calleeId,
     String? callerName,
     String? calleeName,
+    String? callerAvatar,
+    String? calleeAvatar,
   }) async {
     await rtcRepo.ensureMicPermission();
     final offer = await rtcRepo.createOffer();
-    await audioCallRepo.createCall(callId, offer,
-        callerId: callerId,
-        calleeId: calleeId,
-        callerName: callerName,
-        calleeName: calleeName);
+    await audioCallRepo.createCall(
+      callId,
+      offer,
+      callerId: callerId,
+      calleeId: calleeId,
+      callerName: callerName,
+      calleeName: calleeName,
+      callerAvatar: callerAvatar,
+      calleeAvatar: calleeAvatar,
+    );
   }
 }
