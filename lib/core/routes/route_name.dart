@@ -8,6 +8,7 @@ class RouteName {
   static const chatListScreen = '/chat_list';
   static const chatScreen = '/chat';
   static const profileScreen = '/profile';
+  static const editProfileScreen = '/edit_profile';
   static const externalProfileScreen = '/external_profile';
   static const contactListScreen = '/contact_list';
 

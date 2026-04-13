@@ -28,6 +28,7 @@ import 'package:mail_messanger/features/profile/domain/usecases/save_user_usecas
 import 'package:mail_messanger/features/profile/domain/usecases/upload_image_usercase.dart';
 import 'package:mail_messanger/features/profile/presentation/provider/profile_image_provider.dart';
 import 'package:mail_messanger/features/profile/presentation/provider/user_provder.dart';
+import 'package:mail_messanger/features/profile/presentation/provider/current_user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:mail_messanger/features/otp/presentation/provider/auth_provider.dart';
@@ -74,6 +75,18 @@ class AppProvider {
         ),
         FirebaseMessagingService(),
       ),
+    ),
+
+    // current user (profile view/edit)
+    ChangeNotifierProvider(
+      create: (_) {
+        final ds = AuthRemoteDatasourceImpl(FirebaseFirestore.instance);
+        final repo = UserAuthRepository(ds);
+        final uploadUsecase = UploadImageUsercase(
+          ProfileImageRepository(ProfileRemoteDataSoruceImpl()),
+        );
+        return CurrentUserProvider(repo, uploadUsecase);
+      },
     ),
 
     // contacts permission

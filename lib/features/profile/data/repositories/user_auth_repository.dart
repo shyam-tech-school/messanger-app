@@ -11,4 +11,24 @@ class UserAuthRepository implements IUserAuthRepository {
   Future<void> saveUser(AppUser user) {
     return remoteDataSource.saveUser(user);
   }
+
+  @override
+  Future<AppUser?> getUser(String uid) {
+    return remoteDataSource.getUser(uid);
+  }
+
+  @override
+  Future<void> updateProfile({
+    required String uid,
+    required String name,
+    String? about,
+    String? photoUrl,
+  }) {
+    return remoteDataSource.updateProfile(
+      uid: uid,
+      name: name,
+      about: about,
+      photoUrl: photoUrl,
+    );
+  }
 }

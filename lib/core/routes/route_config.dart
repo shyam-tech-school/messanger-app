@@ -11,6 +11,7 @@ import 'package:mail_messanger/features/chat/presentation/pages/chat_screen.dart
 import 'package:mail_messanger/features/external_profile/presentation/pages/external_profile.dart';
 import 'package:mail_messanger/features/onboard/presentation/pages/onboard/presentation/pages/onboard_screen.dart';
 import 'package:mail_messanger/features/profile/presentation/pages/profile_screen.dart';
+import 'package:mail_messanger/features/profile/presentation/pages/edit_profile_screen.dart';
 import 'package:mail_messanger/features/sub_settings/account/account_screen.dart';
 import 'package:mail_messanger/features/sub_settings/account/change_phone_number/presentation/pages/change_phone_number_info.dart';
 import 'package:mail_messanger/features/sub_settings/account/change_phone_number/presentation/pages/change_phone_number_screen.dart';
@@ -72,6 +73,11 @@ class RouteConfig {
 
       case RouteName.profileScreen:
         return MaterialPageRoute(builder: (context) => const ProfileScreen());
+
+      case RouteName.editProfileScreen:
+        return MaterialPageRoute(
+          builder: (context) => const EditProfileScreen(),
+        );
 
       case RouteName.externalProfileScreen:
         final arguments = settings.arguments as Map<String, dynamic>;

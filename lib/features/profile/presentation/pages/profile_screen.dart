@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mail_messanger/core/constants/color_constants.dart';
+import 'package:mail_messanger/features/profile/presentation/provider/current_user_provider.dart';
+import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -7,136 +9,181 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Profile"), centerTitle: true),
-      body: SizedBox(
-        height: .maxFinite,
-        width: .maxFinite,
-        child: Padding(
-          padding: const .all(16.0),
-          child: Column(
-            children: [
-              const CircleAvatar(
-                radius: 70,
-                backgroundImage: NetworkImage(
-                  'https://plus.unsplash.com/premium_photo-1689568126014-06fea9d5d341?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-                ),
+      appBar: AppBar(
+        title: Text(
+          'Profile',
+          style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+            fontFamily: 'LuckiestGuy',
+            color: ColorConstants.primaryColor,
+            letterSpacing: 2,
+          ),
+        ),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pushNamed(context, '/edit_profile')
+                .then((_) => context.read<CurrentUserProvider>().refresh()),
+            child: const Text(
+              'Edit',
+              style: TextStyle(
+                color: Colors.green,
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
               ),
-              Theme(
-                data: ThemeData(
-                  splashColor: Colors.transparent,
-                  splashFactory: NoSplash.splashFactory,
-                  highlightColor: Colors.transparent,
-                ),
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    splashFactory: NoSplash.splashFactory,
+            ),
+          ),
+        ],
+      ),
+      body: Consumer<CurrentUserProvider>(
+        builder: (context, provider, _) {
+          if (provider.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          final user = provider.user;
+
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                // ─── Avatar section ───────────────────────────────────
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 36),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        ColorConstants.primaryColor.withOpacity(0.15),
+                        Colors.transparent,
+                      ],
+                    ),
                   ),
-                  onPressed: () {},
-                  child: Text(
-                    "Edit",
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: Colors.green,
-                      fontWeight: FontWeight.bold,
+                  child: Column(
+                    children: [
+                      Hero(
+                        tag: 'profile-avatar',
+                        child: _buildAvatar(user?.photoUrl, radius: 55),
+                      ),
+                      const SizedBox(height: 14),
+                      Text(
+                        user?.name ?? '—',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall!
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        user?.phone ?? '—',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium!
+                            .copyWith(color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 8),
+
+                // ─── Info tiles ───────────────────────────────────────
+                _InfoTile(
+                  label: 'Name',
+                  value: user?.name ?? '—',
+                  icon: Icons.person_outline,
+                ),
+                const Divider(height: 1, indent: 56),
+                _InfoTile(
+                  label: 'About',
+                  value: user?.about?.isNotEmpty == true
+                      ? user!.about!
+                      : 'No status set',
+                  icon: Icons.info_outline,
+                ),
+                const Divider(height: 1, indent: 56),
+                _InfoTile(
+                  label: 'Phone',
+                  value: user?.phone ?? '—',
+                  icon: Icons.phone_outlined,
+                ),
+
+                const SizedBox(height: 32),
+
+                // ─── Edit button ──────────────────────────────────────
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 52,
+                    child: ElevatedButton.icon(
+                      icon: const Icon(Icons.edit_outlined),
+                      label: const Text('Edit Profile'),
+                      onPressed: () =>
+                          Navigator.pushNamed(context, '/edit_profile').then(
+                        (_) => context.read<CurrentUserProvider>().refresh(),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: ColorConstants.primaryColor,
+                        foregroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 20),
+                const SizedBox(height: 32),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
 
-              // Name section
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Name",
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 5),
-              TextField(
-                readOnly: true,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: ColorConstants.greyShade300,
-                  suffixIcon: const Icon(
-                    Icons.keyboard_arrow_right_outlined,
-                    size: 30,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: .circular(12),
-                    borderSide: BorderSide.none,
-                  ),
-                  hintText: "Username",
-                ),
-              ),
-              const SizedBox(height: 20),
+  Widget _buildAvatar(String? url, {double radius = 40}) {
+    return CircleAvatar(
+      radius: radius,
+      backgroundColor: Colors.white12,
+      backgroundImage:
+          (url != null && url.isNotEmpty) ? NetworkImage(url) : null,
+      child: (url == null || url.isEmpty)
+          ? Icon(Icons.person, size: radius, color: Colors.white38)
+          : null,
+    );
+  }
+}
 
-              // About
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "About",
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 5),
-              TextField(
-                readOnly: true,
-                maxLines: 2,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: ColorConstants.greyShade300,
-                  suffixIcon: const Icon(
-                    Icons.keyboard_arrow_right_outlined,
-                    size: 30,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: .circular(12),
-                    borderSide: BorderSide.none,
-                  ),
-                  hintText:
-                      "It is a long established fact that a reader will be distracted by the readable.",
-                ),
-              ),
-              const SizedBox(height: 20),
+class _InfoTile extends StatelessWidget {
+  final String label;
+  final String value;
+  final IconData icon;
 
-              // Phone number
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Phone number",
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 5),
-              TextField(
-                readOnly: true,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: ColorConstants.greyShade300,
-                  suffixIcon: const Icon(
-                    Icons.keyboard_arrow_right_outlined,
-                    size: 30,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: .circular(12),
-                    borderSide: BorderSide.none,
-                  ),
-                  hintText: "+91 9876543210",
-                ),
-              ),
-            ],
-          ),
+  const _InfoTile({
+    required this.label,
+    required this.value,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Icon(icon, color: ColorConstants.primaryColor),
+      title: Text(
+        label,
+        style: const TextStyle(
+          fontSize: 12,
+          color: Colors.grey,
+          fontWeight: FontWeight.w500,
         ),
       ),
+      subtitle: Text(
+        value,
+        style: const TextStyle(fontSize: 16, color: Colors.white),
+      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
     );
   }
 }

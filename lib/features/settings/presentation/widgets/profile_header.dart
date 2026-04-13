@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mail_messanger/core/constants/color_constants.dart';
+import 'package:mail_messanger/features/profile/presentation/provider/current_user_provider.dart';
+import 'package:provider/provider.dart';
 
 class ProfileHeader extends StatelessWidget {
   const ProfileHeader({super.key, required this.ontap});
@@ -6,43 +9,85 @@ class ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<CurrentUserProvider>();
+    final user = provider.user;
+    final photoUrl = user?.photoUrl ?? '';
+    final name = user?.name ?? '—';
+    final about = (user?.about?.isNotEmpty == true) ? user!.about! : 'No status set';
+
     return InkWell(
       onTap: ontap,
+      borderRadius: BorderRadius.circular(16),
       child: Container(
-        decoration: const BoxDecoration(),
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
         child: Row(
-          spacing: 12,
+          spacing: 14,
           children: [
+            // Avatar
             Container(
-              height: 80,
-              width: 80,
+              height: 72,
+              width: 72,
               clipBehavior: Clip.hardEdge,
-              decoration: const BoxDecoration(shape: BoxShape.circle),
-              child: Image.network(
-                'https://plus.unsplash.com/premium_photo-1689568126014-06fea9d5d341?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-                fit: BoxFit.cover,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white12,
+                border: Border.all(
+                  color: ColorConstants.primaryColor.withOpacity(0.5),
+                  width: 2,
+                ),
               ),
+              child: provider.isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : (photoUrl.isNotEmpty
+                      ? Image.network(
+                          photoUrl,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => const Icon(
+                            Icons.person,
+                            size: 36,
+                            color: Colors.white38,
+                          ),
+                        )
+                      : const Icon(
+                          Icons.person,
+                          size: 36,
+                          color: Colors.white38,
+                        )),
             ),
+
+            // Name + status
             Expanded(
               child: Column(
-                spacing: 6,
-                crossAxisAlignment: .start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 5,
                 children: [
                   Text(
-                    "Robert Evans",
+                    name,
                     style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                       fontWeight: FontWeight.w700,
-                      fontSize: 20,
-                      letterSpacing: .8,
+                      fontSize: 19,
+                      letterSpacing: .5,
                     ),
                   ),
-                  const Text(
-                    "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
+                  Text(
+                    about,
                     maxLines: 1,
-                    overflow: .ellipsis,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: Colors.grey.shade400,
+                      fontSize: 13,
+                    ),
                   ),
                 ],
               ),
+            ),
+
+            // Arrow
+            Icon(
+              Icons.chevron_right,
+              color: Colors.grey.shade600,
             ),
           ],
         ),
