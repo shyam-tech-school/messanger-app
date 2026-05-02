@@ -6,6 +6,7 @@ import 'package:mail_messanger/features/chat/domain/entities/message_entity.dart
 import 'package:mail_messanger/features/chat/domain/usecases/send_message_usecase.dart';
 import 'package:mail_messanger/features/chat/domain/usecases/set_typing_status_usecase.dart';
 import 'package:mail_messanger/features/chat/domain/usecases/stream_typing_status_usecase.dart';
+import 'package:mail_messanger/features/external_profile/data/datasources/external_profile_datasource.dart';
 
 import '../widgets/chat_appbar_widget.dart';
 import '../widgets/chat_input_bar.dart';
@@ -50,13 +51,16 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     ChatRemoteDataSourceImpl(FirebaseFirestore.instance),
   );
 
+  final ExternalProfileDatasource _profileDs = ExternalProfileDatasource();
+
   final _scrollController = ScrollController();
   bool _isUserAtBottom = true;
   bool _initialScrollDone = false;
   final double _scrollThreshold = 100.0; // pixels from bottom
   String? _lastMessageId;
-  List<MessageEntity> _cachedMessages =
-      []; // Cache messages to prevent loading indicator
+  List<MessageEntity> _cachedMessages = []; // Cache messages to prevent loading indicator
+
+  late final Stream<bool> _isBlockedStream;
 
   @override
   void initState() {
@@ -64,13 +68,30 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     _scrollController.addListener(_onScroll);
 
+    _isBlockedStream = _profileDs.streamIBlockedThem(
+      widget.currentUserId,
+      widget.otherUserId,
+    );
+
     // Reset unread count as soon as the chat is opened (WhatsApp style)
     _resetUnread();
+
+    // Mark incoming messages as delivered when receiver opens the chat
+    _markDelivered();
   }
 
   Future<void> _resetUnread() async {
     try {
       await _chatRepository.resetUnreadCount(
+        widget.chatRoomId,
+        widget.currentUserId,
+      );
+    } catch (_) {}
+  }
+
+  Future<void> _markDelivered() async {
+    try {
+      await _chatRepository.markMessagesDelivered(
         widget.chatRoomId,
         widget.currentUserId,
       );
@@ -144,73 +165,154 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(80),
-        child: ChatAppbarWidget(
-          otherUserName: widget.otherUserName,
-          otherPhotoUrl: widget.otherUserImage,
-          otherUserId: widget.otherUserId,
-          chatId: widget.chatRoomId,
-          streamTypingStatusUsecase: _streamTypingStatusUsecase,
-        ),
-      ),
-      body: StreamBuilder<List<MessageEntity>>(
-        stream: _chatRepository.getMessages(widget.chatRoomId),
-        builder: (context, snapshot) {
-          // Use cached messages if snapshot has no data (prevents loading indicator)
-          final messages = snapshot.hasData ? snapshot.data! : _cachedMessages;
+    return StreamBuilder<bool>(
+      stream: _isBlockedStream,
+      initialData: false,
+      builder: (context, blockSnapshot) {
+        final isBlocked = blockSnapshot.data ?? false;
 
-          // Only show loading indicator on true initial load (no cached messages)
-          if (messages.isEmpty && !snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
-          }
+        return Scaffold(
+          resizeToAvoidBottomInset: true,
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(80),
+            child: ChatAppbarWidget(
+              otherUserName: widget.otherUserName,
+              otherPhotoUrl: widget.otherUserImage,
+              otherUserId: widget.otherUserId,
+              chatId: widget.chatRoomId,
+              currentUserId: widget.currentUserId,
+              isBlocked: isBlocked,
+              streamTypingStatusUsecase: _streamTypingStatusUsecase,
+            ),
+          ),
+          body: StreamBuilder<List<MessageEntity>>(
+            stream: _chatRepository.getMessages(widget.chatRoomId),
+            builder: (context, snapshot) {
+              // Use cached messages if snapshot has no data (prevents loading indicator)
+              final rawMessages =
+                  snapshot.hasData ? snapshot.data! : _cachedMessages;
 
-          // Update cache when new data arrives
-          if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-            _cachedMessages = snapshot.data!;
-          }
+              // If I have blocked this contact, hide their messages from my view.
+              // Their messages still exist in Firestore (they see single ✓, no indication
+              // they're blocked). Unblocking instantly restores full message history.
+              final messages = isBlocked
+                  ? rawMessages
+                      .where((m) => m.senderId == widget.currentUserId)
+                      .toList()
+                  : rawMessages;
 
-          if (messages.isEmpty) {
-            return const Center(child: Text('No messages yet'));
-          }
+              // Only show loading indicator on true initial load (no cached messages)
+              if (messages.isEmpty && !snapshot.hasData) {
+                return const Center(child: CircularProgressIndicator());
+              }
 
-          // Handle new messages and auto-scroll logic
-          _handleNewMessages(messages);
+              // Update cache when new data arrives
+              if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                _cachedMessages = snapshot.data!;
+              }
 
-          // Reverse the list so newest messages are at index 0
-          final reversedMessages = messages.reversed.toList();
+              if (messages.isEmpty) {
+                return const Center(child: Text('No messages yet'));
+              }
 
-          return ListView.builder(
-            controller: _scrollController,
-            reverse: true, // Makes the list start from bottom
-            itemCount: reversedMessages.length,
-            addAutomaticKeepAlives: false, // Optimize performance
-            addRepaintBoundaries: true, // Optimize rendering
-            itemBuilder: (context, index) {
-              final message = reversedMessages[index];
-              final isMe = message.senderId == widget.currentUserId;
+              // Handle new messages and auto-scroll logic
+              _handleNewMessages(messages);
 
-              return MessageBubbleWidget(
-                isMe: isMe,
-                message: message.message,
-                timestamp: message.createdAt,
+              // Reverse the list so newest messages are at index 0
+              final reversedMessages = messages.reversed.toList();
+
+              return ListView.builder(
+                controller: _scrollController,
+                reverse: true, // Makes the list start from bottom
+                itemCount: reversedMessages.length,
+                addAutomaticKeepAlives: false, // Optimize performance
+                addRepaintBoundaries: true, // Optimize rendering
+                itemBuilder: (context, index) {
+                  final message = reversedMessages[index];
+                  final isMe = message.senderId == widget.currentUserId;
+
+                  return MessageBubbleWidget(
+                    isMe: isMe,
+                    message: message.message,
+                    timestamp: message.createdAt,
+                    isSeen: message.isSeen,
+                    isDelivered: message.isDelivered,
+                  );
+                },
               );
             },
-          );
-        },
-      ),
-      bottomNavigationBar: ChatInputBar(
-        chatId: widget.chatRoomId,
-        currentUserId: widget.currentUserId,
-        otherUserId: widget.otherUserId,
-        sendMessageUsecase: _sendMessageUsecase,
-        setTypingStatusUsecase: _setTypingStatusUsecase,
-        onMessageSent: () {
-          // Always scroll to bottom when user sends a message
-          _scrollToBottom();
-        },
+          ),
+
+          // ── Bottom: blocked banner OR input bar ──────────────────────────
+          bottomNavigationBar: isBlocked
+              ? _BlockedBanner(
+                  onViewProfile: () {
+                    Navigator.pushNamed(
+                      context,
+                      '/external_profile',
+                      arguments: {
+                        'userId': widget.otherUserId,
+                        'chatRoomId': widget.chatRoomId,
+                        'currentUserId': widget.currentUserId,
+                      },
+                    );
+                  },
+                )
+              : ChatInputBar(
+                  chatId: widget.chatRoomId,
+                  currentUserId: widget.currentUserId,
+                  otherUserId: widget.otherUserId,
+                  sendMessageUsecase: _sendMessageUsecase,
+                  setTypingStatusUsecase: _setTypingStatusUsecase,
+                  onMessageSent: () {
+                    // Always scroll to bottom when user sends a message
+                    _scrollToBottom();
+                  },
+                ),
+        );
+      },
+    );
+  }
+}
+
+// ── Blocked banner shown instead of the input bar ────────────────────────────
+class _BlockedBanner extends StatelessWidget {
+  final VoidCallback? onViewProfile;
+
+  const _BlockedBanner({this.onViewProfile});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      child: SafeArea(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+          decoration: BoxDecoration(
+            border: Border(
+              top: BorderSide(color: Colors.grey.shade800, width: 0.5),
+            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.block, color: Colors.grey, size: 18),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  "You blocked this contact.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.grey.shade500, fontSize: 13),
+                ),
+              ),
+              if (onViewProfile != null)
+                TextButton(
+                  onPressed: onViewProfile,
+                  child: const Text('Unblock', style: TextStyle(fontSize: 13)),
+                ),
+            ],
+          ),
+        ),
       ),
     );
   }

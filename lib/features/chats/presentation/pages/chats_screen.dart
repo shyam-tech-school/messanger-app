@@ -223,6 +223,12 @@ class _ChatsScreenState extends State<ChatsScreen> {
                               },
                             );
                           },
+                          confirmDelete: () => _confirmAndDeleteChat(
+                            context: context,
+                            chatId: chatId,
+                            otherUserName: otherUserName,
+                            currentUserId: currentUserId,
+                          ),
                           username: otherUserName,
                           userImageUrl: otherUserImageUrl,
                           unreadCount: unreadCount,
@@ -240,6 +246,36 @@ class _ChatsScreenState extends State<ChatsScreen> {
         ],
       ),
     );
+  }
+
+  /// Shows a confirmation bottom sheet.
+  /// Returns [true] if the user confirmed deletion, [false] otherwise.
+  Future<bool> _confirmAndDeleteChat({
+    required BuildContext context,
+    required String chatId,
+    required String otherUserName,
+    required String currentUserId,
+  }) async {
+    final confirmed = await showModalBottomSheet<bool>(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (_) => _DeleteChatSheet(username: otherUserName),
+    );
+
+    if (confirmed != true) return false;
+
+    try {
+      await _chatRepository.deleteChat(chatId, currentUserId);
+      return true;
+    } catch (e) {
+      AppLogger.e(e);
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to delete chat. Try again.')),
+        );
+      }
+      return false;
+    }
   }
 
   Future<void> _loadProfileUser(String userId) async {
@@ -280,6 +316,116 @@ class _SearchBarDelegate extends SliverPersistentHeaderDelegate {
   bool shouldRebuild(_SearchBarDelegate oldDelegate) => false;
 }
 
+// -- DELETE CHAT CONFIRMATION BOTTOM SHEET --
+class _DeleteChatSheet extends StatelessWidget {
+  final String username;
+
+  const _DeleteChatSheet({required this.username});
+
+  @override
+  Widget build(BuildContext context) {
+    // Respect the system nav bar / gesture area so buttons are never clipped
+    final bottomPadding = MediaQuery.of(context).padding.bottom;
+
+    return Container(
+      margin: EdgeInsets.fromLTRB(12, 0, 12, 16 + bottomPadding),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1E1E1E),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Handle bar
+          Container(
+            margin: const EdgeInsets.only(top: 12, bottom: 8),
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+              color: Colors.white24,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
+            child: Column(
+              children: [
+                const Icon(
+                  Icons.delete_outline_rounded,
+                  color: Color(0xFFE53935),
+                  size: 40,
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  'Delete Chat',
+                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Delete your chat with $username?\nThis will only remove it for you.',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    color: Colors.white60,
+                    height: 1.4,
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                // Buttons
+                Row(
+                  children: [
+                    // Cancel
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () => Navigator.pop(context, false),
+                        style: OutlinedButton.styleFrom(
+                          side: const BorderSide(color: Colors.white24),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                        ),
+                        child: const Text(
+                          'Cancel',
+                          style: TextStyle(color: Colors.white70),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+
+                    // Delete
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () => Navigator.pop(context, true),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFE53935),
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                        ),
+                        child: const Text(
+                          'Delete',
+                          style: TextStyle(fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 
 /*
 
@@ -297,5 +443,3 @@ SliverList.builder(
 
       
 */
-
-

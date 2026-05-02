@@ -13,4 +13,10 @@ abstract class IChatRepositories {
 
   // Unread count
   Future<void> resetUnreadCount(String chatId, String userId);
+
+  // Delivery status
+  Future<void> markMessagesDelivered(String chatId, String receiverId);
+
+  // Delete chat (soft-delete: remove current user from participants)
+  Future<void> deleteChat(String chatId, String currentUserId);
 }

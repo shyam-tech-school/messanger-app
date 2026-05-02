@@ -42,4 +42,14 @@ class ChatRepository implements IChatRepositories {
   Future<void> resetUnreadCount(String chatId, String userId) {
     return remoteDs.resetUnreadCount(chatId, userId);
   }
+
+  @override
+  Future<void> markMessagesDelivered(String chatId, String receiverId) {
+    return remoteDs.markMessagesDelivered(chatId, receiverId);
+  }
+
+  @override
+  Future<void> deleteChat(String chatId, String currentUserId) {
+    return remoteDs.deleteChat(chatId, currentUserId);
+  }
 }

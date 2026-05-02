@@ -6,6 +6,8 @@ class MessageEntity {
   final String type; // text | image | audio | video
   final String? mediaUrl;
   final DateTime createdAt;
+  final bool isSeen;
+  final bool isDelivered;
 
   MessageEntity({
     required this.chatId,
@@ -15,5 +17,7 @@ class MessageEntity {
     required this.type,
     required this.mediaUrl,
     required this.createdAt,
+    this.isSeen = false,
+    this.isDelivered = false,
   });
 }

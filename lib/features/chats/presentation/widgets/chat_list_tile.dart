@@ -8,6 +8,11 @@ import '../../../../core/constants/color_constants.dart';
 
 class ChatListTile extends StatelessWidget {
   final VoidCallback ontap;
+
+  /// Called when the user swipes to delete. Should show a confirmation dialog
+  /// and return [true] to proceed with deletion, [false] to cancel.
+  final Future<bool> Function()? confirmDelete;
+
   final String username;
   final String? userImageUrl;
   final String lastMessage;
@@ -17,6 +22,7 @@ class ChatListTile extends StatelessWidget {
   const ChatListTile({
     super.key,
     required this.ontap,
+    this.confirmDelete,
     required this.username,
     required this.userImageUrl,
     required this.lastMessage,
@@ -26,7 +32,7 @@ class ChatListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
+    final tile = ListTile(
       onTap: ontap,
       leading: DpCircleImageWidget(imageUrl: userImageUrl),
       title: Text(
@@ -79,6 +85,34 @@ class ChatListTile extends StatelessWidget {
             ),
         ],
       ),
+    );
+
+    if (confirmDelete == null) return tile;
+
+    return Dismissible(
+      key: Key(username),
+      direction: DismissDirection.startToEnd,
+      confirmDismiss: (_) => confirmDelete!(),
+      background: Container(
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.only(left: 24),
+        color: const Color(0xFFE53935),
+        child: const Row(
+          children: [
+            Icon(Icons.delete_rounded, color: Colors.white, size: 26),
+            SizedBox(width: 8),
+            Text(
+              'Delete',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+                fontSize: 15,
+              ),
+            ),
+          ],
+        ),
+      ),
+      child: tile,
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mail_messanger/core/utils/app_logger.dart';
 import 'package:mail_messanger/features/chat/domain/entities/message_entity.dart';
 
 abstract class ChatRemoteDatasource {
@@ -13,6 +14,12 @@ abstract class ChatRemoteDatasource {
 
   // Unread count
   Future<void> resetUnreadCount(String chatId, String userId);
+
+  // Delivery status
+  Future<void> markMessagesDelivered(String chatId, String receiverId);
+
+  // Delete chat (soft-delete)
+  Future<void> deleteChat(String chatId, String currentUserId);
 }
 
 class ChatRemoteDataSourceImpl implements ChatRemoteDatasource {
@@ -61,6 +68,8 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDatasource {
               type: data['type'],
               mediaUrl: data['mediaUrl'],
               createdAt: (data['createdAt'] as Timestamp).toDate(),
+              isSeen: (data['isSeen'] as bool?) ?? false,
+              isDelivered: (data['isDelivered'] as bool?) ?? false,
             );
           }).toList();
         });
@@ -79,6 +88,7 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDatasource {
       'type': message.type,
       'mediaUrl': message.mediaUrl,
       'isSeen': false,
+      'isDelivered': false,
       'createdAt': FieldValue.serverTimestamp(),
     });
 
@@ -113,7 +123,7 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDatasource {
     String userId,
     bool isTyping,
   ) async {
-    print(
+    AppLogger.i(
       'ChatRemoteDataSource: Setting typing status for $userId in $chatId to $isTyping',
     );
     await firestore
@@ -121,7 +131,7 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDatasource {
         .doc(chatId)
         .update({'typing.$userId': isTyping})
         .catchError((e) {
-          print('ChatRemoteDataSource: Error setting typing status: $e');
+          AppLogger.e('ChatRemoteDataSource: Error setting typing status: $e');
         });
   }
 
@@ -134,7 +144,7 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDatasource {
       final isTyping = (data != null && data['typing'] != null)
           ? data['typing'][userId] ?? false
           : false;
-      print(
+      AppLogger.i(
         'ChatRemoteDataSource: Streamed typing status for $userId in $chatId: $isTyping',
       );
       return isTyping;
@@ -145,6 +155,34 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDatasource {
   Future<void> resetUnreadCount(String chatId, String userId) async {
     await firestore.collection('chats').doc(chatId).update({
       'unreadCount.$userId': 0,
+    });
+  }
+
+  @override
+  Future<void> markMessagesDelivered(String chatId, String receiverId) async {
+    // Batch-update all undelivered messages sent to this receiver
+    final snap = await firestore
+        .collection('chats')
+        .doc(chatId)
+        .collection('messages')
+        .where('receiverId', isEqualTo: receiverId)
+        .where('isDelivered', isEqualTo: false)
+        .get();
+
+    if (snap.docs.isEmpty) return;
+
+    final batch = firestore.batch();
+    for (final doc in snap.docs) {
+      batch.update(doc.reference, {'isDelivered': true});
+    }
+    await batch.commit();
+  }
+
+  @override
+  Future<void> deleteChat(String chatId, String currentUserId) async {
+    await firestore.collection('chats').doc(chatId).update({
+      'participants': FieldValue.arrayRemove([currentUserId]),
+      'participantsMap.$currentUserId': FieldValue.delete(),
     });
   }
 }

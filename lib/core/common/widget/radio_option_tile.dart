@@ -35,7 +35,7 @@ class RadioOptionTile<T> extends StatelessWidget {
               },
               fillColor: WidgetStateColor.resolveWith((states) {
                 return isSelected
-                    ? ColorConstants.primary
+                    ? ColorConstants.primaryColor
                     : ColorConstants.black;
               }),
             ),

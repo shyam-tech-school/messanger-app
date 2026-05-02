@@ -82,7 +82,7 @@ class RouteConfig {
       case RouteName.externalProfileScreen:
         final arguments = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
-          builder: (context) => ExternalProfile(user: arguments),
+          builder: (context) => ExternalProfile(args: arguments),
         );
 
       //-- ACCOUNT SCREEN

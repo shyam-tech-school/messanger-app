@@ -41,6 +41,17 @@ class ContactsTileWidget extends StatelessWidget {
           matchedContact.name,
           style: const TextStyle(fontWeight: FontWeight.w700),
         ),
+        subtitle: Text(
+          matchedContact.about?.isNotEmpty == true
+              ? matchedContact.about!
+              : 'Hey there! I am using Mail Messenger',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            color: Colors.grey.shade500,
+            fontSize: 13,
+          ),
+        ),
         contentPadding: .zero,
       ),
     );

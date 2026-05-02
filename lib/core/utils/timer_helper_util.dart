@@ -61,6 +61,32 @@ class TimerHelperUtil {
     return DateFormat("MMM d").format(datetime);
   }
 
+  // Last seen formatting:
+  // Today → "last seen today at 10:45 AM" | Yesterday → "last seen yesterday at 9:00 PM" | Older → "last seen Dec 1 at 8:00 AM"
+  static String formatLastSeen(dynamic timestamp) {
+    if (timestamp == null || timestamp == 0) return '';
+    try {
+      final datetime = _parse(timestamp);
+      final now = DateTime.now();
+
+      final isToday = _isSameDay(datetime, now);
+      final isYesterday = _isSameDay(
+        datetime,
+        now.subtract(const Duration(days: 1)),
+      );
+
+      final time = formatTo12Hour(timestamp);
+      
+      if (isToday) return "last seen today at $time";
+      if (isYesterday) return "last seen yesterday at $time";
+
+      final dateStr = DateFormat("MMM d").format(datetime);
+      return "last seen $dateStr at $time";
+    } catch (_) {
+      return '';
+    }
+  }
+
   // 3️⃣ Chat bubble footer time: "10:45 AM"
   static String formatMessageBubbleTime(dynamic timestamp) {
     return formatTo12Hour(timestamp);

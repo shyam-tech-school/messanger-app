@@ -29,6 +29,7 @@ class ContactsRepository implements IContactsRepository {
             name: e['name'],
             phone: e['phone'],
             photoUrl: e['photoUrl'],
+            about: e['about'],
           ),
         )
         .toList();

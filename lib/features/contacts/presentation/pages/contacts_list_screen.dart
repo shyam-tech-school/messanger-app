@@ -101,7 +101,7 @@ class _ContactsListScreenState extends State<ContactsListScreen> {
                           currentUserId,
                           otherUserId,
                         );
-
+ 
                         final otherUserNamme = contacts[index].name;
                         final otherUserImagerUrl = contacts[index].photoUrl;
 
