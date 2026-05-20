@@ -19,4 +19,8 @@ abstract class IChatRepositories {
 
   // Delete chat (soft-delete: remove current user from participants)
   Future<void> deleteChat(String chatId, String currentUserId);
+
+  // Bulk operations
+  Future<void> clearAllChats(String userId);
+  Future<void> deleteAllChats(String userId);
 }

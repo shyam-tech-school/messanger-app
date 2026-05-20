@@ -20,6 +20,10 @@ abstract class ChatRemoteDatasource {
 
   // Delete chat (soft-delete)
   Future<void> deleteChat(String chatId, String currentUserId);
+
+  // Bulk operations
+  Future<void> clearAllChats(String userId);
+  Future<void> deleteAllChats(String userId);
 }
 
 class ChatRemoteDataSourceImpl implements ChatRemoteDatasource {
@@ -184,5 +188,62 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDatasource {
       'participants': FieldValue.arrayRemove([currentUserId]),
       'participantsMap.$currentUserId': FieldValue.delete(),
     });
+  }
+
+  @override
+  Future<void> clearAllChats(String userId) async {
+    final chatsSnap = await firestore
+        .collection('chats')
+        .where('participants', arrayContains: userId)
+        .get();
+
+    for (final chatDoc in chatsSnap.docs) {
+      // Delete all messages in the subcollection
+      final messagesSnap = await chatDoc.reference
+          .collection('messages')
+          .get();
+
+      final batch = firestore.batch();
+      for (final msgDoc in messagesSnap.docs) {
+        batch.delete(msgDoc.reference);
+      }
+      await batch.commit();
+
+      // Reset chat metadata but keep the chat document
+      await chatDoc.reference.update({
+        'lastMessage': '',
+        'lastMessageType': null,
+        'lastMessageSenderId': null,
+        'lastMessageTime': null,
+        'unreadCount.$userId': 0,
+      });
+    }
+  }
+
+  @override
+  Future<void> deleteAllChats(String userId) async {
+    final chatsSnap = await firestore
+        .collection('chats')
+        .where('participants', arrayContains: userId)
+        .get();
+
+    for (final chatDoc in chatsSnap.docs) {
+      // Delete all messages in the subcollection
+      final messagesSnap = await chatDoc.reference
+          .collection('messages')
+          .get();
+
+      final batch = firestore.batch();
+      for (final msgDoc in messagesSnap.docs) {
+        batch.delete(msgDoc.reference);
+      }
+      await batch.commit();
+
+      // Soft-delete: remove user from participants
+      await chatDoc.reference.update({
+        'participants': FieldValue.arrayRemove([userId]),
+        'participantsMap.$userId': FieldValue.delete(),
+      });
+    }
   }
 }

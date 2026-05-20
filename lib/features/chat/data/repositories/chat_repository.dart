@@ -52,4 +52,14 @@ class ChatRepository implements IChatRepositories {
   Future<void> deleteChat(String chatId, String currentUserId) {
     return remoteDs.deleteChat(chatId, currentUserId);
   }
+
+  @override
+  Future<void> clearAllChats(String userId) {
+    return remoteDs.clearAllChats(userId);
+  }
+
+  @override
+  Future<void> deleteAllChats(String userId) {
+    return remoteDs.deleteAllChats(userId);
+  }
 }

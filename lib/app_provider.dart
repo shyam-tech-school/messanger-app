@@ -34,6 +34,7 @@ import 'package:provider/single_child_widget.dart';
 import 'package:mail_messanger/features/otp/presentation/provider/auth_provider.dart';
 import 'package:mail_messanger/features/call/data/repositories/call_history_repository_impl.dart';
 import 'package:mail_messanger/features/call/presentation/provider/call_history_provider.dart';
+import 'package:mail_messanger/features/sub_settings/chat_settings/provider/font_size_provider.dart';
 
 import 'features/contacts/core/contacts_permission_manager.dart';
 import 'core/services/firebase_messaging_service.dart';
@@ -148,6 +149,11 @@ class AppProvider {
         final repo = CallHistoryRepositoryImpl(firestore);
         return CallHistoryProvider(repo);
       },
+    ),
+
+    // ---- Settings ----
+    ChangeNotifierProvider(
+      create: (_) => FontSizeProvider(),
     ),
   ];
 }

@@ -13,6 +13,7 @@ import 'package:mail_messanger/core/utils/app_logger.dart';
 import 'package:mail_messanger/firebase_options.dart';
 import 'package:mail_messanger/core/services/firebase_messaging_service.dart';
 import 'package:mail_messanger/core/services/presence_service.dart';
+import 'package:mail_messanger/features/sub_settings/chat_settings/provider/font_size_provider.dart';
 import 'package:provider/provider.dart';
 
 void main(List<String> args) async {
@@ -42,16 +43,28 @@ class MessangerApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: AppProvider.provider,
-      child: MaterialApp(
-        theme: AppThemes.darkThemeData,
-        darkTheme: AppThemes.darkThemeData,
-        themeMode: ThemeMode.dark,
-        home: const AppRoot(),
-        onGenerateRoute: RouteConfig.routeGenerator,
-        debugShowCheckedModeBanner: false,
+      child: Consumer<FontSizeProvider>(
+        builder: (context, fontSizeProvider, _) {
+          return MaterialApp(
+            theme: AppThemes.darkThemeData,
+            darkTheme: AppThemes.darkThemeData,
+            themeMode: ThemeMode.dark,
+            home: const AppRoot(),
+            onGenerateRoute: RouteConfig.routeGenerator,
+            debugShowCheckedModeBanner: false,
+            builder: (context, child) {
+              return MediaQuery(
+                data: MediaQuery.of(context).copyWith(
+                  textScaler: TextScaler.linear(fontSizeProvider.textScaleFactor),
+                ),
+                child: child!,
+              );
+            },
+          );
+        },
       ),
     );
   }
 }
 
-// 153088
+
